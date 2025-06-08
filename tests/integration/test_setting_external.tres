@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cqtabb22tqpx2"]
+
+[ext_resource type="Script" uid="uid://dl0d15jitliem" path="res://tests/integration/test_setting_resource.gd" id="1_8laal"]
+
+[resource]
+script = ExtResource("1_8laal")
+int_var = 50
+float_var = 60

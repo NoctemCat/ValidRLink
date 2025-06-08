@@ -11,8 +11,18 @@ config_version=5
 [application]
 
 config/name="ValidRLink"
+run/main_scene="uid://de06e31f7iu5i"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[debug]
+
+gdscript/warnings/exclude_addons=false
+gdscript/warnings/untyped_declaration=1
+
+[display]
+
+window/size/mode.editor=0
 
 [dotnet]
 

@@ -1,0 +1,304 @@
+[gd_scene load_steps=17 format=4 uid="uid://de06e31f7iu5i"]
+
+[ext_resource type="Script" uid="uid://c0776xyhyin8h" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
+[ext_resource type="Script" uid="uid://cdsgv6uw5huvs" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
+[ext_resource type="Script" uid="uid://chy5s74q5ag1v" path="res://tests/editor/scripts/validate_inner_base.gd" id="2_mgxhu"]
+[ext_resource type="Script" uid="uid://2ywss7l6kc6v" path="res://tests/editor/scripts/inner_resource.gd" id="3_mgxhu"]
+[ext_resource type="Script" uid="uid://dyvwgoa8khf0n" path="res://tests/editor/scripts/inner_resource_validate.gd" id="4_4dnud"]
+[ext_resource type="Script" uid="uid://reta8lv7tvd8" path="res://tests/editor/scripts/rlink_child.gd" id="6_baol1"]
+[ext_resource type="Script" uid="uid://cl578xaoh1it6" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
+[ext_resource type="PackedScene" uid="uid://dyftaq5bcj40m" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
+[ext_resource type="Script" uid="uid://beknapxgoro47" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_tvfff"]
+[ext_resource type="Script" uid="uid://cy812ttkiutkj" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
+
+[sub_resource type="Resource" id="Resource_65005"]
+script = ExtResource("3_mgxhu")
+export_bool_var = true
+export_int_var = 100
+export_float_var = 100.0
+export_String_var = "new value"
+export_Vector2_var = Vector2(100, 100)
+export_Vector2i_var = Vector2i(100, 100)
+export_Rect2_var = Rect2(100, 100, 100, 100)
+export_Rect2i_var = Rect2i(100, 100, 100, 100)
+export_Vector3_var = Vector3(100, 100, 100)
+export_Vector3i_var = Vector3i(100, 100, 100)
+export_Transform2D_var = Transform2D(100, 100, 200, 200, 300, 300)
+export_Vector4_var = Vector4(100, 100, 100, 100)
+export_Vector4i_var = Vector4i(100, 100, 100, 100)
+export_Plane_var = Plane(100, 100, 100, 100)
+export_Quaternion_var = Quaternion(-0.177884, -0.310742, -0.310742, 0.880475)
+export_AABB_var = AABB(300, 300, 300, 200, 200, 200)
+export_Basis_var = Basis(300, 200, 100, 300, 200, 100, 300, 200, 100)
+export_Transform3D_var = Transform3D(300, 200, 100, 300, 200, 100, 300, 200, 100, 200, 200, 200)
+export_Projection_var = Projection(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100, 100, 100, 100, 100)
+export_Color_var = Color(0.3, 0.4, 0.5, 1)
+export_StringName_var = &"new stringname"
+export_NodePath_var = NodePath("../ValidateInner")
+export_Dictionary_var = {
+"key1": 100,
+Vector2i(20, 20): true
+}
+export_Array_var = [Color(1, 1, 1, 1), 200, "text"]
+export_PackedByteArray_var = PackedByteArray("FB4o")
+export_PackedInt32Array_var = PackedInt32Array(1234, 4321, 4544, 1131)
+export_PackedInt64Array_var = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+export_PackedFloat32Array_var = PackedFloat32Array(1234, 4321, 4544, 1131)
+export_PackedFloat64Array_var = PackedFloat64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+export_PackedStringArray_var = PackedStringArray("hello world", "new value", "third")
+export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
+export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
+export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
+export_PackedVector4Array_var = PackedVector4Array(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100)
+
+[sub_resource type="Resource" id="Resource_p40gm"]
+script = ExtResource("3_mgxhu")
+export_bool_var = true
+export_int_var = 0
+export_float_var = 0.0
+export_String_var = ""
+export_Vector2_var = Vector2(0, 0)
+export_Vector2i_var = Vector2i(0, 0)
+export_Rect2_var = Rect2(0, 0, 0, 0)
+export_Rect2i_var = Rect2i(0, 0, 0, 0)
+export_Vector3_var = Vector3(0, 0, 0)
+export_Vector3i_var = Vector3i(0, 0, 0)
+export_Transform2D_var = Transform2D(1, 0, 0, 1, 0, 0)
+export_Vector4_var = Vector4(0, 0, 0, 0)
+export_Vector4i_var = Vector4i(0, 0, 0, 0)
+export_Plane_var = Plane(0, 0, 0, 0)
+export_Quaternion_var = Quaternion(0, 0, 0, 1)
+export_AABB_var = AABB(0, 0, 0, 0, 0, 0)
+export_Basis_var = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+export_Transform3D_var = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+export_Projection_var = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+export_Color_var = Color(0, 0, 0, 1)
+export_StringName_var = &""
+export_NodePath_var = NodePath("")
+export_Dictionary_var = {}
+export_Array_var = []
+export_PackedByteArray_var = PackedByteArray()
+export_PackedInt32Array_var = PackedInt32Array()
+export_PackedInt64Array_var = PackedInt64Array()
+export_PackedFloat32Array_var = PackedFloat32Array()
+export_PackedFloat64Array_var = PackedFloat64Array()
+export_PackedStringArray_var = PackedStringArray()
+export_PackedVector2Array_var = PackedVector2Array()
+export_PackedVector3Array_var = PackedVector3Array()
+export_PackedColorArray_var = PackedColorArray()
+export_PackedVector4Array_var = PackedVector4Array()
+
+[sub_resource type="Resource" id="Resource_utf88"]
+script = ExtResource("4_4dnud")
+export_bool_var = true
+export_int_var = 100
+export_float_var = 100.0
+export_String_var = "new value"
+export_Vector2_var = Vector2(100, 100)
+export_Vector2i_var = Vector2i(100, 100)
+export_Rect2_var = Rect2(100, 100, 100, 100)
+export_Rect2i_var = Rect2i(100, 100, 100, 100)
+export_Vector3_var = Vector3(100, 100, 100)
+export_Vector3i_var = Vector3i(100, 100, 100)
+export_Transform2D_var = Transform2D(100, 100, 200, 200, 300, 300)
+export_Vector4_var = Vector4(100, 100, 100, 100)
+export_Vector4i_var = Vector4i(100, 100, 100, 100)
+export_Plane_var = Plane(100, 100, 100, 100)
+export_Quaternion_var = Quaternion(-0.177884, -0.310742, -0.310742, 0.880475)
+export_AABB_var = AABB(300, 300, 300, 200, 200, 200)
+export_Basis_var = Basis(300, 200, 100, 300, 200, 100, 300, 200, 100)
+export_Transform3D_var = Transform3D(300, 200, 100, 300, 200, 100, 300, 200, 100, 200, 200, 200)
+export_Projection_var = Projection(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100, 100, 100, 100, 100)
+export_Color_var = Color(0.3, 0.4, 0.5, 1)
+export_StringName_var = &"new stringname"
+export_NodePath_var = NodePath("../ValidateInner")
+export_Dictionary_var = {
+"key1": 100,
+Vector2i(20, 20): true
+}
+export_Array_var = [Color(1, 1, 1, 1), 200, "text"]
+export_PackedByteArray_var = PackedByteArray("FB4o")
+export_PackedInt32Array_var = PackedInt32Array(1234, 4321, 4544, 1131)
+export_PackedInt64Array_var = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+export_PackedFloat32Array_var = PackedFloat32Array(1234, 4321, 4544, 1131)
+export_PackedFloat64Array_var = PackedFloat64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+export_PackedStringArray_var = PackedStringArray("hello world", "new value", "third")
+export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
+export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
+export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
+export_PackedVector4Array_var = PackedVector4Array(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100)
+inner = SubResource("Resource_p40gm")
+
+[sub_resource type="Resource" id="Resource_tvfff"]
+script = ExtResource("9_tvfff")
+text = "Remove All"
+tooltip_text = ""
+icon = ""
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = []
+unbind_next = 0
+callable_method_name = &"remove_all_impl"
+metadata/default_values = {
+&"_args": [],
+&"_unbind_next": 0,
+&"clip_text": true,
+&"disabled": false,
+&"icon": "",
+&"icon_alignment": 0,
+&"icon_alignment_vertical": 1,
+&"icon_texture": null,
+&"margin_bottom": 0,
+&"margin_top": 0,
+&"max_width": 200,
+&"method_name": &"remove_all_impl",
+&"min_height": 0,
+&"modulate": Color(1, 1, 1, 1),
+&"size_flags": -1,
+&"text": "Remove All",
+&"tooltip_text": ""
+}
+
+[sub_resource type="Resource" id="Resource_py022"]
+script = ExtResource("9_tvfff")
+text = "Toggle Connectds"
+tooltip_text = ""
+icon = ""
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(0, 1, 0, 1)
+max_width = 105
+min_height = 0
+margin_left = 0
+margin_top = 10
+margin_right = 0
+margin_bottom = 10
+disabled = false
+clip_text = true
+size_flags = 8
+bound_args = []
+unbind_next = 0
+callable_method_name = &"toggle_connect_impl"
+metadata/default_values = {
+&"_args": [],
+&"_unbind_next": 0,
+&"clip_text": true,
+&"disabled": false,
+&"icon": "",
+&"icon_alignment": 0,
+&"icon_alignment_vertical": 1,
+&"icon_texture": null,
+&"margin_bottom": 10,
+&"margin_top": 10,
+&"max_width": 105,
+&"method_name": &"toggle_connect_impl",
+&"min_height": 0,
+&"modulate": Color(0, 1, 0, 1),
+&"size_flags": 8,
+&"text": "Toggle Connectds",
+&"tooltip_text": ""
+}
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_py022"]
+
+[node name="Node" type="Node"]
+
+[node name="ValidateBasic" type="Node" parent="."]
+script = ExtResource("1_aoqcc")
+export_bool_var = true
+export_int_var = 100
+export_float_var = 100.0
+export_String_var = "new value"
+export_Vector2_var = Vector2(100, 100)
+export_Vector2i_var = Vector2i(100, 100)
+export_Rect2_var = Rect2(100, 100, 100, 100)
+export_Rect2i_var = Rect2i(100, 100, 100, 100)
+export_Vector3_var = Vector3(100, 100, 100)
+export_Vector3i_var = Vector3i(100, 100, 100)
+export_Transform2D_var = Transform2D(100, 100, 200, 200, 300, 300)
+export_Vector4_var = Vector4(100, 100, 100, 100)
+export_Vector4i_var = Vector4i(100, 100, 100, 100)
+export_Plane_var = Plane(100, 100, 100, 100)
+export_Quaternion_var = Quaternion(-0.177884, -0.310742, -0.310742, 0.880475)
+export_AABB_var = AABB(300, 300, 300, 200, 200, 200)
+export_Basis_var = Basis(300, 200, 100, 300, 200, 100, 300, 200, 100)
+export_Transform3D_var = Transform3D(300, 200, 100, 300, 200, 100, 300, 200, 100, 200, 200, 200)
+export_Projection_var = Projection(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100, 100, 100, 100, 100)
+export_Color_var = Color(0.3, 0.4, 0.5, 1)
+export_StringName_var = &"new stringname"
+export_NodePath_var = NodePath("../ValidateInner")
+export_Dictionary_var = {
+"key1": 100,
+Vector2i(20, 20): true
+}
+export_Array_var = [Color(1, 1, 1, 1), 200, "text"]
+export_PackedByteArray_var = PackedByteArray("FB4o")
+export_PackedInt32Array_var = PackedInt32Array(1234, 4321, 4544, 1131)
+export_PackedInt64Array_var = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+export_PackedFloat32Array_var = PackedFloat32Array(1234, 4321, 4544, 1131)
+export_PackedFloat64Array_var = PackedFloat64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+export_PackedStringArray_var = PackedStringArray("hello world", "new value", "third")
+export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
+export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
+export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
+export_PackedVector4Array_var = PackedVector4Array(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100)
+
+[node name="ValidateInner" type="Node" parent="."]
+script = ExtResource("2_2l0tt")
+inner = SubResource("Resource_65005")
+
+[node name="ValidateInnerValidate" type="Node" parent="."]
+script = ExtResource("2_mgxhu")
+inner = SubResource("Resource_utf88")
+
+[node name="RLinkChild" type="Node" parent="."]
+script = ExtResource("6_baol1")
+
+[node name="DirectChild" type="Node" parent="RLinkChild"]
+
+[node name="ChildPath" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="ChildFromPath" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="ChildFrom" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="HasFrom" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="DirectChildPath" type="Node" parent="RLinkChild"]
+
+[node name="RLinkScene" type="Node" parent="." node_paths=PackedStringArray("scene_export", "scene_load", "scene_file")]
+script = ExtResource("7_v4orn")
+scene = ExtResource("8_tvfff")
+scene_export = NodePath("SceneExport")
+scene_load = NodePath("SceneLoad")
+scene_file = NodePath("SceneFile")
+remove_all = SubResource("Resource_tvfff")
+toggle_connect = SubResource("Resource_py022")
+
+[node name="SceneExport" parent="RLinkScene" instance=ExtResource("8_tvfff")]
+
+[node name="SceneLoad" parent="RLinkScene" instance=ExtResource("8_tvfff")]
+offset_top = 50.0
+offset_bottom = 50.0
+
+[node name="SceneFile" parent="RLinkScene" instance=ExtResource("8_tvfff")]
+offset_top = 100.0
+offset_bottom = 100.0
+
+[node name="RLinkChanges" type="Node" parent="."]
+script = ExtResource("10_py022")
+noise_texture = SubResource("NoiseTexture2D_py022")
+
+[connection signal="custom_pressed" from="RLinkScene/SceneExport" to="RLinkScene" method="scene_pressed"]
+[connection signal="custom_pressed" from="RLinkScene/SceneLoad" to="RLinkScene" method="scene_pressed"]
+[connection signal="custom_pressed" from="RLinkScene/SceneFile" to="RLinkScene" method="scene_pressed" binds= ["hello scene_file"]]

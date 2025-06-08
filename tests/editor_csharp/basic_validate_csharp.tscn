@@ -1,0 +1,111 @@
+[gd_scene load_steps=6 format=3 uid="uid://bni70jg43615s"]
+
+[ext_resource type="Script" uid="uid://d2meso1twn2ec" path="res://tests/editor_csharp/BasicValidateCSharp.cs" id="1_tyrjc"]
+[ext_resource type="Script" uid="uid://bvn01egv77461" path="res://addons/valid_rlink/runtime/RLinkButtonCS.cs" id="2_mbuwi"]
+[ext_resource type="Script" uid="uid://cnrrrou7pvg1j" path="res://tests/editor_csharp/button.gd" id="3_ykr5n"]
+
+[sub_resource type="Resource" id="Resource_ykr5n"]
+script = ExtResource("2_mbuwi")
+Text = "Hello"
+TooltipText = ""
+Icon = "Clear"
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 40
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"TestInt"
+metadata/default_values = {
+&"BoundArgs": [],
+&"CallableMethodName": &"TestInt",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 40,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 0,
+&"MaxWidth": 200,
+&"MinHeight": 0,
+&"Modulate": Color(1, 1, 1, 1),
+&"SizeFlags": -1,
+&"Text": "Hello",
+&"TooltipText": "",
+&"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_28d03"]
+script = ExtResource("2_mbuwi")
+Text = "Lambda"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"TestStatic"
+metadata/default_values = {
+&"BoundArgs": [],
+&"CallableMethodName": &"TestStatic",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 0,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 0,
+&"MaxWidth": 200,
+&"MinHeight": 0,
+&"Modulate": Color(1, 1, 1, 1),
+&"SizeFlags": -1,
+&"Text": "Lambda",
+&"TooltipText": "",
+&"UnbindNext": 0
+}
+
+[node name="Node" type="Node"]
+script = ExtResource("1_tyrjc")
+ButtsssonCS2 = SubResource("Resource_ykr5n")
+TestInfoCall234 = Callable()
+TestInfoCallDirect = Callable()
+IntVar = 391
+Lambda = SubResource("Resource_28d03")
+metadata/rlink_skip = false
+
+[node name="Button" type="Button" parent="."]
+offset_left = 164.0
+offset_top = 88.0
+offset_right = 282.0
+offset_bottom = 130.0
+script = ExtResource("3_ykr5n")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
