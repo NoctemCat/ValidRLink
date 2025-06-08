@@ -13,7 +13,6 @@ func _init() -> void:
         _expr_get_arg_count.parse("callable.get_argument_count()", ["callable"])
 
 
-@warning_ignore_start("unsafe_method_access")
 func set_interface(plugin: EditorPlugin) -> void:
     if Engine.has_singleton(&"EditorInterface"):
         interface = Engine.get_singleton(&"EditorInterface")
@@ -64,6 +63,3 @@ func get_editor_theme() -> Theme:
 func get_editor_base_control() -> Control:
     if interface == null: return null
     return interface.get_base_control()
-
-    
-@warning_ignore_restore("unsafe_method_access")

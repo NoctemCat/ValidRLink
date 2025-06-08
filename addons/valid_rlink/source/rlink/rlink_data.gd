@@ -469,8 +469,6 @@ func is_native_resource(value: Variant) -> bool:
 
 
 #region: Changes buffer
-@warning_ignore_start("untyped_declaration")
-@warning_ignore_start("unsafe_method_access")
 func object_add_changes(object: Object, property: StringName, old_value: Variant, new_value: Variant) -> void:
     _changes.push_back(object)
     _changes.push_back(property)
@@ -486,7 +484,7 @@ func object_remove_meta(object: Object, property: StringName) -> void:
 
 
 func node_add_groups(node: Node, groups: Array[StringName]) -> void:
-    var arr = _add_groups.get(node)
+    var arr: Variant = _add_groups.get(node)
     if arr == null:
         arr = Array([], TYPE_STRING_NAME, &"", null)
         _add_groups[node] = arr
@@ -495,7 +493,7 @@ func node_add_groups(node: Node, groups: Array[StringName]) -> void:
 
 
 func node_remove_groups(node: Node, groups: Array[StringName]) -> void:
-    var arr = _erase_groups.get(node)
+    var arr: Variant = _erase_groups.get(node)
     if arr == null:
         arr = Array([], TYPE_STRING_NAME, &"", null)
         _erase_groups[node] = arr
@@ -504,7 +502,7 @@ func node_remove_groups(node: Node, groups: Array[StringName]) -> void:
     
     
 func node_add_child(node: Node, child: Node) -> void:
-    var arr = _add_children.get(node)
+    var arr: Variant = _add_children.get(node)
     if arr == null:
         arr = Array([], TYPE_OBJECT, &"Node", null)
         _add_children[node] = arr
@@ -513,7 +511,7 @@ func node_add_child(node: Node, child: Node) -> void:
 
 
 func node_remove_child(node: Node, child: Node) -> void:
-    var arr = _remove_children.get(node)
+    var arr: Variant = _remove_children.get(node)
     if arr == null:
         arr = Array([], TYPE_OBJECT, &"Node", null)
         _remove_children[node] = arr
@@ -539,7 +537,7 @@ func flush_changes(use_history: bool = true) -> void:
     if use_history: _flush_changes_history()
     else: _flush_changes_direct()
     
-    var needs_updating = _connect_signals.size() > 0 or _disconnect_signals.size() > 0
+    var needs_updating := _connect_signals.size() > 0 or _disconnect_signals.size() > 0
     _clear_buffer()
     if needs_updating: _update_tree()
 
@@ -555,16 +553,20 @@ func _flush_changes_history() -> void:
         var object: Object = _remove_metas[i]
         var meta: StringName = _remove_metas[i + 1]
         __undo_redo.add_undo_method(object, &"set_meta", meta, object.get_meta(meta))
-        
+    
+    @warning_ignore("untyped_declaration")
     for node in _add_children:
+        @warning_ignore("untyped_declaration")
         for child in _add_children[node]:
             __undo_redo.add_do_method(node, &"add_child", child, true)
             if node.is_inside_tree():
                 __undo_redo.add_do_method(child, &"set_owner", node.owner if node.owner != null else node)
             __undo_redo.add_do_reference(child)
             __undo_redo.add_undo_method(node, &"remove_child", child)
-            
+
+    @warning_ignore("untyped_declaration")
     for node in _remove_children:
+        @warning_ignore("untyped_declaration")
         for child in _remove_children[node]:
             __undo_redo.add_do_method(node, &"remove_child", child)
             __undo_redo.add_undo_method(node, &"add_child", child, true)
@@ -590,13 +592,17 @@ func _flush_changes_history() -> void:
         
     for i in range(0, _undo_methods.size(), 1):
         __undo_redo.callv(&"add_undo_method", _undo_methods[i])
-        
+    
+    @warning_ignore("untyped_declaration")
     for node in _add_groups:
+        @warning_ignore("untyped_declaration")
         for group in _add_groups[node]:
             __undo_redo.add_do_method(node, &"add_to_group", group, true)
             __undo_redo.add_undo_method(node, &"remove_from_group", group)
-            
+
+    @warning_ignore("untyped_declaration")
     for node in _erase_groups:
+        @warning_ignore("untyped_declaration")
         for group in _erase_groups[node]:
             __undo_redo.add_do_method(node, &"remove_from_group", group)
             __undo_redo.add_undo_method(node, &"add_to_group", group, true)
@@ -617,13 +623,17 @@ func _flush_changes_history() -> void:
 
 
 func _flush_changes_direct() -> void:
+    @warning_ignore("untyped_declaration")
     for node in _add_children:
+        @warning_ignore("untyped_declaration")
         for child in _add_children[node]:
             node.add_child(child, true)
             if node.is_inside_tree():
                 child.owner = node.owner if node.owner != null else node
 
+    @warning_ignore("untyped_declaration")
     for node in _remove_children:
+        @warning_ignore("untyped_declaration")
         for child in _remove_children[node]:
             node.remove_child(child)
             
@@ -640,12 +650,16 @@ func _flush_changes_direct() -> void:
         var object: Object = args.pop_front()
         var method: StringName = args.pop_front()
         object.callv(method, args)
-        
+
+    @warning_ignore("untyped_declaration")
     for node in _add_groups:
+        @warning_ignore("untyped_declaration")
         for group in _add_groups[node]:
             node.add_to_group(group, true)
-            
+    
+    @warning_ignore("untyped_declaration")
     for node in _erase_groups:
+        @warning_ignore("untyped_declaration")
         for group in _erase_groups[node]:
             node.remove_from_group(group)
     
@@ -658,8 +672,6 @@ func _flush_changes_direct() -> void:
         var signal_value: Signal = _disconnect_signals[i]
         var callable: Callable = _disconnect_signals[i + 1]
         signal_value.disconnect(callable)
-@warning_ignore_restore("untyped_declaration")
-@warning_ignore_restore("unsafe_method_access")
 
 
 func discard_changes() -> void:
