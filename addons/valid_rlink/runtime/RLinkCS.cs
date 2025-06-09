@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Godot;
 
@@ -40,11 +41,16 @@ public partial class RLinkCS : RefCounted
         _objectId = data.Get(DataNames._ObjectId).AsUInt64();
     }
 
+    [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "It complained without it")]
+    [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Don't want non static methods here")]
     public SceneTree GetTree()
     {
         return (SceneTree)Engine.GetMainLoop();
     }
 
+    /// <summary>
+    /// Compares current node with EditedSceneRoot
+    /// </summary>
     public bool IsEditedSceneRoot() => Placeholder == GetTree().EditedSceneRoot;
 
     /// <inheritdoc cref="GetToolFrom(GodotObject)" />
@@ -66,7 +72,7 @@ public partial class RLinkCS : RefCounted
     public T? GetRuntimeFrom<T>(GodotObject tool) where T : GodotObject
         => (T?)GetRuntimeFrom(tool);
     /// <summary>
-    /// Retrieves placeholder if exist
+    /// Retrieves placeholder object if exist
     /// </summary>
     /// <param name="tool">Converted object</param>
     /// <returns>Registed placeholder or null</returns>
@@ -77,39 +83,45 @@ public partial class RLinkCS : RefCounted
 
     /// <inheritdoc cref="ConvertToTool(GodotObject, int)" />
     /// <typeparam name="T">The type of your class</typeparam>
-    public T ConvertToTool<T>(GodotObject runtime, int customDepth = 1) where T : GodotObject?
-        => (T)ConvertToTool(runtime, customDepth);
+    [return: NotNullIfNotNull(nameof(runtime))]
+    public T? ConvertToTool<T>(GodotObject? runtime, int customDepth = 1) where T : GodotObject
+        => (T?)ConvertToTool(runtime, customDepth);
+
     /// <summary>
-    /// Convert placeholder to a real object
+    /// Converts placeholder to a real object
     /// </summary>
     /// <param name="runtime">Placeholder instance</param>
     /// <returns>Registered object with your type, if not creates a new one</returns>
-    public GodotObject ConvertToTool(GodotObject runtime, int customDepth = 1)
+    [return: NotNullIfNotNull(nameof(runtime))]
+    public GodotObject? ConvertToTool(GodotObject? runtime, int customDepth = 1)
     {
-        return Data.Call(DataNames.RLinkConvertToTool, runtime, customDepth).AsGodotObject();
+        return Data.Call(DataNames.RLinkConvertToTool, runtime ?? new Variant(), customDepth).AsGodotObject();
     }
 
     /// <inheritdoc cref="ConvertToRuntime(GodotObject, int, bool)" />
     /// <typeparam name="T">Base native Godot type</typeparam>
-    public T ConvertToRuntime<T>(GodotObject tool, int customDepth = 1, bool trackInstances = true) where T : GodotObject?
-        => (T)ConvertToRuntime(tool, customDepth, trackInstances);
+    [return: NotNullIfNotNull(nameof(tool))]
+    public T? ConvertToRuntime<T>(GodotObject? tool, int customDepth = 1, bool trackInstances = true) where T : GodotObject
+        => (T?)ConvertToRuntime(tool, customDepth, trackInstances);
 
     /// <summary>
-    /// Convert tool object to placeholder
+    /// Converts tool object to placeholder
     /// </summary>
     /// <param name="tool">Converted instance</param>
     /// <param name="trackInstances">If true will free tool obj together with other temporaries</param>
     /// <returns>Runtime placeholder if registered, if not creates a new one</returns>
-    public GodotObject ConvertToRuntime(GodotObject tool, int customDepth = 1, bool trackInstances = true)
+    [return: NotNullIfNotNull(nameof(tool))]
+    public GodotObject? ConvertToRuntime(GodotObject? tool, int customDepth = 1, bool trackInstances = true)
     {
-        return Data.Call(DataNames.RLinkConvertToRuntime, tool, customDepth, trackInstances).AsGodotObject();
+        return Data.Call(DataNames.RLinkConvertToRuntime, tool ?? new Variant(), customDepth, trackInstances).AsGodotObject();
     }
 
     /// <summary>
-    /// Check if the registered pair is valid. For nodes being outside of treee counts as invalid
+    /// Check if the registered pair is invalid. For nodes being outside of tree counts as invalid
     /// </summary>
     /// <param name="deleteIfInvalid">If pair is not valid, on true frees passed obj if it was created by this plugin</param>
     public bool IsPairInvalid(GodotObject obj, bool deleteIfInvalid = true) => !IsPairValid(obj, deleteIfInvalid);
+
     /// <summary>
     /// Check if the registered pair is valid. For nodes being outside of treee counts as invalid
     /// </summary>
@@ -126,6 +138,7 @@ public partial class RLinkCS : RefCounted
     {
         return InstantiatePacked<T>(GD.Load<PackedScene>(path));
     }
+
     /// <summary>
     /// Instantiates scene and converts root node to real type
     /// </summary>
@@ -141,6 +154,7 @@ public partial class RLinkCS : RefCounted
     {
         return InstantiatePacked(GD.Load<PackedScene>(path));
     }
+
     /// <summary>
     /// Instantiates scene and converts root node to real type
     /// </summary>
@@ -149,16 +163,63 @@ public partial class RLinkCS : RefCounted
         return ConvertToTool<Node>(scene.Instantiate(PackedScene.GenEditState.Instance));
     }
 
-    public Node? GetNodeOrNull(NodePath path) => GetNodeOrNull<Node>(path);
-    public T? GetNodeOrNull<T>(NodePath path) where T : Node
+    /// <summary>
+    /// Gets parent as real type
+    /// </summary>
+    public T? GetParent<T>() where T : Node => (T?)GetParent();
+    /// <summary>
+    /// Gets parent as real type
+    /// </summary>
+    public Node? GetParent()
+    {
+        if (Placeholder is not Node nodePlaceholder) return null;
+        Node? parent = nodePlaceholder.GetParent();
+        if (parent is null) return null;
+        return ConvertToTool<Node>(parent);
+    }
+
+    /// <summary>
+    /// Gets parent for node as real type
+    /// </summary>
+    public T? GetParentFor<T>(Node toolNode) where T : Node => (T?)GetParentFor(toolNode);
+    /// <summary>
+    /// Gets parent for node as real type
+    /// </summary>
+    public Node? GetParentFor(Node toolNode)
+    {
+        Node? runtimeNode = GetRuntimeFrom<Node>(toolNode);
+        if (runtimeNode is null)
+        {
+            GD.PushError("ValidRLink: runtime pair is not registered [RLink.GetParentFrom]");
+            return null;
+        }
+        Node? parent = runtimeNode.GetParent();
+        if (parent is null) return null;
+        return ConvertToTool<Node>(parent);
+    }
+
+    /// <summary>
+    /// Gets node as real type
+    /// </summary>
+    public Node? GetNodeOrNull(scoped in NodePath path) => GetNodeOrNull<Node>(path);
+    /// <summary>
+    /// Gets node as real type
+    /// </summary>
+    public T? GetNodeOrNull<T>(scoped in NodePath path) where T : Node
     {
         if (Placeholder is not Node nodePlaceholder) return null;
         Node? node = nodePlaceholder.GetNodeOrNull(path);
-        return ConvertToTool<T?>(node);
+        return ConvertToTool<T>(node);
     }
 
-    public Node? GetNodeOrNullFrom(Node toolNode, NodePath path) => GetNodeOrNullFrom<Node>(toolNode, path);
-    public T? GetNodeOrNullFrom<T>(Node toolNode, NodePath path) where T : Node
+    /// <summary>
+    /// Gets node from node as real type
+    /// </summary>
+    public Node? GetNodeOrNullFrom(Node toolNode, scoped in NodePath path) => GetNodeOrNullFrom<Node>(toolNode, path);
+    /// <summary>
+    /// Gets node from node as real type
+    /// </summary>
+    public T? GetNodeOrNullFrom<T>(Node toolNode, scoped in NodePath path) where T : Node
     {
         Node? runtimeNode = GetRuntimeFrom<Node>(toolNode);
         if (runtimeNode is null)
@@ -167,22 +228,22 @@ public partial class RLinkCS : RefCounted
             return null;
         }
         Node? runtime = runtimeNode.GetNodeOrNull(path);
-        return ConvertToTool<T?>(runtime);
+        return ConvertToTool<T>(runtime);
     }
 
     /// <summary>
-    /// Checks from current
+    /// Checks if node exist
     /// </summary>
-    public bool HasNode(NodePath path)
+    public bool HasNode(scoped in NodePath path)
     {
         if (Placeholder is not Node nodePlaceholder) return false;
         return nodePlaceholder.HasNode(path);
     }
 
     /// <summary>
-    /// Checks if the node has node by path
+    /// Checks if node exist from node
     /// </summary>
-    public bool HasNodeFrom(Node toolNode, NodePath path)
+    public bool HasNodeFrom(Node toolNode, scoped in NodePath path)
     {
         Node? runtimeNode = GetRuntimeFrom<Node>(toolNode);
         if (runtimeNode is null)
@@ -199,8 +260,7 @@ public partial class RLinkCS : RefCounted
     public void AddChild(Node child)
     {
         if (Placeholder is not Node) return;
-        Node? runtimeChild = ConvertToRuntime<Node?>(child);
-        ThrowIfNull(runtimeChild);
+        Node runtimeChild = ConvertToRuntime<Node>(child);
         Data.Call(DataNames.RLinkAddChildTo, Placeholder, runtimeChild);
     }
 
@@ -215,29 +275,16 @@ public partial class RLinkCS : RefCounted
             GD.PushError("ValidRLink: runtime pair is not registered [RLink.AddChildTo]");
             return;
         }
-        Node? runtimeChild = ConvertToRuntime<Node?>(child);
-        ThrowIfNull(runtimeChild);
+        Node runtimeChild = ConvertToRuntime<Node>(child);
         Data.Call(DataNames.RLinkAddChildTo, runtimeNode, runtimeChild);
     }
 
     /// <summary>
-    /// Gets the node at path and adds a child to it
+    /// Gets the node before last segment and adds a child to it with the name from the last segment.
+    /// When the last parameter is true, frees passed <c>child</c> if node before last segment from 
+    /// <c>path</c> is not found
     /// </summary>
-    public void AddChildToPath(NodePath path, Node child)
-    {
-        if (Placeholder is not Node nodePlaceholder) return;
-        Node? runtimeNode = nodePlaceholder.GetNodeOrNull(path);
-        if (runtimeNode is null) return;
-
-        Node? runtimeChild = ConvertToRuntime<Node?>(child);
-        ThrowIfNull(runtimeChild);
-        Data.Call(DataNames.RLinkAddChildTo, runtimeNode, runtimeChild);
-    }
-
-    /// <summary>
-    /// Gets the node before last segment and adds a child to it with the name from the last segment 
-    /// </summary>
-    public void AddChildPath(NodePath path, Node child)
+    public void AddChildPath(NodePath path, Node child, bool freeIfNotFound = true)
     {
         if (Placeholder is not Node nodePlaceholder) return;
         string names = path.GetConcatenatedNames();
@@ -248,11 +295,15 @@ public partial class RLinkCS : RefCounted
         else
             runtimeNode = nodePlaceholder.GetNodeOrNull(names[..idx]);
 
-        if (runtimeNode is null) return;
+        if (runtimeNode is null)
+        {
+            if (freeIfNotFound)
+                child.QueueFree();
+            return;
+        }
 
         child.Name = path.GetName(path.GetNameCount() - 1);
-        Node? runtimeChild = ConvertToRuntime<Node?>(child);
-        ThrowIfNull(runtimeChild);
+        Node? runtimeChild = ConvertToRuntime<Node>(child);
         Data.Call(DataNames.RLinkAddChildTo, runtimeNode, runtimeChild);
     }
 
@@ -287,28 +338,9 @@ public partial class RLinkCS : RefCounted
     }
 
     /// <summary>
-    /// Gets the node at path and removes child from it
-    /// </summary>
-    public void RemoveChildFromPath(NodePath path, Node child)
-    {
-        if (Placeholder is not Node nodePlaceholder) return;
-
-        Node? runtimeNode = nodePlaceholder.GetNodeOrNull(path);
-        if (runtimeNode is null) return;
-
-        Node? runtimeChild = GetRuntimeFrom<Node>(child);
-        if (runtimeChild is null)
-        {
-            GD.PushError("ValidRLink: runtime pair is not registered [RLink.RemoveChildFromPath]");
-            return;
-        }
-        Data.Call(DataNames.RLinkRemoveChildFrom, runtimeNode, runtimeChild);
-    }
-
-    /// <summary>
     /// Removes the node at the end of the path from current
     /// </summary>
-    public void RemoveChildPath(NodePath path)
+    public void RemoveChildPath(scoped in NodePath path)
     {
         if (Placeholder is not Node nodePlaceholder) return;
 
@@ -317,52 +349,97 @@ public partial class RLinkCS : RefCounted
         Data.Call(DataNames.RLinkRemoveChildFrom, runtimeNode.GetParent(), runtimeNode);
     }
 
-    /// <inheritdoc cref="SignalConnect(Signal, Callable, Godot.Collections.Array?, int)" />
-    public void SignalConnect(Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    /// <summary>
+    /// Removes all children from current node
+    /// </summary>
+    public void RemoveAllChildren()
+    {
+        if (Placeholder is not Node nodePlaceholder) return;
+        for (int idx = 0; idx < nodePlaceholder.GetChildCount(); idx++)
+        {
+            Data.Call(DataNames.RLinkRemoveChildFrom, nodePlaceholder, nodePlaceholder.GetChild(idx));
+        }
+    }
+
+    /// <summary>
+    /// Removes all children from toolNode
+    /// </summary>
+    public void RemoveAllChildrenFrom(Node toolNode)
+    {
+        Node? runtimeNode = GetRuntimeFrom<Node>(toolNode);
+        if (runtimeNode is null)
+        {
+            GD.PushError("ValidRLink: runtime pair is not registered [RLink.RemoveAllChildrenFrom]");
+            return;
+        }
+        for (int idx = 0; idx < runtimeNode.GetChildCount(); idx++)
+        {
+            Data.Call(DataNames.RLinkRemoveChildFrom, runtimeNode, runtimeNode.GetChild(idx));
+        }
+    }
+
+    /// <summary>
+    /// Removes all children from the node at path
+    /// </summary>
+    public void RemoveAllChildrenPath(scoped in NodePath path)
+    {
+        if (Placeholder is not Node nodePlaceholder) return;
+
+        Node? runtimeNode = nodePlaceholder.GetNodeOrNull(path);
+        if (runtimeNode is null) return;
+
+        for (int idx = 0; idx < runtimeNode.GetChildCount(); idx++)
+        {
+            Data.Call(DataNames.RLinkRemoveChildFrom, runtimeNode, runtimeNode.GetChild(idx));
+        }
+    }
+
+    /// <inheritdoc cref="SignalConnect(in Signal, in Variant, Godot.Collections.Array?, int)" />
+    public void SignalConnect(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalConnect(signal, DelegateToCallable(method), bindvArgs, unbind);
     /// <summary>
     /// Connects them persistingly, bound arguments get added first, then unbind. Callables are treated as connected if they have the
     /// same object and method, so different binds are treated as the same callable
     /// </summary>
-    public void SignalConnect(Signal signal, Callable callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public void SignalConnect(scoped in Signal signal, scoped in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
     {
         bindvArgs ??= [];
         Data.Call(DataNames.RLinkSignalConnect, signal, callable, bindvArgs, unbind);
     }
 
-    /// <inheritdoc cref="SignalDisconnect(Signal, Callable, Godot.Collections.Array?, int)" />
-    public void SignalDisconnect(Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    /// <inheritdoc cref="SignalDisconnect(in Signal, in Variant, Godot.Collections.Array?, int)" />
+    public void SignalDisconnect(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalDisconnect(signal, DelegateToCallable(method), bindvArgs, unbind);
     /// <summary>
     /// Disconnects them, bound arguments get added first, then unbind. Callables are treated as connected if they have the
     /// same object and method, so different binds are treated as the same callable
     /// </summary>
-    public void SignalDisconnect(Signal signal, Callable callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public void SignalDisconnect(scoped in Signal signal, scoped in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
     {
         bindvArgs ??= [];
         Data.Call(DataNames.RLinkSignalDisconnect, signal, callable, bindvArgs, unbind);
     }
 
-    /// <inheritdoc cref="SignalIsConnected(Signal, Callable, Godot.Collections.Array?, int)" />
-    public void SignalIsConnected(Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    /// <inheritdoc cref="SignalIsConnected(in Signal, in Variant, Godot.Collections.Array?, int)" />
+    public bool SignalIsConnected(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalIsConnected(signal, DelegateToCallable(method), bindvArgs, unbind);
     /// <summary>
     /// Check if callable connected to the signal. Callables are treated as connected if they have the
     /// same object and method, so different binds are treated as the same callable
     /// </summary>
-    public bool SignalIsConnected(Signal signal, Callable callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public bool SignalIsConnected(scoped in Signal signal, scoped in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
     {
         bindvArgs ??= [];
         return Data.Call(DataNames.RLinkSignalIsConnected, signal, callable, bindvArgs, unbind).AsBool();
     }
 
-    /// <inheritdoc cref="SignalToggle(Signal, Callable, Godot.Collections.Array?, int)" />
-    public void SignalToggle(Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    /// <inheritdoc cref="SignalToggle(in Signal, in Variant, Godot.Collections.Array?, int)" />
+    public void SignalToggle(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalToggle(signal, DelegateToCallable(method), bindvArgs, unbind);
     /// <summary>
     /// Checks if connected, if connected disconnects callable, if not callable is connected
     /// </summary>
-    public void SignalToggle(Signal signal, Callable callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public void SignalToggle(scoped in Signal signal, scoped in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
     {
         bindvArgs ??= [];
         if (SignalIsConnected(signal, callable, bindvArgs, unbind))
@@ -372,24 +449,50 @@ public partial class RLinkCS : RefCounted
     }
 
 
-    private static Callable DelegateToCallable(Delegate callable)
+    private static Variant DelegateToCallable(Delegate callable)
     {
-        if (callable.Target is not GodotObject godotObject)
+        if (!callable.Method.IsStatic)
         {
-            GD.PushError("ValidRLink: Delegate's target must inherit from GodotObject [RLinkCS.DelegateToCallable]");
-            return new();
-        }
+            if (callable.Target is not GodotObject godotObject)
+            {
+                GD.PushError("ValidRLink: Delegate's target must inherit from GodotObject [RLinkCS.DelegateToCallable]");
+                return new();
+            }
 
-        return new Callable(godotObject, callable.Method.Name);
+            return new Callable(godotObject, callable.Method.Name);
+        }
+        else
+        {
+            // Static methods still don't work, but I'm going to just leave it, theoretically it should work
+            // and it prints correct method name, even could be called, just doesn't pass "is_valid" check
+            GD.PushWarning("ValidRLink: Currently can't create valid Callable for static method [RLinkCS.DelegateToCallable]");
+
+            Type? type = callable.Method.DeclaringType;
+            if (type is null || !typeof(GodotObject).IsAssignableFrom(type))
+            {
+                GD.PushError("ValidRLink: Delegate's static method must belong to type that inherits from GodotObject [RLinkCS.DelegateToCallable]");
+                return new();
+            }
+
+            ScriptPathAttribute? attr = (ScriptPathAttribute?)type.GetCustomAttribute(typeof(ScriptPathAttribute));
+            if (attr is null)
+            {
+                GD.PushError("ValidRLink: GodotObject type is missing 'ScriptPathAttribute' [RLinkCS.DelegateToCallable]");
+                return new();
+            }
+            return GodotHelper.Callable.CallConstructor(GD.Load(attr.Path), callable.Method.Name);
+        }
     }
 
     /// <summary>
     /// The added changes will be added to buffer and added to history. In the case of checked call, if the
     /// check fails, discards all changes
     /// </summary>
-    public void AddChanges(GodotObject obj, StringName property, Variant oldValue, Variant newValue)
+    public void AddChanges(GodotObject obj, StringName property, Variant? oldValue, Variant? newValue)
     {
-        Data.Call(DataNames.RLinkAddChanges, obj, property, oldValue, newValue);
+        oldValue ??= new();
+        newValue ??= new();
+        Data.Call(DataNames.RLinkAddChanges, obj, property, oldValue.Value, newValue.Value);
     }
 
     /// <summary>

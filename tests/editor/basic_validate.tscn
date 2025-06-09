@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://de06e31f7iu5i"]
+[gd_scene load_steps=21 format=4 uid="uid://de06e31f7iu5i"]
 
 [ext_resource type="Script" uid="uid://c0776xyhyin8h" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
 [ext_resource type="Script" uid="uid://cdsgv6uw5huvs" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dyftaq5bcj40m" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
 [ext_resource type="Script" uid="uid://beknapxgoro47" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_tvfff"]
 [ext_resource type="Script" uid="uid://cy812ttkiutkj" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
+[ext_resource type="Script" uid="uid://c7o2ghum5gwo5" path="res://tests/editor/scripts/rlink_await.gd" id="11_65005"]
 
 [sub_resource type="Resource" id="Resource_65005"]
 script = ExtResource("3_mgxhu")
@@ -209,7 +210,95 @@ metadata/default_values = {
 &"tooltip_text": ""
 }
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_py022"]
+seed = 1234
+
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_py022"]
+noise = SubResource("FastNoiseLite_py022")
+
+[sub_resource type="Resource" id="Resource_asyf6"]
+script = ExtResource("9_tvfff")
+text = "Set Int"
+tooltip_text = ""
+icon = ""
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = []
+unbind_next = 0
+callable_method_name = &"set_int_impl"
+metadata/default_values = {
+&"bound_args": [],
+&"callable_method_name": &"set_int_impl",
+&"clip_text": true,
+&"disabled": false,
+&"icon": "",
+&"icon_alignment": 0,
+&"icon_alignment_vertical": 1,
+&"icon_texture": null,
+&"margin_bottom": 0,
+&"margin_left": 0,
+&"margin_right": 0,
+&"margin_top": 0,
+&"max_width": 200,
+&"min_height": 0,
+&"modulate": Color(1, 1, 1, 1),
+&"size_flags": -1,
+&"text": "Set Int",
+&"tooltip_text": "",
+&"unbind_next": 0
+}
+
+[sub_resource type="Resource" id="Resource_hoejj"]
+script = ExtResource("9_tvfff")
+text = "Set Int Checked"
+tooltip_text = ""
+icon = ""
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = []
+unbind_next = 0
+callable_method_name = &"set_int_checked_impl"
+metadata/default_values = {
+&"bound_args": [],
+&"callable_method_name": &"set_int_checked_impl",
+&"clip_text": true,
+&"disabled": false,
+&"icon": "",
+&"icon_alignment": 0,
+&"icon_alignment_vertical": 1,
+&"icon_texture": null,
+&"margin_bottom": 0,
+&"margin_left": 0,
+&"margin_right": 0,
+&"margin_top": 0,
+&"max_width": 200,
+&"min_height": 0,
+&"modulate": Color(1, 1, 1, 1),
+&"size_flags": -1,
+&"text": "Set Int Checked",
+&"tooltip_text": "",
+&"unbind_next": 0
+}
 
 [node name="Node" type="Node"]
 
@@ -274,6 +363,8 @@ script = ExtResource("6_baol1")
 
 [node name="HasFrom" type="Node" parent="RLinkChild/DirectChild"]
 
+[node name="GetParent" type="Node" parent="RLinkChild/DirectChild"]
+
 [node name="DirectChildPath" type="Node" parent="RLinkChild"]
 
 [node name="RLinkScene" type="Node" parent="." node_paths=PackedStringArray("scene_export", "scene_load", "scene_file")]
@@ -299,6 +390,9 @@ offset_bottom = 100.0
 script = ExtResource("10_py022")
 noise_texture = SubResource("NoiseTexture2D_py022")
 
-[connection signal="custom_pressed" from="RLinkScene/SceneExport" to="RLinkScene" method="scene_pressed"]
-[connection signal="custom_pressed" from="RLinkScene/SceneLoad" to="RLinkScene" method="scene_pressed"]
-[connection signal="custom_pressed" from="RLinkScene/SceneFile" to="RLinkScene" method="scene_pressed" binds= ["hello scene_file"]]
+[node name="RLinkAwait" type="Node" parent="."]
+script = ExtResource("11_65005")
+int_var = 4
+set_int = SubResource("Resource_asyf6")
+success = true
+set_int_checked = SubResource("Resource_hoejj")

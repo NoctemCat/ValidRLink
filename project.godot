@@ -8,6 +8,10 @@
 
 config_version=5
 
+[addons]
+
+valid_rlink/misc/duplicate_packed_arrays=false
+
 [application]
 
 config/name="ValidRLink"

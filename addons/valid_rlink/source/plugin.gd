@@ -51,16 +51,17 @@ func _enter_tree() -> void:
     add_child(_popup)
     _ctx.popup = _popup
     _create_refresh_timer()
-    add_tool_menu_item("ValidRLink: Clear Cache", clear_with_cancel)
+    add_tool_menu_item("ValidRLink: Clear Cache", _clear)
 
 
 func _exit_tree() -> void:
     _refresh_callable = Callable()
     clear_with_cancel()
     remove_tool_menu_item("ValidRLink: Clear Cache")
-    if ClassDB.class_exists(&"CSharpScript"):
+    if _csharp_unload_detector != null:
         _csharp_unload_detector.call(&"FreeHandle")
         _csharp_unload_detector.queue_free()
+        _csharp_unload_detector = null
     _popup.queue_free()
     _refresh_timer.queue_free()
     remove_inspector_plugin(_inspector)
@@ -70,22 +71,17 @@ func _exit_tree() -> void:
 
 
 func _clear() -> void:
-    print("sds")
     if _clear_entered: return
-    print("sds3")
     _clear_entered = true
     if _ctx.rlink_data_cache.waits_for_result:
         await _ctx.rlink_data_cache.stopped_waiting
     _inspector.clear()
-    print("sds1")
     if _refresh_callable.is_valid():
         _refresh_callable.call()
-    print("sds2")
     _clear_entered = false
 
 
 func clear_with_cancel() -> void:
-    print("emitting>>>>>>>>>>")
     _ctx.emit_cancel_tasks()
     _clear()
 

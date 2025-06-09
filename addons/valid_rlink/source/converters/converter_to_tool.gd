@@ -60,38 +60,34 @@ func _get_tool_object(data: RLinkData, runtime: Object, depth: int) -> Object:
         data.script_error = true
         return null
     
-    __map.add_pair(runtime, tool_obj)
-    if runtime is RLinkButton or runtime.get_script() == __ctx.csharp_button_script:
-        _connect_rlink_buttons(data, runtime)
-    _tool_register_defaults(data, {}, runtime, tool_obj, depth)
-    __scan_cache.add_pair(runtime, tool_obj)
+    _tool_register_defaults(data, runtime, tool_obj, depth)
     return tool_obj
 
 
-func _tool_register_defaults(data: RLinkData, local_visit: Dictionary, runtime: Object, tool_obj: Object, depth: int) -> void:
-    var tool_id := tool_obj.get_instance_id()
-    if local_visit.has(tool_id): return
-    local_visit[tool_id] = true
-    
+func _tool_register_defaults(data: RLinkData, runtime: Object, tool_obj: Object, depth: int) -> void:
+    if __map.is_runtime(runtime): return
+    __map.add_pair(runtime, tool_obj)
+
+    if runtime is RLinkButton or runtime.get_script() == __ctx.csharp_button_script:
+        _connect_rlink_buttons(data, runtime)
+
     var res := __scan_cache.get_search(runtime)
     __scan_cache.add_pair(runtime, tool_obj)
     
-    for prop in tool_obj.get_property_list():
-        if (_skip_property(res.skip_properties, res.allowed_properties, prop)): continue
+    for prop in runtime.get_property_list():
+        if (_skip_property(res.skip_properties, res.allowed_properties, prop)):
+            continue
         var prop_name: StringName = prop["name"]
-        if prop["type"] != TYPE_OBJECT or prop_name == &"script": continue
-        
+        if prop["type"] != TYPE_OBJECT or prop_name == &"script":
+            continue
         var runtime_value: Object = runtime.get(prop_name)
         var tool_value: Object = tool_obj.get(prop_name)
-        if runtime_value == null or tool_value == null: continue
-        if _skip_value(data, prop, tool_value, depth): continue
+        if runtime_value == null or tool_value == null or _skip_value(data, prop, tool_value, depth):
+            continue
             
         var script: Script = tool_value.get_script()
         if script == null or script.is_tool():
-            __map.add_pair(runtime_value, tool_value)
-            _tool_register_defaults(data, local_visit, runtime_value, tool_value, depth + 1)
-            if runtime_value is RLinkButton or runtime_value.get_script() == __ctx.csharp_button_script:
-                _connect_rlink_buttons(data, runtime_value)
+            _tool_register_defaults(data, runtime_value, tool_value, depth + 1)
 
 
 func _connect_rlink_buttons(data: RLinkData, runtime: Resource) -> void:
@@ -111,19 +107,23 @@ func _set_tool_object(data: RLinkData, runtime: Object, tool_obj: Object, depth:
         _copy_groups(runtime, tool_obj)
     
     for prop in runtime.get_property_list():
-        if (_skip_property(res.skip_properties, res.allowed_properties, prop)): continue
+        if (_skip_property(res.skip_properties, res.allowed_properties, prop)):
+            continue
+        var is_button := _is_rlink_button(prop)
         var prop_name: StringName = prop["name"]
         var value: Variant = runtime.get(prop_name)
 
-        if _skip_value(data, prop, value, depth): continue
-        if (
-            value == null and prop["type"] == TYPE_OBJECT
-            and (prop["hint_string"] == RLinkButton.CLASS_NAME or prop["hint_string"] == RLinkButton.CLASS_NAME_CS)
-        ):
+        if _skip_value(data, prop, value, depth):
             continue
+        if is_button and value == null: continue
         
-        var tool_value: Variant = _get_tool_value(data, value, depth + 1)
-        if data.script_error: return
+        var tool_value: Variant
+        if value is Node and not value.is_inside_tree():
+            # exported nodes should always be inside tree
+            tool_value = null
+        else:
+            tool_value = _get_tool_value(data, value, depth + 1)
+            if data.script_error: return
         
         tool_obj.set(prop_name, tool_value)
 

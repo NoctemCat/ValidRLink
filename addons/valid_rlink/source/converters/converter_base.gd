@@ -46,14 +46,10 @@ func _skip_property(to_skip: Array[StringName], allowed: Array[StringName], prop
     if value_type == TYPE_CALLABLE or value_type == TYPE_SIGNAL:
         return true
 
-    if not (
-        prop["usage"] & PROPERTY_USAGE_STORAGE != 0 
-        #or prop["usage"] & PROPERTY_USAGE_EDITOR != 0
-        #or prop["usage"] & PROPERTY_USAGE_SCRIPT_VARIABLE != 0
-    ): 
+    if prop["usage"] & PROPERTY_USAGE_STORAGE != PROPERTY_USAGE_STORAGE:
         return true
     
-    if value_type == TYPE_OBJECT and (prop["hint_string"] == RLinkButton.CLASS_NAME or prop["hint_string"] == RLinkButton.CLASS_NAME_CS):
+    if _is_rlink_button(prop):
         return false
         
     if allowed.size() > 0:
@@ -76,10 +72,10 @@ func _skip_property(to_skip: Array[StringName], allowed: Array[StringName], prop
 func _skip_value(data: RLinkData, prop: Dictionary, value: Variant, depth: int) -> bool:
     var value_type: int = prop["type"]
     if depth + 1 >= data.max_depth and (
-        value_type == TYPE_OBJECT  
+        value_type == TYPE_OBJECT
         or value_type == TYPE_ARRAY
         or value_type == TYPE_DICTIONARY
-    ): 
+    ):
         return true
 
     if value is Object and __scan_cache.get_search(value).skip:
@@ -91,7 +87,7 @@ func _skip_value(data: RLinkData, prop: Dictionary, value: Variant, depth: int) 
     
 
 func _pass_directly(value: Object) -> bool:
-    var script: Script = value.get_script() 
+    var script: Script = value.get_script()
     if script == null:
             return value is Resource
     return false
@@ -102,3 +98,7 @@ func _is_external_resource(value: Variant) -> bool:
     var path: String = value.resource_path
     var is_builtin := path.is_empty() or "::" in path or path.begins_with("local://")
     return not is_builtin
+
+
+func _is_rlink_button(prop: Dictionary) -> bool:
+    return prop["type"] == TYPE_OBJECT and (prop["hint_string"] == RLinkButton.CLASS_NAME or prop["hint_string"] == RLinkButton.CLASS_NAME_CS)

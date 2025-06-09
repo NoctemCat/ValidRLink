@@ -426,8 +426,9 @@ func toggle_disabled() -> RLinkButton:
 ## Stores current exported properties as default
 func set_current_as_default() -> void:
     var defaults := {}
+    var comb_flag: int = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
     for prop in get_property_list():
-        if prop["usage"] & PROPERTY_USAGE_STORAGE != 0 and prop["usage"] & PROPERTY_USAGE_SCRIPT_VARIABLE:
+        if (prop["usage"] & comb_flag) == comb_flag:
             var prop_name: StringName = prop["name"]
             defaults[prop_name] = get(prop_name)
     set_meta(&"default_values", defaults)

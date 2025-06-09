@@ -86,12 +86,14 @@ func _set_runtime_object(data: RLinkData, runtime: Object, tool_obj: Object, dep
         _copy_groups(data, runtime, tool_obj)
     
     for prop in tool_obj.get_property_list():
-        if (_skip_property(res.skip_properties, res.allowed_properties, prop)): continue
+        if (_skip_property(res.skip_properties, res.allowed_properties, prop)):
+            continue
+            
         var prop_name: StringName = prop["name"]
-        
         var tool_value: Variant = tool_obj.get(prop_name)
         
-        if _skip_value(data, prop, tool_value, depth): continue
+        if _skip_value(data, prop, tool_value, depth):
+            continue
         var original_value: Variant = runtime.get(prop_name)
         if original_value is Object and original_value.get_meta(&"rlink_skip", false):
             continue

@@ -9,7 +9,7 @@ var _results_cache: Dictionary
 
 
 func _init(context: Context) -> void:
-    __ctx = context    
+    __ctx = context
 
 
 func get_search(object: Object) -> ScanResult:
@@ -21,9 +21,9 @@ func get_search(object: Object) -> ScanResult:
     return cached
 
 
-func add_pair(runtime: Object, tool: Object) -> void:
+func add_pair(runtime: Object, tool_obj: Object) -> void:
     var runtime_id := runtime.get_instance_id()
-    var tool_id := tool.get_instance_id()
+    var tool_id := tool_obj.get_instance_id()
     
     var cached: ScanResult = _results_cache.get(runtime_id)
     if cached != null:
@@ -36,5 +36,4 @@ func add_pair(runtime: Object, tool: Object) -> void:
 
 
 func clear() -> void:
-    _results_cache.clear() 
-    
+    _results_cache.clear()

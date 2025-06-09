@@ -9,15 +9,15 @@ extends Node
 
 
 func validate_changes(rlink: RLink) -> bool:
-    if rlink.is_pair_invalid(scene_export):
-        scene_export = rlink.convert_to_tool(scene.instantiate(PackedScene.GEN_EDIT_STATE_INSTANCE)) 
+    if scene_export == null:
+        scene_export = rlink.convert_to_tool(scene.instantiate(PackedScene.GEN_EDIT_STATE_INSTANCE))
         rlink.add_child_path("SceneExport", scene_export)
         
-    if rlink.is_pair_invalid(scene_load):
+    if scene_load == null:
         scene_load = rlink.instantiate_packed(scene)
         rlink.add_child_path("SceneLoad", scene_load)
         
-    if rlink.is_pair_invalid(scene_file):
+    if scene_file == null:
         scene_file = rlink.instantiate_file("res://tests/editor/simple_scene.tscn")
         rlink.add_child_path("SceneFile", scene_file)
         
@@ -27,21 +27,19 @@ func validate_changes(rlink: RLink) -> bool:
 
 
 func remove_all_impl(rlink: RLink) -> void:
-    rlink.remove_child_path("SceneExport")
-    rlink.remove_child_path("SceneLoad")
-    rlink.remove_child_path("SceneFile")
+    rlink.remove_all_children()
 
 
 func toggle_connect_impl(rlink: RLink) -> void:
     if rlink.signal_is_connected(scene_export.custom_pressed, scene_pressed):
-        rlink.signal_disconnect(scene_export.custom_pressed, scene_pressed, ["hello scene_export"])
+        rlink.signal_disconnect(scene_export.custom_pressed, scene_pressed)
     else:
-        rlink.signal_connect(scene_export.custom_pressed, scene_pressed)
+        rlink.signal_connect(scene_export.custom_pressed, scene_pressed, ["hello scene_export"])
 
     if rlink.signal_is_connected(scene_load.custom_pressed, scene_pressed):
-        rlink.signal_disconnect(scene_load.custom_pressed, scene_pressed, ["hello scene_load"])
+        rlink.signal_disconnect(scene_load.custom_pressed, scene_pressed)
     else:
-        rlink.signal_connect(scene_load.custom_pressed, scene_pressed)
+        rlink.signal_connect(scene_load.custom_pressed, scene_pressed, ["hello scene_load"])
     
     rlink.signal_toggle(scene_file.custom_pressed, scene_pressed, ["hello scene_file"])
 

@@ -30,15 +30,15 @@ var tool_obj: Object ## Keeps RefCounted alive
 var _result: ScanResult
 var _helper: RefCounted
 var _validate_queued: String
-var _busy: bool:
-    get: return _busy
+var busy: bool:
+    get: return busy
     set(value):
-        _busy = value
+        busy = value
         if !value and _validate_queued != "":
             var copy := _validate_queued
             _validate_queued = ""
             validate_changes(copy)
-        busy_changed.emit(_busy, get_instance_id())
+        busy_changed.emit(busy, get_instance_id())
 
 #region: Converter State
 var max_depth: int
@@ -89,7 +89,7 @@ func _init(context: Context, object: Object, in_result: ScanResult) -> void:
 
 func _on_cancel_tasks() -> void:
     discard_changes()
-    _busy = false
+    busy = false
 
 
 func reflect_to_tool(object: Object = null, depth: int = 0) -> Object:
@@ -103,12 +103,12 @@ func reflect_to_runtime(object: Object = null, depth: int = 0) -> Object:
  
 
 func validate_changes(object_name: String) -> void:
-    if _busy:
+    if busy:
         _validate_queued = object_name
         return
     if not _result.has_validate: return
     
-    _busy = true
+    busy = true
     if reflect_to_tool() == null: return
     
     if _result.validate_check_return:
@@ -127,7 +127,7 @@ func validate_changes(object_name: String) -> void:
         flush_changes(false)
     else:
         discard_changes()
-    _busy = false
+    busy = false
 
 
 func _call_validate(call_obj: Object) -> Variant:
@@ -138,7 +138,7 @@ func _call_validate(call_obj: Object) -> Variant:
     
     
 func call_callable(prop_name: StringName) -> void:
-    if _busy: return
+    if busy: return
     var to_call: Callable = tool_obj.get(prop_name)
     if to_call == null:
         push_error("ValidRLink: '%s' expected Callable [rlink_data.call_callable]" % prop_name)
@@ -157,7 +157,7 @@ func call_callable(prop_name: StringName) -> void:
         push_error("ValidRLink: '%s' takes maximum 1 argument [rlink_data.call_callable]" % prop_name)
         return
         
-    _busy = true
+    busy = true
     if reflect_to_tool() == null: return
     if info != null and info.check_return:
         var call_res: Variant = await _call_callable_impl(arg_count, to_call)
@@ -172,9 +172,14 @@ func call_callable(prop_name: StringName) -> void:
     
     var action_name := prop_name.capitalize()
     create_action(__settings.call_action_template % action_name)
-    flush_changes()
+    if has_changes:
+        flush_changes()
+    else:
+        # unlikely to store changes, but if for some reason 
+        # any are present discard them
+        discard_changes()
     commit_action()
-    _busy = false
+    busy = false
 
 
 func _call_callable_impl(arg_count: int, to_call: Callable) -> Variant:
@@ -184,7 +189,7 @@ func _call_callable_impl(arg_count: int, to_call: Callable) -> Variant:
 
 
 func call_rlink_button(prop_name: StringName) -> void:
-    if _busy: return
+    if busy: return
     var to_call := tool_obj.get(prop_name) as RLinkButton
     if to_call == null:
         push_error("ValidRLink: '%s' expected RLinkButton [rlink_data.call_rlink_button]" % prop_name)
@@ -197,7 +202,7 @@ func call_rlink_button(prop_name: StringName) -> void:
         push_error("ValidRLink: '%s' takes maximum 1 argument [rlink_data.call_rlink_button]" % to_call.callable_method_name)
         return
     
-    _busy = true
+    busy = true
     if reflect_to_tool() == null: return
     if to_call.needs_check:
         var call_res: Variant = await _call_rlink_button_impl(final_count, to_call)
@@ -210,9 +215,14 @@ func call_rlink_button(prop_name: StringName) -> void:
     
     var action_name := to_call.text if to_call.text else prop_name.capitalize()
     create_action(__settings.call_action_template % action_name)
-    flush_changes()
+    if has_changes:
+        flush_changes()
+    else:
+        # unlikely to store changes, but if for some reason 
+        # any are present discard them
+        discard_changes()
     commit_action()
-    _busy = false
+    busy = false
 
 
 func _call_rlink_button_impl(arg_count: int, to_call: RLinkButton) -> Variant:
@@ -225,12 +235,12 @@ func print_res(res: Variant) -> void:
 
 func cancel(res: Resource) -> void:
     res.CancelTask()
-    _busy = false
+    busy = false
 
 
 func call_rlink_button_cs(prop_name: StringName) -> void:
-    prints("here", _busy)
-    if _busy: return
+    prints("here", busy)
+    if busy: return
     var to_call := tool_obj.get(prop_name) as RLinkButtonCS
     if to_call == null:
         push_error("ValidRLink: '%s' expected RLinkButtonCS [rlink_data.call_rlink_button_cs]" % prop_name)
@@ -251,7 +261,7 @@ func call_rlink_button_cs(prop_name: StringName) -> void:
         push_error("ValidRLink: '%s' takes maximum 1 argument [rlink_data.call_rlink_button_cs]" % to_call.CallableMethodName)
         return
     
-    _busy = true
+    busy = true
     if reflect_to_tool() == null: return
     
     var signal_var: Signal = _call_rlink_button_cs_impl(final_count, to_call)
@@ -272,28 +282,27 @@ func call_rlink_button_cs_continue(result: Variant, to_call_id: int, prop_name: 
         return
 
     if to_call.NeedsCheck:
-        # var call_res: Variant = await _call_rlink_button_cs_impl(final_count, to_call)
-        prints("here2", to_call, result)
         if discard_if_same(is_same(result, true), false): return
-    # else:
-    #     await _call_rlink_button_cs_impl(final_count, to_call)
     
-    # prints("here3", call_res)
     converted_object.emit(_object_id)
     if discard_if_same(reflect_to_runtime(), null): return
-    # prints("here4", call_res)
+
     var action_name: String = to_call.Text if to_call.Text else prop_name.capitalize()
     create_action(__settings.call_action_template % action_name)
-    flush_changes()
+    if has_changes:
+        flush_changes()
+    else:
+        # unlikely to store changes, but if for some reason 
+        # any are present discard them
+        discard_changes()
     commit_action()
-    prints("here5")
-    _busy = false
+    busy = false
 
 
 func discard_if_same(value1: Variant, value2: Variant) -> bool:
     if is_same(value1, value2):
         discard_changes()
-        _busy = false
+        busy = false
         return true
     return false
 
@@ -332,7 +341,10 @@ func rlink_is_pair_valid(obj: Object, delete_if_invalid: bool) -> bool:
 func rlink_add_changes(object: Object, property: StringName, old_value: Variant, value: Variant) -> void:
     var runtime_obj: Object = __conv_to_runtime.convert_value(self, object)
     if runtime_obj == null: return
-    object_add_changes(runtime_obj, property, __conv_to_runtime.convert_value(self, old_value, 1), __conv_to_runtime.convert_value(self, value, 1))
+    var old_value_runtime: Variant = __conv_to_runtime.convert_value(self, old_value, 1)
+    var new_value_runtime: Variant = __conv_to_runtime.convert_value(self, value, 1)
+    object_add_changes(runtime_obj, property, old_value_runtime, new_value_runtime)
+    has_changes = true
     
 
 func rlink_add_do_method(object: Object, method: StringName, args: Array) -> void:
@@ -343,6 +355,7 @@ func rlink_add_do_method(object: Object, method: StringName, args: Array) -> voi
     args_runtime.push_front(method)
     args_runtime.push_front(object)
     _do_methods.push_back(args_runtime)
+    has_changes = true
 
 
 func rlink_add_undo_method(object: Object, method: StringName, args: Array) -> void:
@@ -353,6 +366,7 @@ func rlink_add_undo_method(object: Object, method: StringName, args: Array) -> v
     args_runtime.push_front(method)
     args_runtime.push_front(object)
     _undo_methods.push_back(args_runtime)
+    has_changes = true
     
     
 func rlink_convert_to_tool(runtime_obj: Object, custom_depth: int) -> Object:
@@ -442,6 +456,7 @@ func get_runtime_signal(signal_value: Signal) -> Signal:
 
 
 func get_runtime_callable(callable: Callable, bindv_args: Array, unbind: int) -> Variant:
+    print(callable)
     if not callable.is_valid():
         push_error("ValidRLink: Callable must be valid to be converted [rlink_data.get_runtime_callable]")
         return null

@@ -71,6 +71,8 @@ func _init(context: Context, data: RLinkData, property: String, rlink_button: Re
     _on_resize()
     
     if rlink_button == null: return
+
+    data.busy_changed.connect(_on_busy_changed)
     if rlink_button is RLinkButton:
         setup(rlink_button, property)
     elif rlink_button.get_script() == __ctx.csharp_button_script:
@@ -84,6 +86,10 @@ func setup(rlink_button: RLinkButton, property: String) -> void:
         if rlink_button.text.is_empty():
             rlink_button.text = property.capitalize()
         rlink_button.set_current_as_default()
+        _data.create_action("Buttons set default", UndoRedo.MERGE_ALL)
+        _data.reflect_to_runtime(_rlink_button)
+        _data.flush_changes()
+        _data.commit_action()
         
     _rlink_button.changed.connect(_on_rlink_button_changed)
     _on_rlink_button_changed()
@@ -96,10 +102,24 @@ func setup_cs(rlink_button_cs: Resource, property: String) -> void:
         if rlink_button_cs.Text.is_empty():
             rlink_button_cs.Text = property.capitalize()
         rlink_button_cs.SetCurrentAsDefault()
+        _data.create_action("Buttons set default", UndoRedo.MERGE_ALL)
+        _data.reflect_to_runtime(rlink_button_cs)
+        _data.flush_changes()
+        _data.commit_action()
         
     _rlink_button_cs.changed.connect(_on_rlink_button_changed_cs)
     _on_rlink_button_changed_cs()
-    
+
+
+func _on_busy_changed(_status: bool, _id: int) -> void:
+    var disabled: bool
+    if _rlink_button != null:
+        disabled = _rlink_button.disabled
+    elif _rlink_button_cs != null:
+        disabled = _rlink_button_cs.Disabled
+
+    _button.disabled = _data.busy or property_is_readonly or disabled
+
     
 func _on_rlink_button_changed() -> void:
     _max_width = _rlink_button.max_width
@@ -114,7 +134,7 @@ func _on_rlink_button_changed() -> void:
     _button.tooltip_text = _rlink_button.tooltip_text
     _button.icon_alignment = _rlink_button.icon_alignment
     _button.vertical_icon_alignment = _rlink_button.icon_alignment_vertical
-    _button.disabled = property_is_readonly or _rlink_button.disabled
+    _button.disabled = _data.busy or property_is_readonly or _rlink_button.disabled
     _button.clip_text = _rlink_button.clip_text
     _button.custom_minimum_size.y = _rlink_button.min_height
     _button.modulate = _rlink_button.modulate
@@ -140,7 +160,7 @@ func _on_rlink_button_changed_cs() -> void:
     _button.tooltip_text = _rlink_button_cs.TooltipText
     _button.icon_alignment = _rlink_button_cs.IconAlignment as HorizontalAlignment
     _button.vertical_icon_alignment = _rlink_button_cs.IconAlignmentVertical as VerticalAlignment
-    _button.disabled = property_is_readonly or _rlink_button_cs.Disabled
+    _button.disabled = _data.busy or property_is_readonly or _rlink_button_cs.Disabled
     _button.clip_text = _rlink_button_cs.ClipText
     _button.custom_minimum_size.y = _rlink_button_cs.MinHeight
     _button.modulate = _rlink_button_cs.Modulate
@@ -195,7 +215,7 @@ func _on_gui_input(input_event: InputEvent) -> void:
 
 
 func _on_id_pressed(id: int) -> void:
-    if _data == null: return
+    if _data == null or _data.busy: return
     if id == ContextActions.Edit:
         var obj := _data.runtime
         var rlink_runtime: Resource = __rlink_map.runtime_from_obj(_rlink_button)
@@ -247,7 +267,7 @@ func _on_id_pressed(id: int) -> void:
 
 
 func _on_id_pressed_cs(id: int) -> void:
-    if _data == null: return
+    if _data == null or _data.busy: return
     if id == ContextActions.Edit:
         var obj := _data.runtime
         var rlink_runtime_cs: Resource = __rlink_map.runtime_from_obj(_rlink_button_cs)

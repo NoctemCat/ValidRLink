@@ -347,17 +347,17 @@ public partial class RLinkButtonCS : Resource
         BoundArgs = [];
         SetDefaults();
 
-        StringName method = GodotHelper.CallableHelper.GetMethod(callable);
+        StringName method = GodotHelper.Callable.GetMethod(callable);
         if (method.ToString().Contains("anonymous lambda"))
         {
             GD.PushError("ValidRLink: Doesn't support lambdas [RLinkButtonCS.ctor(Callable)]");
             return;
         }
 
-        BoundArgs = GodotHelper.CallableHelper.GetBoundArguments(callable);
-        if (GodotHelper.CallableHelper.UnboundCountAvailable)
+        BoundArgs = GodotHelper.Callable.GetBoundArguments(callable);
+        if (GodotHelper.Callable.UnboundCountAvailable)
         {
-            UnbindNext = GodotHelper.CallableHelper.GetUnboundArgumentsCount(callable);
+            UnbindNext = GodotHelper.Callable.GetUnboundArgumentsCount(callable);
         }
         SetObject(callable.Target, method);
         if (properties is not null)

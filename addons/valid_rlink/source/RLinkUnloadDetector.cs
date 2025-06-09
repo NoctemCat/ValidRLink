@@ -9,7 +9,7 @@ namespace ValidRLink;
 public partial class RLinkUnloadDetector : Node
 {
     public static RLinkUnloadDetector Instance { get; private set; } = null!;
-    private System.Runtime.InteropServices.GCHandle? _handle;
+    // private System.Runtime.InteropServices.GCHandle? _handle;
     private readonly System.Runtime.Loader.AssemblyLoadContext? _ctx;
     private Node? _parent;
     public bool CollectGC { get; set; }
@@ -24,7 +24,7 @@ public partial class RLinkUnloadDetector : Node
         Instance = this;
 
         // block unloading with a strong handle
-        _handle = System.Runtime.InteropServices.GCHandle.Alloc(this);
+        // _handle = System.Runtime.InteropServices.GCHandle.Alloc(this);
 
         // register cleanup code to prevent unloading issues
         _ctx = System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(System.Reflection.Assembly.GetExecutingAssembly());
@@ -68,12 +68,11 @@ public partial class RLinkUnloadDetector : Node
                     isDone = true;
                 }
                 catch (TaskCanceledException) { }
-                catch (ObjectDisposedException) { }
                 catch (Exception e)
                 {
                     if (SwallowBaseException)
                     {
-                        GD.PushWarning($"ValidRLink: Swallowed error trying to execute pending continuations [RLinkUnloadDetector.ExecuteContinuations]\n{e}");
+                        GD.PushWarning($"ValidRLink: Swallowed error trying to execute pending continuations [RLinkUnloadDetector.TryExecuteContinuations]\n{e}");
                         isDone = true;
                     }
                     else
@@ -95,8 +94,8 @@ public partial class RLinkUnloadDetector : Node
 
     public void FreeHandle()
     {
-        _handle?.Free();
-        _handle = null;
+        // _handle?.Free();
+        // _handle = null;
     }
 }
 #endif
