@@ -239,17 +239,13 @@ func cancel(res: Resource) -> void:
 
 
 func call_rlink_button_cs(prop_name: StringName) -> void:
-    prints("here", busy)
     if busy: return
-    var to_call := tool_obj.get(prop_name) as RLinkButtonCS
-    if to_call == null:
+    var to_call := tool_obj.get(prop_name) as RefCounted
+    if to_call == null or to_call.get_script() != __context.csharp_button_script:
         push_error("ValidRLink: '%s' expected RLinkButtonCS [rlink_data.call_rlink_button_cs]" % prop_name)
         return
     to_call.SetObject(tool_obj)
-    prints("leaked ", runtime, tool_obj)
     
-    # to_call.Completed.connect(print_res, CONNECT_ONE_SHOT)
-    # var info := _result.get_method_info(to_call.CallableMethodName)
     var final_count: int = to_call.GetArgCount()
     const CSharpAsyncDelegate = 3
     const CSharpAsyncAwaitable = 4
@@ -268,7 +264,7 @@ func call_rlink_button_cs(prop_name: StringName) -> void:
     signal_var.connect(call_rlink_button_cs_continue.bind(to_call.get_instance_id(), prop_name), CONNECT_ONE_SHOT)
     
 
-func _call_rlink_button_cs_impl(arg_count: int, to_call: RLinkButtonCS) -> Variant:
+func _call_rlink_button_cs_impl(arg_count: int, to_call: RefCounted) -> Variant:
     if arg_count == 0: return to_call.RLinkCallvAwait([])
     elif arg_count == 1: return to_call.RLinkCallvAwait([_helper])
     return null

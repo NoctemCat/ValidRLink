@@ -733,7 +733,6 @@ public partial class RLinkButtonCS : Resource
         }
 
         GodotObject? instance = InstanceFromId(_objectId);
-        GD.PrintS($">><<: {instance}, {MethodType} {CallableMethodName}");
         switch (MethodType)
         {
             case MethodTypeEnum.NotFound:

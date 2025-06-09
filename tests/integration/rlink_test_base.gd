@@ -27,10 +27,10 @@ func before_all() -> void:
     _ctx = Context.new()
     _ctx.settings = Settings.new()
     _ctx.compat = Compatibility.new()
-    _ctx.csharp_enabled = true
-    _ctx.csharp_helper_script = load(Context.RUNTIME_PATH + "RLinkCS.cs")
-    _ctx.csharp_button_script = load(Context.RUNTIME_PATH + "RLinkButtonCS.cs")
-    _ctx.csharp_settings_script = load(Context.RUNTIME_PATH + "RLinkSettingsCS.cs")
+    # _ctx.csharp_enabled = true
+    # _ctx.csharp_helper_script = load(Context.RUNTIME_PATH + "RLinkCS.cs")
+    # _ctx.csharp_button_script = load(Context.RUNTIME_PATH + "RLinkButtonCS.cs")
+    # _ctx.csharp_settings_script = load(Context.RUNTIME_PATH + "RLinkSettingsCS.cs")
     
     _ctx.rlink_map = RLinkMap.new()
     _ctx.scan_cache = ScanCache.new(_ctx)

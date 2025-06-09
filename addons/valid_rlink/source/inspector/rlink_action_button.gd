@@ -35,7 +35,8 @@ var _button_id: int
 var _rlink_button: RLinkButton:
     get: return instance_from_id(_button_id)
 var _button_id_cs: int
-var _rlink_button_cs: RLinkButtonCS:
+var _rlink_button_cs: RefCounted:
+# var _rlink_button_cs: RLinkButtonCS:
     get: return instance_from_id(_button_id_cs)
 var _on_id_pressed_callable: Callable
 var _box: HBoxContainer
@@ -115,7 +116,7 @@ func _on_busy_changed(_status: bool, _id: int) -> void:
     var disabled: bool
     if _rlink_button != null:
         disabled = _rlink_button.disabled
-    elif _rlink_button_cs != null:
+    elif "Disabled" in _rlink_button_cs:
         disabled = _rlink_button_cs.Disabled
 
     _button.disabled = _data.busy or property_is_readonly or disabled
