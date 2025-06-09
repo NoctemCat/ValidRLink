@@ -60,10 +60,12 @@ public partial class RLinkUnloadDetector : Node
         if (ExecutePendingContinuations)
         {
             var isDone = false;
-            while (isDone is false)
+            int times = 0;
+            while (isDone is false && times < 5)
             {
                 try
                 {
+                    times += 1;
                     Dispatcher.SynchronizationContext.ExecutePendingContinuations();
                     isDone = true;
                 }

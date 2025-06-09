@@ -76,7 +76,7 @@ func _init(context: Context, data: RLinkData, property: String, rlink_button: Re
     data.busy_changed.connect(_on_busy_changed)
     if rlink_button is RLinkButton:
         setup(rlink_button, property)
-    elif rlink_button.get_script() == __ctx.csharp_button_script:
+    elif __ctx.csharp_enabled and rlink_button.get_script() == __ctx.csharp_button_script:
         setup_cs(rlink_button, property)
 
 

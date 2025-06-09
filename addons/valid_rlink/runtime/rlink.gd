@@ -78,7 +78,7 @@ func get_parent() -> Node:
 func get_parent_for(tool_node: Node) -> Node:
     var runtime_node: Node = _data.rlink_get_runtime(tool_node)
     if runtime_node == null:
-        push_error("ValidRLink: runtime pair is not registered")
+        push_error("ValidRLink: Runtime pair is not registered [rlink.get_parent_for]")
         return null
     var parent: Node = runtime_node.get_parent()
     if parent == null: return null
@@ -97,7 +97,7 @@ func get_node_or_null(path: NodePath) -> Node:
 func get_node_or_null_from(tool_node: Node, path: NodePath) -> Node:
     var runtime_node: Node = _data.rlink_get_runtime(tool_node)
     if runtime_node == null:
-        push_error("ValidRLink: runtime pair is not registered")
+        push_error("ValidRLink: Runtime pair is not registered [rlink.get_node_or_null_from]")
         return null
         
     var runtime: Node = runtime_node.get_node_or_null(path)
@@ -114,7 +114,7 @@ func has_node(path: NodePath) -> bool:
 func has_node_from(tool_node: Node, path: NodePath) -> bool:
     var runtime_node: Node = _data.rlink_get_runtime(tool_node)
     if runtime_node == null:
-        push_error("ValidRLink: runtime pair is not registered")
+        push_error("ValidRLink: Runtime pair is not registered [rlink.has_node_from]")
         return false
     return runtime_node.has_node(path)
 
@@ -131,7 +131,7 @@ func add_child(child: Node) -> void:
 func add_child_to(tool_node: Node, child: Node) -> void:
     var runtime_node: Node = _data.rlink_get_runtime(tool_node)
     if runtime_node == null:
-        push_error("ValidRLink: runtime pair is not registered")
+        push_error("ValidRLink: runtime pair is not registered [rlink.add_child_to]")
         return
         
     var runtime_child: Node = _data.rlink_convert_to_runtime(child, 1, true)
@@ -162,7 +162,7 @@ func remove_child(child: Node) -> void:
     if not placeholder is Node: return
     var runtime_child: Node = _data.rlink_get_runtime(child)
     if runtime_child == null:
-        push_error("ValidRLink: runtime pair is not registered")
+        push_error("ValidRLink: Runtime pair is not registered [rlink.remove_child]")
         return
     
     _data.rlink_remove_child_from(placeholder, runtime_child)
@@ -173,7 +173,7 @@ func remove_child_from(tool_node: Node, child: Node) -> void:
     var runtime_node: Node = _data.rlink_get_runtime(tool_node)
     var runtime_child: Node = _data.rlink_get_runtime(child)
     if runtime_node == null or runtime_child == null:
-        push_error("ValidRLink: runtime pair is not registered")
+        push_error("ValidRLink: Runtime pair is not registered [rlink.remove_child_from]")
         return
     _data.rlink_remove_child_from(runtime_node, runtime_child)
 
@@ -199,7 +199,7 @@ func remove_all_children() -> void:
 func remove_all_children_from(tool_node: Node) -> void:
     var runtime_node: Node = _data.rlink_get_runtime(tool_node)
     if runtime_node == null:
-        push_error("ValidRLink: runtime pair is not registered")
+        push_error("ValidRLink: Runtime pair is not registered [rlink.remove_all_children_from]")
         return
     for idx in runtime_node.get_child_count():
         _data.rlink_remove_child_from(runtime_node, runtime_node.get_child(idx))

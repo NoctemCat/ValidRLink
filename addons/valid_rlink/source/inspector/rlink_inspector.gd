@@ -91,10 +91,7 @@ func _parse_property(object: Object, type: Variant.Type, name: String, hint_type
         var data := _rlink_data_cache.get_data(object, true)
         if data.tool_obj == null: return false
         var rlink_button: Resource = data.tool_obj.get(name)
-        if (
-            rlink_button == null
-            or not (rlink_button is RLinkButton or rlink_button.get_script() == __ctx.csharp_button_script)
-        ):
+        if not __ctx.object_is_button(rlink_button):
             push_error("ValidRLink._parse_property: expected button at '%s'" % name)
             return false
         

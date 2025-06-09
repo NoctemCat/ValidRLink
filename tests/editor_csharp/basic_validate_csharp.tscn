@@ -326,7 +326,7 @@ NoiseTexture = SubResource("NoiseTexture2D_wjsgh")
 
 [node name="RLinkAsync" type="Node" parent="."]
 script = ExtResource("11_wjsgh")
-IntVar = 8
+IntVar = 6
 Success = true
 
 [connection signal="CustomPressed" from="RLinkScene/SceneExport" to="RLinkScene" method="ScenePressed" binds= ["hello SceneExport"]]

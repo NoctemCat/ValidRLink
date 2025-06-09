@@ -7,7 +7,7 @@ const Compat = Context.Compatibility
 
 var object_id: int
 
-var skip: bool 
+var skip: bool
 var max_depth: int
 var validate_name: StringName
 var validate_arg_count: int
@@ -20,7 +20,7 @@ var allowed_properties: Array[StringName]
 var _methods_arg_infos: Dictionary
 
 
-func _init(ctx: Context, object: Object) -> void: 
+func _init(ctx: Context, object: Object) -> void:
     skip = object.get_meta(&"rlink_skip", false)
     max_depth = ctx.settings.max_depth
     validate_name = &""
@@ -60,16 +60,16 @@ func handle_script(ctx: Context, object: Object, script_or_native: Object) -> vo
                 rlink_settings = RLinkSettings.new(settings)
             elif settings is RLinkSettings:
                 rlink_settings = settings
-            elif settings is Object and settings.get_sctipt() == ctx.csharp_settings_script:
+            elif ctx.csharp_enabled and settings is Object and settings.get_sctipt() == ctx.csharp_settings_script:
                 rlink_settings_cs = settings
             else:
                 push_error("ValidRLink: get settings function must return 'RLinkSettings' or dictionary [scan_result.handle_script]")
                 return
             break
     
-    var had_validate := false        
+    var had_validate := false
     if rlink_settings != null:
-        if rlink_settings.skip: 
+        if rlink_settings.skip:
             skip = true
             return
             

@@ -32,3 +32,7 @@ var rlink_inspector: RefCounted
 
 func emit_cancel_tasks() -> void:
     cancel_tasks.emit()
+
+
+func object_is_button(object: Object) -> bool:
+    return object is RLinkButton or (csharp_enabled and object.get_script() == csharp_button_script)

@@ -68,7 +68,7 @@ func _tool_register_defaults(data: RLinkData, runtime: Object, tool_obj: Object,
     if __map.is_runtime(runtime): return
     __map.add_pair(runtime, tool_obj)
 
-    if runtime is RLinkButton or runtime.get_script() == __ctx.csharp_button_script:
+    if __ctx.object_is_button(runtime):
         _connect_rlink_buttons(data, runtime)
 
     var res := __scan_cache.get_search(runtime)
