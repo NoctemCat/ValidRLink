@@ -12,8 +12,8 @@ func set_int_impl(rlink: RLink) -> void:
     await rlink.get_tree().create_timer(2).timeout
     int_var -= 1
     print("After")
-    
-    
+
+
 func set_int_checked_impl(rlink: RLink) -> bool:
     int_var += 1
     print("Before")

@@ -106,8 +106,8 @@ func _connect_signals() -> void:
     if GDExtensionManager.has_signal(&"extensions_reloaded"):
         GDExtensionManager.connect(&"extensions_reloaded", _clear)
     resource_saved.connect(_on_resource_saved)
-    
-    
+
+
 func _create_refresh_timer() -> void:
     _refresh_timer = Timer.new()
     _refresh_timer.wait_time = 0.4
