@@ -45,8 +45,7 @@ public partial class RLinkButtonCS : Resource
         NotFound = 0,
         GodotMethod = 1,
         CSharpDelegate = 2,
-        CSharpAsyncDelegate = 3,
-        CSharpAsyncAwaitable = 4,
+        CSharpAwaitable = 4,
     }
 
     private string text = "";
@@ -515,28 +514,21 @@ public partial class RLinkButtonCS : Resource
         CallableMethodName = methodName;
         _info = method;
 
-        if (method.GetCustomAttribute(typeof(System.Runtime.CompilerServices.AsyncStateMachineAttribute)) != null)
+        if (method.ReturnType == typeof(SignalAwaiter))
         {
-            if (method.ReturnType == typeof(SignalAwaiter))
-            {
-                MethodType = MethodTypeEnum.CSharpAsyncAwaitable;
-                NeedsCheck = true;
-            }
-            else if (method.ReturnType.IsGenericType && typeof(Task).IsAssignableFrom(method.ReturnType))
-            {
-                var actualReturnType = method.ReturnType.GenericTypeArguments[0];
-                MethodType = MethodTypeEnum.CSharpAsyncAwaitable;
-                NeedsCheck = actualReturnType == typeof(bool) || actualReturnType == typeof(Variant);
-            }
-            else if (method.ReturnType == typeof(Task))
-            {
-                MethodType = MethodTypeEnum.CSharpAsyncAwaitable;
-                NeedsCheck = false;
-            }
-            else
-            {
-                MethodType = MethodTypeEnum.CSharpAsyncDelegate;
-            }
+            MethodType = MethodTypeEnum.CSharpAwaitable;
+            NeedsCheck = false;
+        }
+        else if (method.ReturnType.IsGenericType && typeof(Task).IsAssignableFrom(method.ReturnType))
+        {
+            var actualReturnType = method.ReturnType.GenericTypeArguments[0];
+            MethodType = MethodTypeEnum.CSharpAwaitable;
+            NeedsCheck = actualReturnType == typeof(bool) || actualReturnType == typeof(Variant);
+        }
+        else if (method.ReturnType == typeof(Task))
+        {
+            MethodType = MethodTypeEnum.CSharpAwaitable;
+            NeedsCheck = false;
         }
         else
         {
@@ -659,8 +651,7 @@ public partial class RLinkButtonCS : Resource
                     return variant;
                 }
             case MethodTypeEnum.CSharpDelegate:
-            case MethodTypeEnum.CSharpAsyncDelegate:
-            case MethodTypeEnum.CSharpAsyncAwaitable:
+            case MethodTypeEnum.CSharpAwaitable:
                 {
                     List<object?> argsObj = [.. args.Select(arg => GodotHelper.ToObject(arg))];
                     object?[]? callCopy = GetArgsCopyList(argsObj);
@@ -721,7 +712,7 @@ public partial class RLinkButtonCS : Resource
     {
         int argCount = args.Count;
         // Adds CancelationToken
-        if (MethodType == MethodTypeEnum.CSharpAsyncDelegate || MethodType == MethodTypeEnum.CSharpAsyncAwaitable)
+        if (MethodType == MethodTypeEnum.CSharpAwaitable)
         {
             argCount += 1;
         }
@@ -751,20 +742,20 @@ public partial class RLinkButtonCS : Resource
                     }
                     _ctx = new();
                     Godot.Collections.Array callCopy = GetArgsCopy(args);
+#if TOOLS
+                    if (Engine.IsEditorHint())
+                        RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
+#endif
                     try
                     {
-#if TOOLS
-                        if (Engine.IsEditorHint())
-                            RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
-#endif
                         // With `WaitAsync` Token abandons SignalAwaiter on cancellation in the hopes that it will be enough
                         Variant result = await GodotHelper.CallvAsync(instance, CallableMethodName, callCopy).WaitAsync(_ctx.Token);
                         CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, result]);
                     }
-                    catch (OperationCanceledException)
+                    catch (OperationCanceledException) // Don't know if this is possible, but wouldn't hurt
                     {
                         CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
-                        return; // Expected
+                        return;
                     }
                     finally
                     {
@@ -799,72 +790,32 @@ public partial class RLinkButtonCS : Resource
                         throw;
                     }
                 }
-            case MethodTypeEnum.CSharpAsyncDelegate:
+            case MethodTypeEnum.CSharpAwaitable:
                 {
                     _ctx = new();
                     List<object?> argsObj = [.. args.Select(arg => GodotHelper.ToObject(arg)), _ctx.Token];
                     object?[]? callCopy = GetArgsCopyList(argsObj);
+#if TOOLS
+                    if (Engine.IsEditorHint())
+                        RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
+#endif
 
                     try
                     {
-#if TOOLS
-                        if (Engine.IsEditorHint())
-                            RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
-#endif
-                        _info!.Invoke(instance, callCopy);
-                        return;
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
-                        return; // Expected
-                    }
-                    catch (Exception e)
-                    {
-                        GD.PushError(e);
-                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
-                        throw;
-                    }
-                    finally
-                    {
-#if TOOLS
-                        if (Engine.IsEditorHint())
-                            RLinkUnloadDetector.Instance.Unloading -= _ctx.Cancel;
-#endif
-                        _ctx.Dispose();
-                        _ctx = null;
-                    }
-                }
-            case MethodTypeEnum.CSharpAsyncAwaitable:
-                {
-                    _ctx = new();
-                    List<object?> argsObj = [.. args.Select(arg => GodotHelper.ToObject(arg)), _ctx.Token];
-                    object?[]? callCopy = GetArgsCopyList(argsObj);
-
-                    try
-                    {
-#if TOOLS
-                        if (Engine.IsEditorHint())
-                            RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
-#endif
                         object genericTask = _info!.Invoke(instance, callCopy)!;
-                        Type taskType = genericTask.GetType();
 
                         object? result = null;
-                        if (taskType.IsGenericType && genericTask is Task taskResult)
-                        {
-                            await taskResult;
-                            var resultProperty = taskResult.GetType().GetProperty("Result", BindingFlags.Instance | BindingFlags.Public);
-                            result = resultProperty?.GetValue(taskResult, null);
-                        }
                         if (genericTask is Task task)
                         {
                             await task;
+                            var resultProperty = task.GetType().GetProperty("Result", BindingFlags.Instance | BindingFlags.Public);
+                            result = resultProperty?.GetValue(task, null);
                         }
                         else if (genericTask is SignalAwaiter signalAwaiter)
                         {
                             await signalAwaiter;
-                            result = signalAwaiter.GetResult()[0];
+                            var signalResult = signalAwaiter.GetResult();
+                            result = signalResult.Length > 0 ? signalResult[0] : new Variant();
                         }
                         else
                         {

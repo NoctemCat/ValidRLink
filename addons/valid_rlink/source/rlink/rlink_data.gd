@@ -240,7 +240,7 @@ func cancel(res: Resource) -> void:
 
 
 func call_rlink_button_cs(prop_name: StringName) -> Variant:
-    if busy: return 
+    if busy: return
     var to_call := tool_obj.get(prop_name) as RefCounted
     if to_call == null or to_call.get_script() != __context.csharp_button_script:
         push_error("ValidRLink: '%s' expected RLinkButtonCS [rlink_data.call_rlink_button_cs]" % prop_name)
@@ -248,11 +248,10 @@ func call_rlink_button_cs(prop_name: StringName) -> Variant:
     to_call.SetObject(tool_obj)
     
     var final_count: int = to_call.GetArgCount()
-    const CSharpAsyncDelegate = 3
-    const CSharpAsyncAwaitable = 4
+    const CSharpAwaitable = 4
     
     # Going to add CancellationToken
-    if to_call.MethodType == CSharpAsyncDelegate or to_call.MethodType == CSharpAsyncAwaitable:
+    if to_call.MethodType == CSharpAwaitable:
         final_count -= 1
     if final_count < 0 or final_count > 1:
         push_error("ValidRLink: '%s' takes maximum 1 argument [rlink_data.call_rlink_button_cs]" % to_call.CallableMethodName)
