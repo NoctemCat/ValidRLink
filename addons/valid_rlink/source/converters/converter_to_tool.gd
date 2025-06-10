@@ -6,10 +6,12 @@ func _init(context: Context) -> void:
     super (context)
     
 
-func convert_value(data: RLinkData, runtime_value: Variant, depth: int = 0) -> Variant:
+func _convert_value(data: RLinkData, runtime_value: Variant, depth: int = 0) -> Variant:
     data.converter_converted_object = false
     data.script_error = false
+    data.visit.clear()
     if depth == -1: depth = data.max_depth - 1
+    
     var tool: Variant = _get_tool_value(data, runtime_value, depth)
     if data.script_error:
         push_warning("ValidRLink: Detected error in script [converter_to_tool.convert_value]")

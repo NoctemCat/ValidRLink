@@ -5,7 +5,7 @@ extends "./converter_base.gd"
 #
 #var __undo_redo: RLinkUndoRedo
 
-var _register_tool_instances := false
+#var _register_tool_instances := false
 
 
 func _init(context: Context) -> void:
@@ -13,13 +13,13 @@ func _init(context: Context) -> void:
     #__undo_redo = context.undo_redo
     
     
-func convert_value(data: RLinkData, tool_value: Variant, depth: int = 0, register_tool_instances := true) -> Variant:
+func _convert_value(data: RLinkData, tool_value: Variant, depth: int = 0) -> Variant:
     data.converter_converted_object = false
     data.script_error = false
+    data.visit.clear()
     if depth == -1: depth = data.max_depth - 1
-    _register_tool_instances = register_tool_instances
+    
     var runtime: Variant = _get_runtime_value(data, tool_value, depth)
-    _register_tool_instances = false
     if data.script_error:
         push_warning("ValidRLink: Detected error in script [converter_to_runtime.convert_value]")
     data.visit.clear()
@@ -66,7 +66,7 @@ func _get_runtime_object(data: RLinkData, tool_obj: Object) -> Object:
         data.script_error = true
         return null
     
-    if _register_tool_instances:
+    if data.track_tool_instances:
         __map.add_pair(runtime, tool_obj)
     else:
         __map.add_pair_no_tracking(runtime, tool_obj)

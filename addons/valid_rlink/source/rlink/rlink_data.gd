@@ -46,6 +46,7 @@ var visit: Dictionary
 var script_error := false
 var converter_converted_object := false
 var has_changes := false
+var track_tool_instances := true
 #endregion
 
 #region: Buffer State
@@ -76,7 +77,7 @@ func _init(context: Context, object: Object, in_result: ScanResult) -> void:
     _result = in_result
     max_depth = _result.max_depth
     
-    tool_obj = __conv_to_tool.convert_value(self, runtime)
+    tool_obj = __conv_to_tool._convert_value(self, runtime)
     if (
         object.get_script() != null
         and object.get_script().get_class() == "CSharpScript"
@@ -94,17 +95,17 @@ func _on_cancel_tasks() -> void:
 
 func reflect_to_tool(object: Object = null, depth: int = 0) -> Object:
     if object == null: object = runtime
-    return __conv_to_tool.convert_value(self, object, depth)
+    return __conv_to_tool._convert_value(self, object, depth)
     
     
 func reflect_to_runtime(object: Object = null, depth: int = 0) -> Object:
     if object == null: object = tool_obj
-    return __conv_to_runtime.convert_value(self, object, depth)
+    return __conv_to_runtime._convert_value(self, object, depth)
  
 
 func validate_changes(object_name: String) -> void:
     if busy:
-        _validate_queued = object_name
+        _validate_queued = object_name if object_name else "[EmptyName]"
         return
     if not _result.has_validate: return
     
@@ -139,7 +140,7 @@ func _call_validate(call_obj: Object) -> Variant:
     
 func call_callable(prop_name: StringName) -> void:
     if busy: return
-    var to_call: Callable = tool_obj.get(prop_name)
+    var to_call := tool_obj.get(prop_name) as Callable
     if to_call == null:
         push_error("ValidRLink: '%s' expected Callable [rlink_data.call_callable]" % prop_name)
         return
@@ -238,8 +239,8 @@ func cancel(res: Resource) -> void:
     busy = false
 
 
-func call_rlink_button_cs(prop_name: StringName) -> void:
-    if busy: return
+func call_rlink_button_cs(prop_name: StringName) -> Variant:
+    if busy: return 
     var to_call := tool_obj.get(prop_name) as RefCounted
     if to_call == null or to_call.get_script() != __context.csharp_button_script:
         push_error("ValidRLink: '%s' expected RLinkButtonCS [rlink_data.call_rlink_button_cs]" % prop_name)
@@ -262,7 +263,8 @@ func call_rlink_button_cs(prop_name: StringName) -> void:
     
     var signal_var: Signal = _call_rlink_button_cs_impl(final_count, to_call)
     signal_var.connect(call_rlink_button_cs_continue.bind(to_call.get_instance_id(), prop_name), CONNECT_ONE_SHOT)
-    
+    return signal_var
+        
 
 func _call_rlink_button_cs_impl(arg_count: int, to_call: RefCounted) -> Variant:
     if arg_count == 0: return to_call.RLinkCallvAwait([])
@@ -335,10 +337,10 @@ func rlink_is_pair_valid(obj: Object, delete_if_invalid: bool) -> bool:
 
 
 func rlink_add_changes(object: Object, property: StringName, old_value: Variant, value: Variant) -> void:
-    var runtime_obj: Object = __conv_to_runtime.convert_value(self, object)
+    var runtime_obj: Object = __conv_to_runtime._convert_value(self, object)
     if runtime_obj == null: return
-    var old_value_runtime: Variant = __conv_to_runtime.convert_value(self, old_value, 1)
-    var new_value_runtime: Variant = __conv_to_runtime.convert_value(self, value, 1)
+    var old_value_runtime: Variant = __conv_to_runtime._convert_value(self, old_value, 1)
+    var new_value_runtime: Variant = __conv_to_runtime._convert_value(self, value, 1)
     object_add_changes(runtime_obj, property, old_value_runtime, new_value_runtime)
     has_changes = true
     
@@ -347,7 +349,7 @@ func rlink_add_do_method(object: Object, method: StringName, args: Array) -> voi
     if not is_native_resource(object):
         push_error("ValidRLink: This method only supports native resources [rlink_data.add_do_method]")
         return
-    var args_runtime: Array = __conv_to_runtime.convert_value(self, args, 1)
+    var args_runtime: Array = __conv_to_runtime._convert_value(self, args, 1)
     args_runtime.push_front(method)
     args_runtime.push_front(object)
     _do_methods.push_back(args_runtime)
@@ -358,7 +360,7 @@ func rlink_add_undo_method(object: Object, method: StringName, args: Array) -> v
     if not is_native_resource(object):
         push_error("ValidRLink: This method only supports native resources [rlink_data.add_undo_method]")
         return
-    var args_runtime: Array = __conv_to_runtime.convert_value(self, args, 1)
+    var args_runtime: Array = __conv_to_runtime._convert_value(self, args, 1)
     args_runtime.push_front(method)
     args_runtime.push_front(object)
     _undo_methods.push_back(args_runtime)
@@ -366,11 +368,15 @@ func rlink_add_undo_method(object: Object, method: StringName, args: Array) -> v
     
     
 func rlink_convert_to_tool(runtime_obj: Object, custom_depth: int) -> Object:
-    return __conv_to_tool.convert_value(self, runtime_obj, custom_depth)
+    return __conv_to_tool._convert_value(self, runtime_obj, custom_depth)
     
     
 func rlink_convert_to_runtime(tool_obj_in: Object, custom_depth: int, track_instances: bool) -> Object:
-    return __conv_to_runtime.convert_value(self, tool_obj_in, custom_depth, track_instances)
+    var old := track_tool_instances
+    track_tool_instances = track_instances
+    var value: Object = __conv_to_runtime._convert_value(self, tool_obj_in, custom_depth)
+    track_tool_instances = old
+    return value
 
 
 func rlink_is_tool_object(object: Object) -> bool:
@@ -452,7 +458,6 @@ func get_runtime_signal(signal_value: Signal) -> Signal:
 
 
 func get_runtime_callable(callable: Callable, bindv_args: Array, unbind: int) -> Variant:
-    print(callable)
     if not callable.is_valid():
         push_error("ValidRLink: Callable must be valid to be converted [rlink_data.get_runtime_callable]")
         return null
@@ -465,7 +470,7 @@ func get_runtime_callable(callable: Callable, bindv_args: Array, unbind: int) ->
         
     var runtime_callable := Callable(callable_object, callable.get_method())
     if bindv_args.size() > 0:
-        var run_args: Array = __conv_to_runtime.convert_value(self, bindv_args, 1)
+        var run_args: Array = __conv_to_runtime._convert_value(self, bindv_args, 1)
         if converter_converted_object:
             push_error("ValidRLink: Binding object persistingly is not supported [rlink_data.get_runtime_callable]")
             return null

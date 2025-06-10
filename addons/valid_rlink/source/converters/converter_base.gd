@@ -21,32 +21,22 @@ func _init(context: Context) -> void:
     __scan_cache = context.scan_cache
 
 
-#func _setup(value: Variant, depth: int) -> int:
-    #var found_res := false
-    #if value is Object:
-        #var res := __scan_cache.get_search(value)
-        #if res != null:
-            #_max_depth = res.max_depth
-            #found_res = true
-    #if not found_res:
-         #_max_depth = __settings.max_depth
-        #
-    #if depth == -1: depth = _max_depth - 1
-    #_script_error = false
-    #_visit.clear()
-    #return depth
+func _convert_value(_data: RLinkData, value: Variant, _depth: int = 0) -> Variant:
+    push_warning("ValidRLink: Don't call this base method [converter_base._convert_value]")
+    return value
 
 
 func _skip_property(to_skip: Array[StringName], allowed: Array[StringName], prop: Dictionary) -> bool:
     var prop_name: StringName = prop["name"]
-    if allowed.is_empty() and prop_name in to_skip:
-        return true
     
+    if prop_name == &"script":
+        return true
+
     var value_type: int = prop["type"]
     if value_type == TYPE_CALLABLE or value_type == TYPE_SIGNAL:
         return true
 
-    if prop["usage"] & PROPERTY_USAGE_STORAGE != PROPERTY_USAGE_STORAGE:
+    if (prop["usage"] & PROPERTY_USAGE_STORAGE) != PROPERTY_USAGE_STORAGE:
         return true
     
     if _is_rlink_button(prop):
@@ -54,6 +44,9 @@ func _skip_property(to_skip: Array[StringName], allowed: Array[StringName], prop
         
     if allowed.size() > 0:
         return not prop_name in allowed
+        
+    if prop_name in to_skip:
+        return true
 
     return false
 
@@ -80,13 +73,14 @@ func _skip_value(data: RLinkData, prop: Dictionary, value: Variant, depth: int) 
 
     if value is Object and __scan_cache.get_search(value).skip:
         return true
-    #if value is Resource and prop["hint_string"] != RLinkButton.CLASS_NAME and _skip_resource(value):
-        #return true
 
     return false
     
 
 func _pass_directly(value: Object) -> bool:
+    if value is Script:
+        return true
+        
     var script: Script = value.get_script()
     if script == null:
             return value is Resource
@@ -101,4 +95,6 @@ func _is_external_resource(value: Variant) -> bool:
 
 
 func _is_rlink_button(prop: Dictionary) -> bool:
-    return prop["type"] == TYPE_OBJECT and (prop["hint_string"] == RLinkButton.CLASS_NAME or prop["hint_string"] == RLinkButton.CLASS_NAME_CS)
+    return prop["type"] == TYPE_OBJECT and (
+        prop["hint_string"] == RLinkButton.CLASS_NAME 
+        or prop["hint_string"] == RLinkButton.CLASS_NAME_CS)

@@ -754,7 +754,8 @@ public partial class RLinkButtonCS : Resource
                     try
                     {
 #if TOOLS
-                        RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
+                        if (Engine.IsEditorHint())
+                            RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
 #endif
                         // With `WaitAsync` Token abandons SignalAwaiter on cancellation in the hopes that it will be enough
                         Variant result = await GodotHelper.CallvAsync(instance, CallableMethodName, callCopy).WaitAsync(_ctx.Token);
@@ -768,7 +769,8 @@ public partial class RLinkButtonCS : Resource
                     finally
                     {
 #if TOOLS
-                        RLinkUnloadDetector.Instance.Unloading -= _ctx.Cancel;
+                        if (Engine.IsEditorHint())
+                            RLinkUnloadDetector.Instance.Unloading -= _ctx.Cancel;
 #endif
                         _ctx.Dispose();
                         _ctx = null;
@@ -806,7 +808,8 @@ public partial class RLinkButtonCS : Resource
                     try
                     {
 #if TOOLS
-                        RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
+                        if (Engine.IsEditorHint())
+                            RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
 #endif
                         _info!.Invoke(instance, callCopy);
                         return;
@@ -825,7 +828,8 @@ public partial class RLinkButtonCS : Resource
                     finally
                     {
 #if TOOLS
-                        RLinkUnloadDetector.Instance.Unloading -= _ctx.Cancel;
+                        if (Engine.IsEditorHint())
+                            RLinkUnloadDetector.Instance.Unloading -= _ctx.Cancel;
 #endif
                         _ctx.Dispose();
                         _ctx = null;
@@ -840,7 +844,8 @@ public partial class RLinkButtonCS : Resource
                     try
                     {
 #if TOOLS
-                        RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
+                        if (Engine.IsEditorHint())
+                            RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
 #endif
                         object genericTask = _info!.Invoke(instance, callCopy)!;
                         Type taskType = genericTask.GetType();
@@ -886,7 +891,8 @@ public partial class RLinkButtonCS : Resource
                     finally
                     {
 #if TOOLS
-                        RLinkUnloadDetector.Instance.Unloading -= _ctx.Cancel;
+                        if (Engine.IsEditorHint())
+                            RLinkUnloadDetector.Instance.Unloading -= _ctx.Cancel;
 #endif
                         _ctx.Dispose();
                         _ctx = null;

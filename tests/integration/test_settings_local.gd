@@ -1,11 +1,11 @@
 extends RLinkTestBase
 
 
-class Inner extends Node:
+class Inner extends Resource:
     @export var inner_var: int
 
 
-class InnerSkip extends Node:
+class InnerSkip extends Resource:
     @export var inner_var: int
 
     static func get_rlink_settings() -> RLinkSettings:
@@ -37,7 +37,6 @@ class SkipProps extends Node:
 func test_skip_properties() -> void:
     var node: SkipProps = autofree(SkipProps.new())
     node.inner = Inner.new()
-    node.add_child(node.inner)
     var data := rlink_data_cache.get_data(node)
     
     data.validate_changes("valid")
@@ -66,7 +65,6 @@ class AllowProps extends Node:
 func test_allow_properties() -> void:
     var node: AllowProps = autofree(AllowProps.new())
     node.inner = Inner.new()
-    node.add_child(node.inner)
     var data := rlink_data_cache.get_data(node)
     
     data.validate_changes("valid")
@@ -118,7 +116,6 @@ class MaxDepth extends Node:
 func test_max_depth() -> void:
     var node: MaxDepth = autofree(MaxDepth.new())
     node.inner = Inner.new()
-    node.add_child(node.inner)
     var data := rlink_data_cache.get_data(node)
     
     data.validate_changes("valid")
@@ -146,10 +143,6 @@ func test_skips() -> void:
     node.inner_meta = Inner.new()
     node.inner_meta.set_meta(&"rlink_skip", true)
     node.inner_skip = InnerSkip.new()
-    
-    node.add_child(node.inner)
-    node.add_child(node.inner_meta)
-    node.add_child(node.inner_skip)
     
     var data := rlink_data_cache.get_data(node)
     data.validate_changes("valid")

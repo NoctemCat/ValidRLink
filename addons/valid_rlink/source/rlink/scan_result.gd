@@ -26,7 +26,7 @@ func _init(ctx: Context, object: Object) -> void:
     validate_name = &""
     validate_arg_count = -1
     validate_check_return = false
-    skip_properties = [&"_import_path", &"resource_path", &"script"]
+    skip_properties = [&"_import_path", &"resource_path"]
     #__settings = ctx.settings
     #var compat := ctx.compat
     object_id = object.get_instance_id()
@@ -35,7 +35,7 @@ func _init(ctx: Context, object: Object) -> void:
     if object is Script:
         skip = true
         return
-    
+
     var script: Script = object.get_script()
     if script != null and not script.is_tool():
         handle_script(ctx, object, script)

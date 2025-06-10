@@ -1,9 +1,9 @@
 extends RLinkTestBase
 
 
-class Inner extends Node:
+class Inner extends Resource:
     @export var inner_var: int
-    @export var inner: Inner
+    @export var inner: Resource
 
 
 class MaxDepth extends Node:
@@ -11,7 +11,7 @@ class MaxDepth extends Node:
     @export var int_var: int
 
     func validate_changes() -> void:
-        var temp: Node = inner
+        var temp: Resource = inner
         while temp != null:
             int_var += 1
             temp = temp.inner
@@ -30,11 +30,10 @@ func test_max_depth(params: Array = use_parameters(max_depth_params)) -> void:
     var node: MaxDepth = autofree(MaxDepth.new())
     var data := rlink_data_cache.get_data(node)
     
-    var temp: Node = node
+    var temp: Object = node
     @warning_ignore("untyped_declaration")
     for i in params[1]:
         temp.inner = Inner.new()
-        temp.add_child(temp.inner)
         temp = temp.inner
     
     data.validate_changes("valid")
