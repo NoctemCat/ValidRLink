@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bni70jg43615s"]
+[gd_scene load_steps=21 format=3 uid="uid://bni70jg43615s"]
 
 [ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateBasic.cs" id="1_tyrjc"]
 [ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInner.cs" id="2_ykr5n"]
@@ -12,7 +12,7 @@
 [ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkChanges.cs" id="10_mqgjl"]
 [ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkAsync.cs" id="11_wjsgh"]
 
-[sub_resource type="Resource" id="Resource_wjsgh"]
+[sub_resource type="Resource" id="Resource_gbh6v"]
 script = ExtResource("3_28d03")
 ExportBool = true
 ExportInt = 100
@@ -211,11 +211,95 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_1yi76"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_heyfu"]
 seed = 1234
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wjsgh"]
-noise = SubResource("FastNoiseLite_1yi76")
+noise = SubResource("FastNoiseLite_heyfu")
+
+[sub_resource type="Resource" id="Resource_hanbw"]
+script = ExtResource("9_jcvuu")
+Text = "Set Int"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(0, 1, 0, 1)
+MaxWidth = 135
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 1
+CallableMethodName = &"SetIntAsync"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"SetIntAsync",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Set Int",
+"TooltipText": "",
+"UnbindNext": 1
+}
+
+[sub_resource type="Resource" id="Resource_avnbq"]
+script = ExtResource("9_jcvuu")
+Text = "Set Int Checked"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"SetIntCheckedAsync"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"SetIntCheckedAsync",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Set Int Checked",
+"TooltipText": "",
+"UnbindNext": 0
+}
 
 [node name="Node" type="Node"]
 metadata/rlink_skip = false
@@ -261,7 +345,7 @@ ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.7019
 
 [node name="ValidateInner" type="Node" parent="."]
 script = ExtResource("2_ykr5n")
-Inner = SubResource("Resource_wjsgh")
+Inner = SubResource("Resource_gbh6v")
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
 script = ExtResource("4_28d03")
@@ -308,8 +392,11 @@ NoiseTexture = SubResource("NoiseTexture2D_wjsgh")
 
 [node name="RLinkAsync" type="Node" parent="."]
 script = ExtResource("11_wjsgh")
-IntVar = 4
+IntVar = 6
+SetInt = SubResource("Resource_hanbw")
 Success = true
+SetIntChecked = SubResource("Resource_avnbq")
+metadata/rlink_skip = false
 
 [connection signal="CustomPressed" from="RLinkScene/SceneExport" to="RLinkScene" method="ScenePressed" binds= ["hello SceneExport"]]
 [connection signal="CustomPressed" from="RLinkScene/SceneLoad" to="RLinkScene" method="ScenePressed" binds= ["hello SceneLoad"]]

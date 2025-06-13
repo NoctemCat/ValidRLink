@@ -32,8 +32,8 @@ const NAME_ALIASES := {
 }
 
 const PROP_HINTS := {
-    validate_changes_names = [PROPERTY_HINT_ARRAY_TYPE, "%d:" % TYPE_STRING_NAME],
-    get_rlink_settings_names = [PROPERTY_HINT_ARRAY_TYPE, "%d:" % TYPE_STRING_NAME]
+    validate_changes_names = {"hint": PROPERTY_HINT_ARRAY_TYPE, "hint_string": "%d:" % TYPE_STRING_NAME},
+    get_rlink_settings_names = {"hint": PROPERTY_HINT_ARRAY_TYPE, "hint_string": "%d:" % TYPE_STRING_NAME}
 }
 
 var plugin_version := 0x000100
@@ -86,9 +86,9 @@ func _add_setting(prop_name: StringName, value: Variant) -> void:
         "type": typeof(value),
     }
     if PROP_HINTS.has(prop_name):
-        var hints: Array = PROP_HINTS[prop_name]
-        prop_info["hint"] = hints[0]
-        prop_info["hint_string"] = hints[1]
+        var hints: Dictionary = PROP_HINTS[prop_name]
+        prop_info["hint"] = hints["hint"]
+        prop_info["hint_string"] = hints["hint_string"]
     
     if not ProjectSettings.has_setting(setting_name):
         ProjectSettings.set_setting(setting_name, value)
@@ -104,7 +104,7 @@ func update_plugin_settings() -> void:
     if max_depth <= 0:
         push_warning("ValidRLink: 'copy_max_depth' is only accepts values higher than 1 [settings.update_plugin_settings]")
         max_depth = 3
-        ProjectSettings.set_setting("copy_max_depth", 3)
+        ProjectSettings.set_setting(BASE_SETTINGS_PATH + "copy_max_depth", 3)
 
 
 func _decode_version(_version: int) -> Array[int]:

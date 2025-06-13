@@ -52,7 +52,7 @@ export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 
-[sub_resource type="Resource" id="Resource_ig6cm"]
+[sub_resource type="Resource" id="Resource_sybr4"]
 script = ExtResource("3_mgxhu")
 export_bool_var = true
 export_int_var = 0
@@ -88,7 +88,7 @@ export_PackedVector2Array_var = PackedVector2Array()
 export_PackedVector3Array_var = PackedVector3Array()
 export_PackedColorArray_var = PackedColorArray()
 
-[sub_resource type="Resource" id="Resource_kfn5e"]
+[sub_resource type="Resource" id="Resource_itrf4"]
 script = ExtResource("5_xpbgq")
 export_bool_var = true
 export_int_var = 100
@@ -126,7 +126,7 @@ export_PackedStringArray_var = PackedStringArray("hello world", "new value", "th
 export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-inner = SubResource("Resource_ig6cm")
+inner = SubResource("Resource_sybr4")
 
 [sub_resource type="Resource" id="Resource_b5c2a"]
 script = ExtResource("9_65005")
@@ -351,7 +351,7 @@ metadata/rlink_skip = false
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
 script = ExtResource("2_mgxhu")
-inner = SubResource("Resource_kfn5e")
+inner = SubResource("Resource_itrf4")
 metadata/rlink_skip = false
 
 [node name="RLinkChild" type="Node" parent="."]
@@ -396,7 +396,7 @@ noise_texture = SubResource("NoiseTexture2D_py022")
 
 [node name="RLinkAwait" type="Node" parent="."]
 script = ExtResource("11_65005")
-int_var = 8
+int_var = 6
 set_int = SubResource("Resource_asyf6")
 success = true
 set_int_checked = SubResource("Resource_hoejj")

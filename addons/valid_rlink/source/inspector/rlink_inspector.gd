@@ -41,6 +41,9 @@ func _init(context: Context) -> void:
 
 
 func _can_handle(object: Object) -> bool:
+    if not object is Node and not object is Resource:
+        return false
+
     var needs_clear := _prev_objects.size() >= 4
     
     if object is Node:
@@ -55,7 +58,7 @@ func _can_handle(object: Object) -> bool:
     if needs_clear:
         clear()
         _watchers.clear()
-        
+
     var res := _scan_cache.get_search(object)
     if res.skip or object.get_meta(&"rlink_skip", false): return false
     

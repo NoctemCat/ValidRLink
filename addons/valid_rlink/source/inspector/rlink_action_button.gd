@@ -80,10 +80,13 @@ func setup(rlink_button: RLinkButton, property: String) -> void:
         if rlink_button.text.is_empty():
             rlink_button.text = property.capitalize()
         rlink_button.set_current_as_default()
-        _data.convert_to_runtime(_rlink_button)
+        var old_runtime: Resource = _data.runtime.get(property)
+        var run_button: Resource = rlink_button.duplicate()
+        _buffer.object_add_changes(_data.runtime, property, old_runtime, run_button)
         _buffer.create_action("Buttons Set Default", UndoRedo.MERGE_ALL, _data.runtime)
         _buffer.flush_changes()
         _buffer.commit_action()
+        __rlink_map.add_pair(run_button, rlink_button)
         
     _rlink_button.changed.connect(_on_rlink_button_changed)
     _on_rlink_button_changed()
@@ -96,10 +99,14 @@ func setup_cs(rlink_button_cs: Resource, property: String) -> void:
         if rlink_button_cs.Text.is_empty():
             rlink_button_cs.Text = property.capitalize()
         rlink_button_cs.SetCurrentAsDefault()
-        _data.convert_to_runtime(rlink_button_cs)
+        
+        var old_runtime: Resource = _data.runtime.get(property)
+        var run_button: Resource = rlink_button_cs.duplicate()
+        _buffer.object_add_changes(_data.runtime, property, old_runtime, run_button)
         _buffer.create_action("Buttons Set Default", UndoRedo.MERGE_ALL, _data.runtime)
         _buffer.flush_changes()
         _buffer.commit_action()
+        __rlink_map.add_pair(run_button, rlink_button_cs)
         
     _rlink_button_cs.changed.connect(_on_rlink_button_changed_cs)
     _on_rlink_button_changed_cs()
