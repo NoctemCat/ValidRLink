@@ -208,13 +208,13 @@ public partial class RLinkCS : RefCounted
     /// <summary>
     /// Gets node as real type
     /// </summary>
-    public Node? GetNodeOrNull(scoped in NodePath path)
+    public Node? GetNodeOrNull(in NodePath path)
         => GetNodeOrNull<Node>(path);
 
     /// <summary>
     /// Gets node as real type
     /// </summary>
-    public T? GetNodeOrNull<T>(scoped in NodePath path) where T : Node
+    public T? GetNodeOrNull<T>(in NodePath path) where T : Node
     {
         if (Placeholder is not Node nodePlaceholder) return null;
         Node? node = nodePlaceholder.GetNodeOrNull(path);
@@ -224,13 +224,13 @@ public partial class RLinkCS : RefCounted
     /// <summary>
     /// Gets node from node as real type
     /// </summary>
-    public Node? GetNodeOrNullFrom(Node toolNode, scoped in NodePath path)
+    public Node? GetNodeOrNullFrom(Node toolNode, in NodePath path)
         => GetNodeOrNullFrom<Node>(toolNode, path);
 
     /// <summary>
     /// Gets node from node as real type
     /// </summary>
-    public T? GetNodeOrNullFrom<T>(Node toolNode, scoped in NodePath path) where T : Node
+    public T? GetNodeOrNullFrom<T>(Node toolNode, in NodePath path) where T : Node
     {
         Node? runtimeNode = GetRuntimeFrom<Node>(toolNode);
         if (runtimeNode is null)
@@ -245,7 +245,7 @@ public partial class RLinkCS : RefCounted
     /// <summary>
     /// Checks if node exist
     /// </summary>
-    public bool HasNode(scoped in NodePath path)
+    public bool HasNode(in NodePath path)
     {
         if (Placeholder is not Node nodePlaceholder) return false;
         return nodePlaceholder.HasNode(path);
@@ -254,7 +254,7 @@ public partial class RLinkCS : RefCounted
     /// <summary>
     /// Checks if node exist from node
     /// </summary>
-    public bool HasNodeFrom(Node toolNode, scoped in NodePath path)
+    public bool HasNodeFrom(Node toolNode, in NodePath path)
     {
         Node? runtimeNode = GetRuntimeFrom<Node>(toolNode);
         if (runtimeNode is null)
@@ -351,7 +351,7 @@ public partial class RLinkCS : RefCounted
     /// <summary>
     /// Removes the node at the end of the path from current
     /// </summary>
-    public void RemoveChildPath(scoped in NodePath path)
+    public void RemoveChildPath(in NodePath path)
     {
         if (Placeholder is not Node nodePlaceholder) return;
 
@@ -392,7 +392,7 @@ public partial class RLinkCS : RefCounted
     /// <summary>
     /// Removes all children from the node at path
     /// </summary>
-    public void RemoveAllChildrenPath(scoped in NodePath path)
+    public void RemoveAllChildrenPath(in NodePath path)
     {
         if (Placeholder is not Node nodePlaceholder) return;
 
@@ -406,57 +406,57 @@ public partial class RLinkCS : RefCounted
     }
 
     /// <inheritdoc cref="SignalConnect(in Signal, in Variant, Godot.Collections.Array?, int)" />
-    public void SignalConnect(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public void SignalConnect(in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalConnect(signal, DelegateToCallable(method), bindvArgs, unbind);
 
     /// <summary>
     /// Connects them persistingly, bound arguments get added first, then unbind. Callables are treated as connected if they have the
     /// same object and method, so different binds are treated as the same callable
     /// </summary>
-    public void SignalConnect(scoped in Signal signal, scoped in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public void SignalConnect(in Signal signal, in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
     {
-        bindvArgs ??= [];
+        bindvArgs ??= new();
         Data.Call(DataNames.RLinkSignalConnect, signal, callable, bindvArgs, unbind);
     }
 
     /// <inheritdoc cref="SignalDisconnect(in Signal, in Variant, Godot.Collections.Array?, int)" />
-    public void SignalDisconnect(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public void SignalDisconnect(in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalDisconnect(signal, DelegateToCallable(method), bindvArgs, unbind);
 
     /// <summary>
     /// Disconnects them, bound arguments get added first, then unbind. Callables are treated as connected if they have the
     /// same object and method, so different binds are treated as the same callable
     /// </summary>
-    public void SignalDisconnect(scoped in Signal signal, scoped in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public void SignalDisconnect(in Signal signal, in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
     {
-        bindvArgs ??= [];
+        bindvArgs ??= new();
         Data.Call(DataNames.RLinkSignalDisconnect, signal, callable, bindvArgs, unbind);
     }
 
     /// <inheritdoc cref="SignalIsConnected(in Signal, in Variant, Godot.Collections.Array?, int)" />
-    public bool SignalIsConnected(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public bool SignalIsConnected(in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalIsConnected(signal, DelegateToCallable(method), bindvArgs, unbind);
 
     /// <summary>
     /// Check if callable connected to the signal. Callables are treated as connected if they have the
     /// same object and method, so different binds are treated as the same callable
     /// </summary>
-    public bool SignalIsConnected(scoped in Signal signal, scoped in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public bool SignalIsConnected(in Signal signal, in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
     {
-        bindvArgs ??= [];
+        bindvArgs ??= new();
         return Data.Call(DataNames.RLinkSignalIsConnected, signal, callable, bindvArgs, unbind).AsBool();
     }
 
     /// <inheritdoc cref="SignalToggle(in Signal, in Variant, Godot.Collections.Array?, int)" />
-    public void SignalToggle(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public void SignalToggle(in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalToggle(signal, DelegateToCallable(method), bindvArgs, unbind);
 
     /// <summary>
     /// Checks if connected, if connected disconnects callable, if not callable is connected
     /// </summary>
-    public void SignalToggle(scoped in Signal signal, scoped in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
+    public void SignalToggle(in Signal signal, in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
     {
-        bindvArgs ??= [];
+        bindvArgs ??= new();
         if (SignalIsConnected(signal, callable, bindvArgs, unbind))
             SignalDisconnect(signal, callable, bindvArgs, unbind);
         else
@@ -516,7 +516,7 @@ public partial class RLinkCS : RefCounted
     /// </summary>
     public void AddDoMethod(GodotObject obj, StringName property, Godot.Collections.Array? args = null)
     {
-        args ??= [];
+        args ??= new();
         Data.Call(DataNames.RLinkAddDoMethod, obj, property, args);
     }
 
@@ -526,7 +526,7 @@ public partial class RLinkCS : RefCounted
     /// </summary>
     public void AddUndoMethod(GodotObject obj, StringName property, Godot.Collections.Array? args = null)
     {
-        args ??= [];
+        args ??= new();
         Data.Call(DataNames.RLinkAddUndoMethod, obj, property, args);
     }
 

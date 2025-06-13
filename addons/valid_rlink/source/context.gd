@@ -17,6 +17,7 @@ var csharp_enabled: bool
 var csharp_helper_script: Script
 var csharp_button_script: Script
 var csharp_settings_script: Script
+var csharp_db: Node
 
 var popup: PopupMenu
 var button_theme: Theme

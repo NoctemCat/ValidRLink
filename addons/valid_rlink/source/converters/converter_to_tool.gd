@@ -13,7 +13,7 @@ func _convert_value(buffer: RLinkBuffer, runtime_value: Variant, depth: int = 0,
     if runtime_value == null: return null
     
     if search_ctx != null: buffer.result = __scan_cache.get_search(search_ctx)
-    else: buffer.result = __scan_cache.get_search(runtime_value)   
+    else: buffer.result = __scan_cache.get_search(runtime_value)
     if depth == -1: depth = buffer.max_depth - 1
     
     var tool: Variant = _get_tool_value(buffer, runtime_value, depth)
@@ -155,7 +155,6 @@ func _get_tool_array(buffer: RLinkBuffer, array: Array, depth: int) -> Array:
 func _get_tool_dictionary(buffer: RLinkBuffer, dict: Dictionary, depth: int) -> Dictionary:
     var copy := dict.duplicate()
     copy.clear()
-    @warning_ignore("untyped_declaration")
     for key in dict:
         copy[_get_tool_value(buffer, key, depth)] = _get_tool_value(buffer, dict[key], depth)
     return copy

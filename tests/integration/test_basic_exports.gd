@@ -14,18 +14,18 @@ class BasicExports extends Resource:
         Vector3(100.0, 100.0, 100.0),
         Vector3i(100, 100, 100),
         Transform2D(Vector2(100.0, 100.0), Vector2(200.0, 200.0), Vector2(300.0, 300.0)),
-        Vector4(100.0, 100.0, 100.0,100.0),
+        Vector4(100.0, 100.0, 100.0, 100.0),
         Vector4i(100, 100, 100, 100),
         Plane(100.0, 100.0, 100.0, 100.0),
         Quaternion.from_euler(Vector3(100.0, 100.0, 100.0)),
         AABB(Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0)),
         Basis(Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0), Vector3(100.0, 100.0, 100.0)),
         Transform3D(Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0), Vector3(100.0, 100.0, 100.0), Vector3(200.0, 200.0, 200.0)),
-        Projection(Vector4(200.0, 200.0, 200.0,200.0), Vector4(300.0, 300.0, 300.0,300.0), Vector4(400.0, 400.0, 400.0,100.0), Vector4(100.0, 100.0, 100.0,100.0)),
+        Projection(Vector4(200.0, 200.0, 200.0, 200.0), Vector4(300.0, 300.0, 300.0, 300.0), Vector4(400.0, 400.0, 400.0, 100.0), Vector4(100.0, 100.0, 100.0, 100.0)),
         Color(0.3, 0.4, 0.5, 1),
         StringName("new stringname"),
         NodePath("Path/To/Something"),
-        { "key1": 100, Vector2i(20, 20): true },
+        {"key1": 100, Vector2i(20, 20): true},
         [Color.WHITE, 200, "text"],
         PackedByteArray([20, 30, 40]),
         PackedInt32Array([1234, 4321, 4544, 1131]),
@@ -36,7 +36,6 @@ class BasicExports extends Resource:
         PackedVector2Array([Vector2(100.0, 100.0), Vector2(200.0, 200.0), Vector2(300.0, 300.0)]),
         PackedVector3Array([Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0)]),
         PackedColorArray([Color.WHITE, Color.FLORAL_WHITE, Color(0.3, 0.4, 0.5, 1)]),
-        PackedVector4Array([Vector4(200.0, 200.0, 200.0,200.0), Vector4(300.0, 300.0, 300.0,300.0), Vector4(400.0, 400.0, 400.0,100.0)]),
     ]
     
     var normal_bool_var: bool
@@ -72,7 +71,6 @@ class BasicExports extends Resource:
     var normal_PackedVector2Array_var: PackedVector2Array
     var normal_PackedVector3Array_var: PackedVector3Array
     var normal_PackedColorArray_var: PackedColorArray
-    var normal_PackedVector4Array_var: PackedVector4Array
     @export var export_bool_var: bool
     @export var export_int_var: int
     @export var export_float_var: float
@@ -106,27 +104,24 @@ class BasicExports extends Resource:
     @export var export_PackedVector2Array_var: PackedVector2Array
     @export var export_PackedVector3Array_var: PackedVector3Array
     @export var export_PackedColorArray_var: PackedColorArray
-    @export var export_PackedVector4Array_var: PackedVector4Array
     
     
     func validate_changes() -> void:
-        @warning_ignore("untyped_declaration")
         for value in set_values:
             var type := typeof(value)
-            set("normal_%s_var" % type_string(type), value)
-            set("export_%s_var" % type_string(type), value)
+            set("normal_%s_var" % RLinkTestBase.type_to_string(type), value)
+            set("export_%s_var" % RLinkTestBase.type_to_string(type), value)
 
 
 class OuterNode extends Node:
-    @export var res: BasicExports 
+    @export var res: BasicExports
     @export var some_var: String
     
     func validate_changes() -> void:
-        @warning_ignore("untyped_declaration")
         for value in BasicExports.set_values:
             var type := typeof(value)
-            res.set("normal_%s_var" % type_string(type), value)
-            res.set("export_%s_var" % type_string(type), value)
+            res.set("normal_%s_var" % RLinkTestBase.type_to_string(type), value)
+            res.set("export_%s_var" % RLinkTestBase.type_to_string(type), value)
         some_var = "after validate"
 
 
@@ -168,12 +163,11 @@ func test_validate_basic_inner() -> void:
     assert_eq(outer.some_var, "after validate")
     
 
-func _check_default(basic_export: BasicExports)-> void:
-    @warning_ignore("untyped_declaration")
+func _check_default(basic_export: BasicExports) -> void:
     for value in BasicExports.set_values:
         var type := typeof(value)
-        var normal_name: String = "normal_%s_var" % type_string(type)
-        var export_name: String = "export_%s_var" % type_string(type)
+        var normal_name: String = "normal_%s_var" % RLinkTestBase.type_to_string(type)
+        var export_name: String = "export_%s_var" % RLinkTestBase.type_to_string(type)
         
         if basic_export.get(normal_name): fail_test("Value is not default")
         else: pass_test("Contains default value")
@@ -181,12 +175,11 @@ func _check_default(basic_export: BasicExports)-> void:
         else: pass_test("Contains default value")
 
 
-func _check_export_set(basic_export: BasicExports)-> void:
-    @warning_ignore("untyped_declaration")
+func _check_export_set(basic_export: BasicExports) -> void:
     for value in BasicExports.set_values:
         var type := typeof(value)
-        var normal_name: String = "normal_%s_var" % type_string(type)
-        var export_name: String = "export_%s_var" % type_string(type)
+        var normal_name: String = "normal_%s_var" % RLinkTestBase.type_to_string(type)
+        var export_name: String = "export_%s_var" % RLinkTestBase.type_to_string(type)
         
         if basic_export.get(normal_name): fail_test("Value is not default")
         else: pass_test("Contains default value")

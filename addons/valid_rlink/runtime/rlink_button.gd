@@ -227,7 +227,6 @@ func _set_method(object: Object, method: StringName) -> void:
 
 ## Sets exported properties by name from dictionary
 func set_dictioanary(properties: Dictionary) -> RLinkButton:
-    @warning_ignore("untyped_declaration")
     for prop_name in properties:
         if prop_name in self: set(prop_name, properties[prop_name])
     return self

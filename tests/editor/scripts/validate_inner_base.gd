@@ -1,9 +1,10 @@
 extends Node
 const InnerResourceValidate = preload("./inner_resource_validate.gd")
 
-@export var inner: InnerResourceValidate
+@export var inner: Resource
 
 
 func validate_changes() -> void:
-    if inner == null:
+    if not inner is InnerResourceValidate:
         inner = InnerResourceValidate.new()
+        pass

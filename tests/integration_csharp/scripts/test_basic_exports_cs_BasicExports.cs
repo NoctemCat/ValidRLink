@@ -28,8 +28,8 @@ public partial class test_basic_exports_cs_BasicExports : BasicResource
     [Export] public Color ExportColor { get; set; }
     [Export] public StringName ExportStringName { get; set; } = new();
     [Export] public NodePath ExportNodePath { get; set; } = new();
-    [Export] public Godot.Collections.Dictionary ExportDictionary { get; set; } = [];
-    [Export] public Godot.Collections.Array ExportArray { get; set; } = [];
+    [Export] public Godot.Collections.Dictionary ExportDictionary { get; set; } = new();
+    [Export] public Godot.Collections.Array ExportArray { get; set; } = new();
     [Export] public byte[] ExportPackedByteArray { get; set; }
     [Export] public int[] ExportPackedInt32Array { get; set; }
     [Export] public long[] ExportPackedInt64Array { get; set; }
@@ -39,7 +39,6 @@ public partial class test_basic_exports_cs_BasicExports : BasicResource
     [Export] public Vector2[] ExportPackedVector2Array { get; set; }
     [Export] public Vector3[] ExportPackedVector3Array { get; set; }
     [Export] public Color[] ExportPackedColorArray { get; set; }
-    [Export] public Vector4[] ExportPackedVector4Array { get; set; }
     public bool NormalBool { get; set; }
     public int NormalInt { get; set; }
     public float NormalFloat { get; set; }
@@ -62,8 +61,8 @@ public partial class test_basic_exports_cs_BasicExports : BasicResource
     public Color NormalColor { get; set; }
     public StringName NormalStringName { get; set; } = new();
     public NodePath NormalNodePath { get; set; } = new();
-    public Godot.Collections.Dictionary NormalDictionary { get; set; } = [];
-    public Godot.Collections.Array NormalArray { get; set; } = [];
+    public Godot.Collections.Dictionary NormalDictionary { get; set; } = new();
+    public Godot.Collections.Array NormalArray { get; set; } = new();
     public byte[] NormalPackedByteArray { get; set; }
     public int[] NormalPackedInt32Array { get; set; }
     public long[] NormalPackedInt64Array { get; set; }
@@ -73,7 +72,6 @@ public partial class test_basic_exports_cs_BasicExports : BasicResource
     public Vector2[] NormalPackedVector2Array { get; set; }
     public Vector3[] NormalPackedVector3Array { get; set; }
     public Color[] NormalPackedColorArray { get; set; }
-    public Vector4[] NormalPackedVector4Array { get; set; }
 
     public void ValidateChanges()
     {

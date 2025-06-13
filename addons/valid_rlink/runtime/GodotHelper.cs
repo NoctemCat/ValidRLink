@@ -263,11 +263,13 @@ public static class GodotHelper
                                 variant = (Vector3[])value;
                                 return true;
                             }
+#if GODOT4_3_OR_GREATER
                             if (valueType == typeof(Vector4[]))
                             {
                                 variant = (Vector4[])value;
                                 return true;
                             }
+#endif
                             if (valueType == typeof(Color[]))
                             {
                                 variant = (Color[])value;
@@ -363,7 +365,7 @@ public static class GodotHelper
     /// Extracts the value from Variant to object
     /// </summary>
     /// <returns>Value as object</returns>
-    public static object? ToObject(scoped in Variant variant)
+    public static object? ToObject(in Variant variant)
     {
         return variant.VariantType switch
         {
@@ -405,7 +407,9 @@ public static class GodotHelper
             Variant.Type.PackedVector2Array => variant.AsVector2Array(),
             Variant.Type.PackedVector3Array => variant.AsVector3Array(),
             Variant.Type.PackedColorArray => variant.AsColorArray(),
+#if GODOT4_3_OR_GREATER
             Variant.Type.PackedVector4Array => variant.AsVector4Array(),
+#endif
             _ => null,
         };
     }
@@ -413,7 +417,7 @@ public static class GodotHelper
     /// <summary>
     /// Checks and cast Variant to RefCounted
     /// </summary>
-    public static bool IsVariantRefCounted(scoped in Variant variant, [NotNullWhen(true)] out RefCounted? refCounted)
+    public static bool IsVariantRefCounted(in Variant variant, [NotNullWhen(true)] out RefCounted? refCounted)
     {
         if (variant.VariantType == Variant.Type.Object && variant.AsGodotObject() is RefCounted refCountedConv)
         {
@@ -443,7 +447,7 @@ public static class GodotHelper
     /// Replicates Get from GDScript dictionary
     /// </summary>
     /// <returns>The value if key exist or default</returns>
-    public static Variant GetDefault(IDictionary<Variant, Variant> dictionary, scoped in Variant key, scoped in Variant defaultValue)
+    public static Variant GetDefault(IDictionary<Variant, Variant> dictionary, in Variant key, in Variant defaultValue)
     {
         if (dictionary.TryGetValue(key, out Variant value))
         {
@@ -472,31 +476,31 @@ public static class GodotHelper
 
         static Callable()
         {
-            long version = Engine.Singleton.GetVersionInfo()["hex"].AsInt64();
+            long version = Engine.GetVersionInfo()["hex"].AsInt64();
             CallableConstructor = new();
-            CallableConstructor.Parse("Callable(variant, method)", ["variant", "method"]);
+            CallableConstructor.Parse("Callable(variant, method)", new string[] { "variant", "method" });
             UnboundCountAvailable = version >= 0x040400;
             if (UnboundCountAvailable)
             {
                 GetUnboundCountExpr = new();
-                GetUnboundCountExpr.Parse("callable.get_unbound_arguments_count()", ["callable"]);
+                GetUnboundCountExpr.Parse("callable.get_unbound_arguments_count()", new string[] { "callable" });
             }
             CallableIsValid = new();
-            CallableIsValid.Parse("callable.is_valid()", ["callable"]);
+            CallableIsValid.Parse("callable.is_valid()", new string[] { "callable" });
             CallableGetBoundArguments = new();
-            CallableGetBoundArguments.Parse("callable.get_bound_arguments()", ["callable"]);
+            CallableGetBoundArguments.Parse("callable.get_bound_arguments()", new string[] { "callable" });
             CallableGetMethod = new();
-            CallableGetMethod.Parse("callable.get_method()", ["callable"]);
+            CallableGetMethod.Parse("callable.get_method()", new string[] { "callable" });
             CallableBind = new();
-            CallableBind.Parse("callable.bind(argument)", ["callable", "argument"]);
+            CallableBind.Parse("callable.bind(argument)", new string[] { "callable", "argument" });
             CallableBindv = new();
-            CallableBindv.Parse("callable.bindv(arguments)", ["callable", "arguments"]);
+            CallableBindv.Parse("callable.bindv(arguments)", new string[] { "callable", "arguments" });
             CallableUnbind = new();
-            CallableUnbind.Parse("callable.unbind(argcount)", ["callable", "argcount"]);
+            CallableUnbind.Parse("callable.unbind(argcount)", new string[] { "callable", "argcount" });
             CallableCallEmpty = new();
-            CallableCallEmpty.Parse("callable.call()", ["callable"]);
+            CallableCallEmpty.Parse("callable.call()", new string[] { "callable" });
             CallableCall = new();
-            CallableCall.Parse("callable.call(argument)", ["callable", "argument"]);
+            CallableCall.Parse("callable.call(argument)", new string[] { "callable", "argument" });
         }
 
         /// <summary>
@@ -505,24 +509,24 @@ public static class GodotHelper
         /// <returns>Callable as variant</returns>
         public static Variant CallConstructor(Variant godotObject, StringName method)
         {
-            return CallableConstructor.Execute([godotObject, method]);
+            return CallableConstructor.Execute(new Godot.Collections.Array { godotObject, method });
         }
 
-        public static bool IsValid(scoped in Variant callable) => CallableIsValid.Execute([callable]).AsBool();
-        public static bool IsValid(scoped in Godot.Callable callable) => CallableIsValid.Execute([callable]).AsBool();
+        public static bool IsValid(in Variant callable) => CallableIsValid.Execute(new Godot.Collections.Array { callable }).AsBool();
+        public static bool IsValid(in Godot.Callable callable) => CallableIsValid.Execute(new Godot.Collections.Array { callable }).AsBool();
 
-        public static int GetUnboundArgumentsCount(scoped in Variant callable)
-             => GetUnboundCountExpr?.Execute([callable]).AsInt32() ?? 0;
-        public static int GetUnboundArgumentsCount(scoped in Godot.Callable callable)
-             => GetUnboundCountExpr?.Execute([callable]).AsInt32() ?? 0;
+        public static int GetUnboundArgumentsCount(in Variant callable)
+             => GetUnboundCountExpr?.Execute(new Godot.Collections.Array { callable }).AsInt32() ?? 0;
+        public static int GetUnboundArgumentsCount(in Godot.Callable callable)
+             => GetUnboundCountExpr?.Execute(new Godot.Collections.Array { callable }).AsInt32() ?? 0;
 
-        public static Godot.Collections.Array GetBoundArguments(scoped in Variant callable)
-            => CallableGetBoundArguments.Execute([callable]).AsGodotArray();
-        public static Godot.Collections.Array GetBoundArguments(scoped in Godot.Callable callable)
-            => CallableGetBoundArguments.Execute([callable]).AsGodotArray();
+        public static Godot.Collections.Array GetBoundArguments(in Variant callable)
+            => CallableGetBoundArguments.Execute(new Godot.Collections.Array { callable }).AsGodotArray();
+        public static Godot.Collections.Array GetBoundArguments(in Godot.Callable callable)
+            => CallableGetBoundArguments.Execute(new Godot.Collections.Array { callable }).AsGodotArray();
 
-        public static StringName GetMethod(scoped in Variant callable) => CallableGetMethod.Execute([callable]).AsStringName();
-        public static StringName GetMethod(scoped in Godot.Callable callable) => CallableGetMethod.Execute([callable]).AsStringName();
+        public static StringName GetMethod(in Variant callable) => CallableGetMethod.Execute(new Godot.Collections.Array { callable }).AsStringName();
+        public static StringName GetMethod(in Godot.Callable callable) => CallableGetMethod.Execute(new Godot.Collections.Array { callable }).AsStringName();
 
         /// <summary>
         /// Binds variant argument to callable, casting returned callable is invalid, ConvertCallableToManaged doesn't take into 
@@ -532,9 +536,9 @@ public static class GodotHelper
         /// Copy with argument bound, converting it into Callable will make it invalid, call it with `Call`
         /// from this class or pass to Godot as Variant through `Call` on the GodotObject class
         /// </returns>
-        public static Variant Bind(scoped in Godot.Callable callable, scoped in Variant arg) => CallableBind.Execute([callable, arg]);
+        public static Variant Bind(in Godot.Callable callable, in Variant arg) => CallableBind.Execute(new Godot.Collections.Array { callable, arg });
         /// <inheritdoc cref="Bind(in Godot.Callable, in Variant)" />
-        public static Variant Bind(scoped in Variant callable, scoped in Variant arg) => CallableBind.Execute([callable, arg]);
+        public static Variant Bind(in Variant callable, in Variant arg) => CallableBind.Execute(new Godot.Collections.Array { callable, arg });
 
         /// <summary>
         /// Binds variant argument to callable, casting returned callable is invalid, ConvertCallableToManaged doesn't take into 
@@ -544,9 +548,9 @@ public static class GodotHelper
         /// Copy with arguments bound, converting it into Callable will make it invalid, call it with `Call`
         /// from this class or pass to Godot as Variant through `Call` on the GodotObject class
         /// </returns>
-        public static Variant Bindv(scoped in Godot.Callable callable, Godot.Collections.Array args) => CallableBindv.Execute([callable, args]);
+        public static Variant Bindv(in Godot.Callable callable, Godot.Collections.Array args) => CallableBindv.Execute(new Godot.Collections.Array { callable, args });
         /// <inheritdoc cref="Bindv(in Godot.Callable, Godot.Collections.Array)" />
-        public static Variant Bindv(scoped in Variant callable, Godot.Collections.Array args) => CallableBindv.Execute([callable, args]);
+        public static Variant Bindv(in Variant callable, Godot.Collections.Array args) => CallableBindv.Execute(new Godot.Collections.Array { callable, args });
 
         /// <summary>
         /// Adds unbind to callable, casting returned callable is invalid, ConvertCallableToManaged doesn't take into 
@@ -556,24 +560,24 @@ public static class GodotHelper
         /// Copy with arguments unbound, converting it into Callable will make it invalid, call it with `Call`
         /// from this class or pass to Godot as Variant through `Call` on the GodotObject class
         /// </returns>
-        public static Variant Unbind(scoped in Godot.Callable callable, int argCount) => CallableUnbind.Execute([callable, argCount]);
+        public static Variant Unbind(in Godot.Callable callable, int argCount) => CallableUnbind.Execute(new Godot.Collections.Array { callable, argCount });
         /// <inheritdoc cref="Unbind(in Godot.Callable, int)" />
-        public static Variant Unbind(scoped in Variant callable, int argCount) => CallableUnbind.Execute([callable, argCount]);
+        public static Variant Unbind(in Variant callable, int argCount) => CallableUnbind.Execute(new Godot.Collections.Array { callable, argCount });
 
-        public static Variant Call(scoped in Variant callable, scoped in Variant? arg = null)
+        public static Variant Call(in Variant callable, in Variant? arg = null)
         {
             if (arg is null)
-                return CallableCallEmpty.Execute([callable]);
+                return CallableCallEmpty.Execute(new Godot.Collections.Array { callable });
             else
-                return CallableCall.Execute([callable, arg.Value]);
+                return CallableCall.Execute(new Godot.Collections.Array { callable, arg.Value });
         }
 
-        public static Variant Call(scoped in Godot.Callable callable, scoped in Variant? arg = null)
+        public static Variant Call(in Godot.Callable callable, in Variant? arg = null)
         {
             if (arg is null)
-                return CallableCallEmpty.Execute([callable]);
+                return CallableCallEmpty.Execute(new Godot.Collections.Array { callable });
             else
-                return CallableCall.Execute([callable, arg.Value]);
+                return CallableCall.Execute(new Godot.Collections.Array { callable, arg.Value });
         }
     }
 }

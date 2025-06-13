@@ -142,9 +142,7 @@ func _flush_changes_history() -> void:
         var meta: StringName = _remove_metas[i + 1]
         __undo_redo.add_undo_method(object, &"set_meta", meta, object.get_meta(meta))
     
-    @warning_ignore("untyped_declaration")
     for node in _add_children:
-        @warning_ignore("untyped_declaration")
         for child in _add_children[node]:
             __undo_redo.add_do_method(node, &"add_child", child, true)
             if node.is_inside_tree():
@@ -152,14 +150,13 @@ func _flush_changes_history() -> void:
             __undo_redo.add_do_reference(child)
             __undo_redo.add_undo_method(node, &"remove_child", child)
 
-    @warning_ignore("untyped_declaration")
     for node in _remove_children:
-        @warning_ignore("untyped_declaration")
         for child in _remove_children[node]:
             __undo_redo.add_do_method(node, &"remove_child", child)
             __undo_redo.add_undo_method(node, &"add_child", child, true)
             if node.is_inside_tree():
                 var owner: Node = node.owner if node.owner != null else node
+                @warning_ignore("unassigned_variable")
                 var owned: Array[Node]
                 _get_owned_by(owner, child, owned)
                 __undo_redo.add_undo_method(__ctx, &"set_owners", owner, owned)
@@ -181,16 +178,12 @@ func _flush_changes_history() -> void:
     for i in range(0, _undo_methods.size(), 1):
         __undo_redo.callv(&"add_undo_method", _undo_methods[i])
     
-    @warning_ignore("untyped_declaration")
     for node in _add_groups:
-        @warning_ignore("untyped_declaration")
         for group in _add_groups[node]:
             __undo_redo.add_do_method(node, &"add_to_group", group, true)
             __undo_redo.add_undo_method(node, &"remove_from_group", group)
 
-    @warning_ignore("untyped_declaration")
     for node in _erase_groups:
-        @warning_ignore("untyped_declaration")
         for group in _erase_groups[node]:
             __undo_redo.add_do_method(node, &"remove_from_group", group)
             __undo_redo.add_undo_method(node, &"add_to_group", group, true)
@@ -211,17 +204,13 @@ func _flush_changes_history() -> void:
 
 
 func _flush_changes_direct() -> void:
-    @warning_ignore("untyped_declaration")
     for node in _add_children:
-        @warning_ignore("untyped_declaration")
         for child in _add_children[node]:
             node.add_child(child, true)
             if node.is_inside_tree():
                 child.owner = node.owner if node.owner != null else node
 
-    @warning_ignore("untyped_declaration")
     for node in _remove_children:
-        @warning_ignore("untyped_declaration")
         for child in _remove_children[node]:
             node.remove_child(child)
             
@@ -239,15 +228,11 @@ func _flush_changes_direct() -> void:
         var method: StringName = args.pop_front()
         object.callv(method, args)
 
-    @warning_ignore("untyped_declaration")
     for node in _add_groups:
-        @warning_ignore("untyped_declaration")
         for group in _add_groups[node]:
             node.add_to_group(group, true)
     
-    @warning_ignore("untyped_declaration")
     for node in _erase_groups:
-        @warning_ignore("untyped_declaration")
         for group in _erase_groups[node]:
             node.remove_from_group(group)
     
@@ -263,9 +248,7 @@ func _flush_changes_direct() -> void:
 
 
 func discard_changes() -> void:
-    @warning_ignore("untyped_declaration")
     for node in _add_children:
-        @warning_ignore("untyped_declaration")
         for child in _add_children[node]:
             child.queue_free()
     _clear_buffer()
@@ -324,15 +307,15 @@ func push_validate_action(name: String, object: Object) -> void:
 
 # Pretty ugly workaround
 func _update_tree() -> void:
-    if __compat.engine_version >= 0x040400:
+    if __compat.engine_version >= 0x040200:
         return
-    #@warning_ignore("unsafe_property_access")
-    #var root: Node = Engine.get_main_loop().edited_scene_root
-    #if root != null:
-        #var temp := Node.new()
-        #root.add_child(temp)
-        #temp.owner = root
-        #temp.queue_free()
+    
+    var root: Node = Engine.get_main_loop().edited_scene_root
+    if root != null:
+        var temp := Node.new()
+        root.add_child(temp)
+        temp.owner = root
+        temp.queue_free()
         
         
 func _get_owned_by(owner: Node, node: Node, owned: Array[Node]) -> void:

@@ -11,7 +11,9 @@ public partial class test_callables_cs_Callables : Node
     [Export] public int IntVar { get; set; }
     [Export] public RLinkButtonCS Button { get; set; } = new(nameof(FromButton));
     // [Export] public RLinkButtonCS CallableVar { get => new(this, MethodName.FromCallable); set { } }
+#if GODOT4_2_OR_GREATER
     [Export] public Callable CallableVar { get => new(this, MethodName.FromCallable); set { } }
+#endif
 
     public void FromButton()
     {

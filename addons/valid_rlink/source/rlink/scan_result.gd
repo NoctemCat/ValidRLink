@@ -57,26 +57,11 @@ func handle_native(ctx: Context, object: Object) -> void:
         
         
 func handle_script(ctx: Context, object: Object, script_or_native: Object) -> void:
-    var rlink_settings: RLinkSettings = null
+    var rlink_settings: RLinkSettings = _get_settings(ctx, object, script_or_native)
     ## Uncomment for autocomplete, then comment it again to make it optional
-    #var rlink_settings_cs: RLinkSettingsCS = null 
-    var rlink_settings_cs: Resource = null
-    var methods := _parse_methods(ctx, object)
-    for name in ctx.settings.get_rlink_settings_names:
-        # TODO: Check in 4.1
-        if methods.has(name):
-            var settings: Variant = script_or_native.call(name)
-            if settings is Dictionary:
-                rlink_settings = RLinkSettings.new(settings)
-            elif settings is RLinkSettings:
-                rlink_settings = settings
-            elif ctx.csharp_enabled and settings is Object and settings.get_script() == ctx.csharp_settings_script:
-                rlink_settings_cs = settings
-            else:
-                push_error("ValidRLink: get settings function must return 'RLinkSettings' or dictionary [scan_result.handle_script]")
-                return
-            break
-    
+    #var rlink_settings_cs: RLinkSettingsCS = _get_settings_cs(ctx, object, script_or_native) 
+    var rlink_settings_cs: Resource = _get_settings_cs(ctx, object, script_or_native)
+
     var had_validate := false
     if rlink_settings != null:
         if rlink_settings.skip:
@@ -116,11 +101,46 @@ func handle_script(ctx: Context, object: Object, script_or_native: Object) -> vo
             if ctx.compat.comp_has_method(object, name):
                 validate_name = name
                 break
-                
+    
+
     if validate_name != &"":
-        var info := get_method_info(validate_name)
-        validate_arg_count = info.arg_count
-        validate_check_return = info.check_return
+        if script_or_native is Script and script_or_native.get_class() == "CSharpScript":
+            var info: Dictionary = ctx.csharp_db.GetMethodInfo(script_or_native, validate_name)
+            validate_arg_count = info["arg_count"]
+            validate_check_return = info["needs_check"]
+        else:
+            var info := get_method_info(validate_name)
+            validate_arg_count = info.arg_count
+            validate_check_return = info.check_return
+
+
+func _get_settings(ctx: Context, _object: Object, script_or_native: Object) -> RLinkSettings:
+    if script_or_native is Script and script_or_native.get_class() == "CSharpScript":
+        return null
+        
+    var rlink_settings: RLinkSettings = null
+    #var methods := _parse_methods(ctx, object)
+    for name in ctx.settings.get_rlink_settings_names:
+        # TODO: Check in 4.1
+        if name in script_or_native:
+        #if methods.has(name):
+            var settings: Variant = script_or_native.call(name)
+            if settings is Dictionary:
+                rlink_settings = RLinkSettings.new(settings)
+            elif settings is RLinkSettings:
+                rlink_settings = settings
+            else:
+                push_error("ValidRLink: get settings function must return 'RLinkSettings' or dictionary [scan_result.handle_script]")
+                return
+            break
+    return rlink_settings
+
+
+func _get_settings_cs(ctx: Context, _object: Object, script_or_native: Object) -> Resource:
+    if not (script_or_native is Script and script_or_native.get_class() == "CSharpScript"):
+        return null
+        
+    return ctx.csharp_db.GetRLinkSettings(script_or_native, ctx.settings.get_rlink_settings_names)
 
 
 func get_method_info(method: StringName) -> MethodInfo:

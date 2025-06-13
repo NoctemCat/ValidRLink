@@ -1,19 +1,19 @@
-[gd_scene load_steps=22 format=4 uid="uid://de06e31f7iu5i"]
+[gd_scene load_steps=22 format=3 uid="uid://de06e31f7iu5i"]
 
-[ext_resource type="Script" uid="uid://c0776xyhyin8h" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
-[ext_resource type="Script" uid="uid://cdsgv6uw5huvs" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
-[ext_resource type="Script" uid="uid://chy5s74q5ag1v" path="res://tests/editor/scripts/validate_inner_base.gd" id="2_mgxhu"]
-[ext_resource type="Script" uid="uid://2ywss7l6kc6v" path="res://tests/editor/scripts/inner_resource.gd" id="3_mgxhu"]
-[ext_resource type="Script" uid="uid://dyvwgoa8khf0n" path="res://tests/editor/scripts/inner_resource_validate.gd" id="4_4dnud"]
-[ext_resource type="Script" uid="uid://reta8lv7tvd8" path="res://tests/editor/scripts/rlink_child.gd" id="6_baol1"]
-[ext_resource type="Script" uid="uid://cl578xaoh1it6" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
+[ext_resource type="Script" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
+[ext_resource type="Script" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
+[ext_resource type="Script" path="res://tests/editor/scripts/validate_inner_base.gd" id="2_mgxhu"]
+[ext_resource type="Script" path="res://tests/editor/scripts/inner_resource.gd" id="3_mgxhu"]
+[ext_resource type="Script" path="res://tests/editor/scripts/inner_resource_validate.gd" id="5_xpbgq"]
+[ext_resource type="Script" path="res://tests/editor/scripts/rlink_child.gd" id="6_baol1"]
+[ext_resource type="Script" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
 [ext_resource type="PackedScene" uid="uid://dyftaq5bcj40m" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
-[ext_resource type="Script" uid="uid://beknapxgoro47" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
+[ext_resource type="Script" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
 [ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="10_p40gm"]
-[ext_resource type="Script" uid="uid://cy812ttkiutkj" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
-[ext_resource type="Script" uid="uid://c7o2ghum5gwo5" path="res://tests/editor/scripts/rlink_await.gd" id="11_65005"]
+[ext_resource type="Script" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
+[ext_resource type="Script" path="res://tests/editor/scripts/rlink_await.gd" id="11_65005"]
 
-[sub_resource type="Resource" id="Resource_65005"]
+[sub_resource type="Resource" id="Resource_vsbwh"]
 script = ExtResource("3_mgxhu")
 export_bool_var = true
 export_int_var = 100
@@ -42,7 +42,7 @@ export_Dictionary_var = {
 Vector2i(20, 20): true
 }
 export_Array_var = [Color(1, 1, 1, 1), 200, "text"]
-export_PackedByteArray_var = PackedByteArray("FB4o")
+export_PackedByteArray_var = PackedByteArray(20, 30, 40)
 export_PackedInt32Array_var = PackedInt32Array(1234, 4321, 4544, 1131)
 export_PackedInt64Array_var = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
 export_PackedFloat32Array_var = PackedFloat32Array(1234, 4321, 4544, 1131)
@@ -51,9 +51,8 @@ export_PackedStringArray_var = PackedStringArray("hello world", "new value", "th
 export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-export_PackedVector4Array_var = PackedVector4Array(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100)
 
-[sub_resource type="Resource" id="Resource_p40gm"]
+[sub_resource type="Resource" id="Resource_ig6cm"]
 script = ExtResource("3_mgxhu")
 export_bool_var = true
 export_int_var = 0
@@ -88,10 +87,9 @@ export_PackedStringArray_var = PackedStringArray()
 export_PackedVector2Array_var = PackedVector2Array()
 export_PackedVector3Array_var = PackedVector3Array()
 export_PackedColorArray_var = PackedColorArray()
-export_PackedVector4Array_var = PackedVector4Array()
 
-[sub_resource type="Resource" id="Resource_d0cf0"]
-script = ExtResource("4_4dnud")
+[sub_resource type="Resource" id="Resource_kfn5e"]
+script = ExtResource("5_xpbgq")
 export_bool_var = true
 export_int_var = 100
 export_float_var = 100.0
@@ -119,7 +117,7 @@ export_Dictionary_var = {
 Vector2i(20, 20): true
 }
 export_Array_var = [Color(1, 1, 1, 1), 200, "text"]
-export_PackedByteArray_var = PackedByteArray("FB4o")
+export_PackedByteArray_var = PackedByteArray(20, 30, 40)
 export_PackedInt32Array_var = PackedInt32Array(1234, 4321, 4544, 1131)
 export_PackedInt64Array_var = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
 export_PackedFloat32Array_var = PackedFloat32Array(1234, 4321, 4544, 1131)
@@ -128,8 +126,7 @@ export_PackedStringArray_var = PackedStringArray("hello world", "new value", "th
 export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-export_PackedVector4Array_var = PackedVector4Array(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100)
-inner = SubResource("Resource_p40gm")
+inner = SubResource("Resource_ig6cm")
 
 [sub_resource type="Resource" id="Resource_b5c2a"]
 script = ExtResource("9_65005")
@@ -152,25 +149,25 @@ bound_args = []
 unbind_next = 0
 callable_method_name = &"remove_all_impl"
 metadata/default_values = {
-&"bound_args": [],
-&"callable_method_name": &"remove_all_impl",
-&"clip_text": true,
-&"disabled": false,
-&"icon": "",
-&"icon_alignment": 0,
-&"icon_alignment_vertical": 1,
-&"icon_texture": null,
-&"margin_bottom": 0,
-&"margin_left": 0,
-&"margin_right": 0,
-&"margin_top": 0,
-&"max_width": 200,
-&"min_height": 0,
-&"modulate": Color(1, 1, 1, 1),
-&"size_flags": -1,
-&"text": "Remove All",
-&"tooltip_text": "",
-&"unbind_next": 0
+"bound_args": [],
+"callable_method_name": &"remove_all_impl",
+"clip_text": true,
+"disabled": false,
+"icon": "",
+"icon_alignment": 0,
+"icon_alignment_vertical": 1,
+"icon_texture": null,
+"margin_bottom": 0,
+"margin_left": 0,
+"margin_right": 0,
+"margin_top": 0,
+"max_width": 200,
+"min_height": 0,
+"modulate": Color(1, 1, 1, 1),
+"size_flags": -1,
+"text": "Remove All",
+"tooltip_text": "",
+"unbind_next": 0
 }
 
 [sub_resource type="Resource" id="Resource_utf88"]
@@ -195,25 +192,25 @@ bound_args = []
 unbind_next = 0
 callable_method_name = &"toggle_connect_impl"
 metadata/default_values = {
-&"bound_args": [],
-&"callable_method_name": &"toggle_connect_impl",
-&"clip_text": true,
-&"disabled": false,
-&"icon": "",
-&"icon_alignment": 0,
-&"icon_alignment_vertical": 1,
-&"icon_texture": null,
-&"margin_bottom": 0,
-&"margin_left": 0,
-&"margin_right": 0,
-&"margin_top": 0,
-&"max_width": 110,
-&"min_height": 0,
-&"modulate": Color(0, 1, 1, 1),
-&"size_flags": -1,
-&"text": "Toggle Connect",
-&"tooltip_text": "",
-&"unbind_next": 0
+"bound_args": [],
+"callable_method_name": &"toggle_connect_impl",
+"clip_text": true,
+"disabled": false,
+"icon": "",
+"icon_alignment": 0,
+"icon_alignment_vertical": 1,
+"icon_texture": null,
+"margin_bottom": 0,
+"margin_left": 0,
+"margin_right": 0,
+"margin_top": 0,
+"max_width": 110,
+"min_height": 0,
+"modulate": Color(0, 1, 1, 1),
+"size_flags": -1,
+"text": "Toggle Connect",
+"tooltip_text": "",
+"unbind_next": 0
 }
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_65005"]
@@ -243,25 +240,25 @@ bound_args = []
 unbind_next = 0
 callable_method_name = &"set_int_impl"
 metadata/default_values = {
-&"bound_args": [],
-&"callable_method_name": &"set_int_impl",
-&"clip_text": true,
-&"disabled": false,
-&"icon": "",
-&"icon_alignment": 0,
-&"icon_alignment_vertical": 1,
-&"icon_texture": null,
-&"margin_bottom": 0,
-&"margin_left": 0,
-&"margin_right": 0,
-&"margin_top": 0,
-&"max_width": 200,
-&"min_height": 0,
-&"modulate": Color(1, 1, 1, 1),
-&"size_flags": -1,
-&"text": "Set Int",
-&"tooltip_text": "",
-&"unbind_next": 0
+"bound_args": [],
+"callable_method_name": &"set_int_impl",
+"clip_text": true,
+"disabled": false,
+"icon": "",
+"icon_alignment": 0,
+"icon_alignment_vertical": 1,
+"icon_texture": null,
+"margin_bottom": 0,
+"margin_left": 0,
+"margin_right": 0,
+"margin_top": 0,
+"max_width": 200,
+"min_height": 0,
+"modulate": Color(1, 1, 1, 1),
+"size_flags": -1,
+"text": "Set Int",
+"tooltip_text": "",
+"unbind_next": 0
 }
 
 [sub_resource type="Resource" id="Resource_hoejj"]
@@ -285,25 +282,25 @@ bound_args = []
 unbind_next = 0
 callable_method_name = &"set_int_checked_impl"
 metadata/default_values = {
-&"bound_args": [],
-&"callable_method_name": &"set_int_checked_impl",
-&"clip_text": true,
-&"disabled": false,
-&"icon": "",
-&"icon_alignment": 0,
-&"icon_alignment_vertical": 1,
-&"icon_texture": null,
-&"margin_bottom": 0,
-&"margin_left": 0,
-&"margin_right": 0,
-&"margin_top": 0,
-&"max_width": 200,
-&"min_height": 0,
-&"modulate": Color(1, 1, 1, 1),
-&"size_flags": -1,
-&"text": "Set Int Checked",
-&"tooltip_text": "",
-&"unbind_next": 0
+"bound_args": [],
+"callable_method_name": &"set_int_checked_impl",
+"clip_text": true,
+"disabled": false,
+"icon": "",
+"icon_alignment": 0,
+"icon_alignment_vertical": 1,
+"icon_texture": null,
+"margin_bottom": 0,
+"margin_left": 0,
+"margin_right": 0,
+"margin_top": 0,
+"max_width": 200,
+"min_height": 0,
+"modulate": Color(1, 1, 1, 1),
+"size_flags": -1,
+"text": "Set Int Checked",
+"tooltip_text": "",
+"unbind_next": 0
 }
 
 [node name="Node" type="Node"]
@@ -337,7 +334,7 @@ export_Dictionary_var = {
 Vector2i(20, 20): true
 }
 export_Array_var = [Color(1, 1, 1, 1), 200, "text"]
-export_PackedByteArray_var = PackedByteArray("FB4o")
+export_PackedByteArray_var = PackedByteArray(20, 30, 40)
 export_PackedInt32Array_var = PackedInt32Array(1234, 4321, 4544, 1131)
 export_PackedInt64Array_var = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
 export_PackedFloat32Array_var = PackedFloat32Array(1234, 4321, 4544, 1131)
@@ -346,16 +343,15 @@ export_PackedStringArray_var = PackedStringArray("hello world", "new value", "th
 export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-export_PackedVector4Array_var = PackedVector4Array(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100)
 
 [node name="ValidateInner" type="Node" parent="."]
 script = ExtResource("2_2l0tt")
-inner = SubResource("Resource_65005")
+inner = SubResource("Resource_vsbwh")
 metadata/rlink_skip = false
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
 script = ExtResource("2_mgxhu")
-inner = SubResource("Resource_d0cf0")
+inner = SubResource("Resource_kfn5e")
 metadata/rlink_skip = false
 
 [node name="RLinkChild" type="Node" parent="."]
@@ -385,18 +381,14 @@ toggle_connect = SubResource("Resource_utf88")
 metadata/rlink_skip = false
 
 [node name="SceneExport" parent="RLinkScene" instance=ExtResource("8_tvfff")]
-int_var = 100
-metadata/_edit_use_anchors_ = true
 
 [node name="SceneLoad" parent="RLinkScene" instance=ExtResource("8_tvfff")]
 offset_top = 50.0
 offset_bottom = 50.0
-int_var = 100
 
 [node name="SceneFile" parent="RLinkScene" instance=ExtResource("8_tvfff")]
 offset_top = 100.0
 offset_bottom = 100.0
-int_var = 100
 
 [node name="RLinkChanges" type="Node" parent="."]
 script = ExtResource("10_py022")
@@ -409,3 +401,7 @@ set_int = SubResource("Resource_asyf6")
 success = true
 set_int_checked = SubResource("Resource_hoejj")
 metadata/rlink_skip = false
+
+[connection signal="custom_pressed" from="RLinkScene/SceneExport" to="RLinkScene" method="scene_pressed" binds= ["hello scene_export"]]
+[connection signal="custom_pressed" from="RLinkScene/SceneLoad" to="RLinkScene" method="scene_pressed" binds= ["hello scene_load"]]
+[connection signal="custom_pressed" from="RLinkScene/SceneFile" to="RLinkScene" method="scene_pressed" binds= ["hello scene_file"]]

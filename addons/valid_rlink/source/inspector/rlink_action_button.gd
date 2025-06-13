@@ -109,7 +109,7 @@ func _on_busy_changed(_status: bool, _id: int) -> void:
     var disabled: bool
     if _rlink_button != null:
         disabled = _rlink_button.disabled
-    elif "Disabled" in _rlink_button_cs:
+    elif _rlink_button_cs != null and "Disabled" in _rlink_button_cs:
         disabled = _rlink_button_cs.Disabled
 
     _button.disabled = _data.busy or property_is_readonly or disabled

@@ -8,8 +8,10 @@ namespace ValidRLink;
 public partial class test_discard_cs_ErrorDiscard : Node
 {
     [Export] public int IntVar { get; set; }
+#if GODOT4_2_OR_GREATER
     [Export] public Callable CallableBoolVar { get => new(this, MethodName.CallableDiscardBool); set { } }
     [Export] public Callable CallableVar { get => new(this, MethodName.CallableDiscard); set { } }
+#endif
     [Export] public RLinkButtonCS ButtonBool { get; set; } = new(nameof(ButtonDiscardBool));
     [Export] public RLinkButtonCS Button { get; set; } = new(nameof(ButtonDiscard));
     [Export] public RLinkButtonCS ButtonSet { get; set; } = new(nameof(ButtonSetImpl));

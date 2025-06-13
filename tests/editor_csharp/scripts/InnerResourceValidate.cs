@@ -38,7 +38,6 @@ public partial class InnerResourceValidate : Resource
     [Export] public Vector2[] ExportPackedVector2Array { get; set; }
     [Export] public Vector3[] ExportPackedVector3Array { get; set; }
     [Export] public Color[] ExportPackedColorArray { get; set; }
-    [Export] public Vector4[] ExportPackedVector4Array { get; set; }
     [Export] public InnerResource Inner { get; set; }
 
     public void ValidateChanges()
@@ -54,7 +53,7 @@ public partial class InnerResourceValidate : Resource
 
     public static Godot.Collections.Array GetValues()
     {
-        return [
+        return new Godot.Collections.Array{
             true,
             100,
             100.0,
@@ -88,7 +87,6 @@ public partial class InnerResourceValidate : Resource
             new Vector2[] {new(100.0f, 100.0f), new(200.0f, 200.0f), new(300.0f, 300.0f)},
             new Vector3[] {new(300.0f, 300.0f, 300.0f), new(200.0f, 200.0f, 200.0f)},
             new Color[] {Colors.White, Colors.Wheat, Colors.FloralWhite, new(0.3f, 0.4f, 0.5f, 1)},
-            new Vector4[] {new(200.0f, 200.0f, 200.0f,200.0f), new(300.0f, 300.0f, 300.0f,300.0f), new(400.0f, 400.0f, 400.0f,100.0f)} ,
-        ];
+        };
     }
 }

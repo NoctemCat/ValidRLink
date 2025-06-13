@@ -337,13 +337,13 @@ public partial class RLinkButtonCS : Resource
     [RequiresUnreferencedCode("Getting method by its name")]
     public RLinkButtonCS()
     {
-        BoundArgs ??= [];
+        BoundArgs ??= new();
     }
 
     [RequiresUnreferencedCode("Getting method by its name")]
     public RLinkButtonCS(Callable callable, Godot.Collections.Dictionary? properties = null)
     {
-        BoundArgs = [];
+        BoundArgs = new();
         SetDefaults();
 
         StringName method = GodotHelper.Callable.GetMethod(callable);
@@ -368,7 +368,7 @@ public partial class RLinkButtonCS : Resource
     [RequiresUnreferencedCode("Getting method by its name")]
     public RLinkButtonCS(GodotObject target, StringName method, Godot.Collections.Dictionary? properties = null)
     {
-        BoundArgs = [];
+        BoundArgs = new();
         SetDefaults();
         SetObject(target, method);
         if (properties is not null)
@@ -383,7 +383,7 @@ public partial class RLinkButtonCS : Resource
     [RequiresUnreferencedCode("Getting method by its name")]
     public RLinkButtonCS(StringName method, Dictionary<StringName, Variant>? properties = null)
     {
-        BoundArgs = [];
+        BoundArgs = new();
         SetDefaults();
 
         CallableMethodName = method;
@@ -396,7 +396,7 @@ public partial class RLinkButtonCS : Resource
     [RequiresUnreferencedCode("Getting method by its name")]
     public RLinkButtonCS(Delegate method, Dictionary<StringName, Variant>? properties = null)
     {
-        BoundArgs = [];
+        BoundArgs = new();
         SetDefaults();
 
         if (typeof(GodotObject).IsAssignableFrom(method.Method.DeclaringType) is false)
@@ -431,12 +431,14 @@ public partial class RLinkButtonCS : Resource
         }
         return new Variant();
     }
-
+#if GODOT4_4_OR_GREATER
     public override void _ResetState()
+#endif
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "It exists in a newer version")]
+    public void _ResetState()
     {
         RestoreDefault();
     }
-
     protected override void Dispose(bool disposing)
     {
         CancelTask();
@@ -619,14 +621,14 @@ public partial class RLinkButtonCS : Resource
     /// <inheritdoc cref="RLinkCallv(Godot.Collections.Array)" />
     public Variant RLinkCall()
     {
-        return RLinkCallv([]);
+        return RLinkCallv(new());
     }
 
     /// <inheritdoc cref="RLinkCallv(Godot.Collections.Array)" />
     /// <param name="arg">Argument passed to method. Bound arguments will be added after</param>
     public Variant RLinkCall(Variant arg)
     {
-        return RLinkCallv([arg]);
+        return RLinkCallv(new Godot.Collections.Array { arg });
     }
 
     /// <summary>
@@ -665,7 +667,7 @@ public partial class RLinkButtonCS : Resource
             case MethodTypeEnum.CSharpDelegate:
             case MethodTypeEnum.CSharpAwaitable:
                 {
-                    List<object?> argsObj = [.. args.Select(arg => GodotHelper.ToObject(arg))];
+                    List<object?> argsObj = args.Select(arg => GodotHelper.ToObject(arg)).ToList();
                     object?[]? callCopy = GetArgsCopyList(argsObj);
 
                     try
@@ -692,7 +694,7 @@ public partial class RLinkButtonCS : Resource
     [RequiresUnreferencedCode("Needed for getting result from Task<>")]
     public Signal RLinkCallAwait()
     {
-        _ = RLinkCallvAwaitTask([]);
+        _ = RLinkCallvAwaitTask(new());
         return new Signal(this, SignalName.Completed);
     }
 
@@ -701,7 +703,7 @@ public partial class RLinkButtonCS : Resource
     [RequiresUnreferencedCode("Needed for getting result from Task<>")]
     public Signal RLinkCallAwait(Variant arg)
     {
-        _ = RLinkCallvAwaitTask([arg]);
+        _ = RLinkCallvAwaitTask(new Godot.Collections.Array { arg });
         return new Signal(this, SignalName.Completed);
     }
 
@@ -734,7 +736,7 @@ public partial class RLinkButtonCS : Resource
         if (UnbindNext > argCount)
         {
             GD.PushError($"ValidRLink: Invalid call to function '{GetMethodName()}'. Expected -{UnbindNext} arguments [RLinkButtonCS.RLinkCallvAwaitTask]");
-            CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
+            CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, new() });
             return;
         }
 
@@ -744,7 +746,7 @@ public partial class RLinkButtonCS : Resource
             case MethodTypeEnum.NotFound:
                 {
                     GD.PushWarning($"ValidRLink: No method found [RLinkButtonCS.RLinkCallvAwaitTask]");
-                    CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
+                    CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, new() });
                     return;
                 }
             case MethodTypeEnum.GodotMethod:
@@ -752,7 +754,7 @@ public partial class RLinkButtonCS : Resource
                     if (instance is null)
                     {
                         GD.PushError($"ValidRLink: InstanceFromId returned null, id: {_objectId} [RLinkButtonCS.RLinkCallvAwaitTask]");
-                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
+                        CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, new() });
                         return;
                     }
                     _ctx = new();
@@ -765,17 +767,17 @@ public partial class RLinkButtonCS : Resource
                     {
                         // With `WaitAsync` Token abandons SignalAwaiter on cancellation in the hopes that it will be enough
                         Variant result = await GodotHelper.CallvAsync(instance, CallableMethodName, callCopy).WaitAsync(_ctx.Token);
-                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, result]);
+                        CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, result });
                     }
                     catch (OperationCanceledException) // Don't know if this is possible, but wouldn't hurt
                     {
-                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
+                        CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, new() });
                         return;
                     }
                     catch (Exception e)
                     {
                         GD.PushError(e);
-                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
+                        CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, new() });
                         throw;
                     }
                     finally
@@ -791,7 +793,7 @@ public partial class RLinkButtonCS : Resource
                 }
             case MethodTypeEnum.CSharpDelegate:
                 {
-                    List<object?> argsObj = [.. args.Select(arg => GodotHelper.ToObject(arg))];
+                    List<object?> argsObj = args.Select(arg => GodotHelper.ToObject(arg)).ToList();
                     object?[]? callCopy = GetArgsCopyList(argsObj);
 
                     try
@@ -801,20 +803,21 @@ public partial class RLinkButtonCS : Resource
                         if (!GodotHelper.TryToVariant(result, out Variant variantConv))
                             variantConv = new Variant();
 
-                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, variantConv]);
+                        CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, variantConv });
                         return;
                     }
                     catch (Exception e)
                     {
                         GD.PushError(e);
-                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
+                        CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, new() });
                         throw;
                     }
                 }
             case MethodTypeEnum.CSharpAwaitable:
                 {
                     _ctx = new();
-                    List<object?> argsObj = [.. args.Select(arg => GodotHelper.ToObject(arg)), _ctx.Token];
+                    List<object?> argsObj = args.Select(arg => GodotHelper.ToObject(arg)).ToList();
+                    argsObj.Add(_ctx.Token);
                     object?[]? callCopy = GetArgsCopyList(argsObj);
 #if TOOLS
                     if (Engine.IsEditorHint())
@@ -846,18 +849,18 @@ public partial class RLinkButtonCS : Resource
                         if (!GodotHelper.TryToVariant(result, out Variant variantConv))
                             variantConv = new Variant();
 
-                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, variantConv]);
+                        CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, variantConv });
                         return;
                     }
                     catch (OperationCanceledException)
                     {
-                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
+                        CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, new() });
                         return; // Expected
                     }
                     catch (Exception e)
                     {
                         GD.PushError(e);
-                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
+                        CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, new() });
                         throw;
                     }
                     finally
@@ -872,7 +875,7 @@ public partial class RLinkButtonCS : Resource
                 }
             default:
                 GD.PushError($"ValidRLink: unknown MethodTypeEnum {(int)MethodType} [RLinkButtonCS.RLinkCallvAwaitTask");
-                CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
+                CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, new() });
                 return;
         }
     }
@@ -1110,7 +1113,7 @@ public partial class RLinkButtonCS : Resource
     /// </summary>
     public void SetCurrentAsDefault()
     {
-        Godot.Collections.Dictionary defaults = [];
+        Godot.Collections.Dictionary defaults = new();
         foreach (var propName in GodotHelper.GetObjectProperties(this))
         {
             StringName asStringName = propName;

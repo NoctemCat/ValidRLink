@@ -6,16 +6,17 @@ extends RLinkTestBaseCSharp
 func test_error_discard() -> void:
     var script := get_cs_script("ErrorDiscard.cs")
     var node: Node = autofree(script.new())
-    var data := rlink_data_cache.get_data(node, true)
+    var data := rlink_data_cache.get_data(node)
     assert_eq(node.IntVar, int())
     
     data.validate_changes("test discard")
     assert_eq(node.IntVar, int())
     
-    data.call_callable(&"CallableBoolVar")
-    assert_eq(node.IntVar, int())
-    data.call_callable(&"CallableVar")
-    assert_eq(node.IntVar, int())
+    if callables_supported():
+        data.call_callable(&"CallableBoolVar")
+        assert_eq(node.IntVar, int())
+        data.call_callable(&"CallableVar")
+        assert_eq(node.IntVar, int())
     
     data.call_rlink_button_cs(&"ButtonBool")
     await wait_frames(1)

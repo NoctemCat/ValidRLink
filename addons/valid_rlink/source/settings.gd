@@ -66,14 +66,12 @@ func _init() -> void:
     
     
 func set_default() -> void:
-    @warning_ignore("untyped_declaration")
     for prop_name in DEFAULT_VALUES:
         assert(prop_name in self)
         set(prop_name, DEFAULT_VALUES[prop_name])
     
     
 func set_project_settings() -> void:
-    @warning_ignore("untyped_declaration")
     for value_name in DEFAULT_VALUES:
         _add_setting(value_name, DEFAULT_VALUES[value_name])
     ProjectSettings.set_setting(MISC_VERSION_PATH, "0.1.0")
@@ -99,7 +97,6 @@ func _add_setting(prop_name: StringName, value: Variant) -> void:
 
 
 func update_plugin_settings() -> void:
-    @warning_ignore("untyped_declaration")
     for prop_name in DEFAULT_VALUES:
         var setting_name: String = BASE_SETTINGS_PATH + NAME_ALIASES.get(prop_name, prop_name)
         set(prop_name, ProjectSettings.get_setting_with_override(setting_name))
@@ -111,7 +108,7 @@ func update_plugin_settings() -> void:
 
 
 func _decode_version(_version: int) -> Array[int]:
-    var arr: PackedByteArray
+    var arr: PackedByteArray = []
     arr.resize(8)
     arr.encode_s64(0, plugin_version)
     return [arr.decode_s8(2), arr.decode_s8(1), arr.decode_s8(0)]

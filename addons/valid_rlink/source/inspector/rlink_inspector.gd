@@ -100,7 +100,7 @@ func _parse_property(object: Object, type: Variant.Type, name: String, hint_type
         #btn.pressed.connect(data.call_rlink_button.bind(name))
         btn.property_is_readonly = usage_flags & PROPERTY_USAGE_READ_ONLY != 0
         
-        _create_watcher(object, null)
+        #_create_watcher(object, null)
         _add_button(object, btn)
         return true
     if __ctx.settings.turn_callables_to_buttons and type == TYPE_CALLABLE:
@@ -110,7 +110,7 @@ func _parse_property(object: Object, type: Variant.Type, name: String, hint_type
         btn.property_is_readonly = usage_flags & PROPERTY_USAGE_READ_ONLY != 0
         #btn.pressed.connect(data.call_callable.bind(name))
         
-        _create_watcher(object, null)
+        #_create_watcher(object, null)
         _add_button(object, btn)
         return true
     return false
@@ -123,14 +123,13 @@ func _parse_end(object: Object) -> void:
     var props_arr: PackedStringArray = []
     for prop in object.get_property_list():
         if (
-            prop["usage"] & PROPERTY_USAGE_DEFAULT == 0
-            or prop["name"] in ["_import_path", "resource_path"]
-        ):
-            continue
+            prop["usage"] & PROPERTY_USAGE_DEFAULT != PROPERTY_USAGE_DEFAULT
+            or prop["name"] in ["_import_path", "resource_path", "script"]
+        ): continue
         props_arr.append(prop["name"])
     add_property_editor_for_multiple_properties("", props_arr, watcher)
 
-
+    
 func _create_watcher(object: Object, data: RLinkData = null) -> void:
     var watcher: PropertyWatcher = _watchers.get(object.get_instance_id())
     if watcher != null: return

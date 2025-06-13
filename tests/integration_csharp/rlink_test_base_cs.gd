@@ -34,6 +34,8 @@ func before_all() -> void:
     _ctx.csharp_helper_script = load(Context.RUNTIME_PATH + "RLinkCS.cs")
     _ctx.csharp_button_script = load(Context.RUNTIME_PATH + "RLinkButtonCS.cs")
     _ctx.csharp_settings_script = load(Context.RUNTIME_PATH + "RLinkSettingsCS.cs")
+    _ctx.csharp_db = load(Context.SOURCE_PATH + "RLinkDB.cs").new()
+    add_child(_ctx.csharp_db, true)
     
     _ctx.rlink_map = RLinkMap.new()
     _ctx.scan_cache = ScanCache.new(_ctx)
@@ -54,8 +56,8 @@ func after_each() -> void:
 
 #Runs once after all tests
 func after_all() -> void:
+    _ctx.csharp_db.free()
     _ctx.free()
-    queue_free()
     
 
 func clear() -> void:
@@ -71,3 +73,6 @@ func get_test_name() -> String:
 
 func get_cs_script(script_name: String) -> Script:
     return load("%s%s_%s" % [SCRIPTS_PATH, get_test_name(), script_name])
+
+func callables_supported() -> bool:
+    return Engine.get_version_info()["hex"] >= 0x040200

@@ -17,7 +17,6 @@ func test_max_depth(params: Array = use_parameters(max_depth_params)) -> void:
     var data := rlink_data_cache.get_data(node)
     
     var temp: Object = node
-    @warning_ignore("untyped_declaration")
     for i in params[1]:
         temp.Inner = Inner_script.new()
         temp = temp.Inner

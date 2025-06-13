@@ -1,16 +1,16 @@
-[gd_scene load_steps=19 format=4 uid="uid://bni70jg43615s"]
+[gd_scene load_steps=19 format=3 uid="uid://bni70jg43615s"]
 
-[ext_resource type="Script" uid="uid://cswdnxsjfowri" path="res://tests/editor_csharp/scripts/ValidateBasic.cs" id="1_tyrjc"]
-[ext_resource type="Script" uid="uid://bt0ngtfnsuu3" path="res://tests/editor_csharp/scripts/ValidateInner.cs" id="2_ykr5n"]
-[ext_resource type="Script" uid="uid://c2kddw4pjhaaa" path="res://tests/editor_csharp/scripts/InnerResource.cs" id="3_28d03"]
-[ext_resource type="Script" uid="uid://crply14ih1msy" path="res://tests/editor_csharp/scripts/ValidateInnerValidate.cs" id="4_28d03"]
-[ext_resource type="Script" uid="uid://b4iffjenx5sgh" path="res://tests/editor_csharp/scripts/InnerResourceValidate.cs" id="5_08x04"]
-[ext_resource type="Script" uid="uid://oiivtaepeo5h" path="res://tests/editor_csharp/scripts/RLinkChild.cs" id="6_a5adi"]
-[ext_resource type="Script" uid="uid://dfu5kjfjxc3m0" path="res://tests/editor_csharp/scripts/RLinkScene.cs" id="7_a5adi"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateBasic.cs" id="1_tyrjc"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInner.cs" id="2_ykr5n"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/InnerResource.cs" id="3_28d03"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInnerValidate.cs" id="4_28d03"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/InnerResourceValidate.cs" id="5_08x04"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkChild.cs" id="6_a5adi"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkScene.cs" id="7_a5adi"]
 [ext_resource type="PackedScene" uid="uid://cty6c0vlme0cm" path="res://tests/editor_csharp/simple_scene.tscn" id="8_5qioq"]
-[ext_resource type="Script" uid="uid://bvn01egv77461" path="res://addons/valid_rlink/runtime/RLinkButtonCS.cs" id="9_jcvuu"]
-[ext_resource type="Script" uid="uid://8rot1okdp2cx" path="res://tests/editor_csharp/scripts/RLinkChanges.cs" id="10_mqgjl"]
-[ext_resource type="Script" uid="uid://dj8jidkak0kcq" path="res://tests/editor_csharp/scripts/RLinkAsync.cs" id="11_wjsgh"]
+[ext_resource type="Script" path="res://addons/valid_rlink/runtime/RLinkButtonCS.cs" id="9_jcvuu"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkChanges.cs" id="10_mqgjl"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkAsync.cs" id="11_wjsgh"]
 
 [sub_resource type="Resource" id="Resource_wjsgh"]
 script = ExtResource("3_28d03")
@@ -41,7 +41,7 @@ ExportDictionary = {
 Vector2i(20, 20): true
 }
 ExportArray = [Color(1, 1, 1, 1), 200, "text"]
-ExportPackedByteArray = PackedByteArray("FB4o")
+ExportPackedByteArray = PackedByteArray(20, 30, 40)
 ExportPackedInt32Array = PackedInt32Array(1234, 4321, 4544, 1131)
 ExportPackedInt64Array = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
 ExportPackedFloat32Array = PackedFloat32Array(1234, 4321, 4544, 1131)
@@ -50,9 +50,8 @@ ExportPackedStringArray = PackedStringArray("hello world", "new value", "third")
 ExportPackedVector2Array = PackedVector2Array(100, 100, 200, 200, 300, 300)
 ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
 ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-ExportPackedVector4Array = PackedVector4Array(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100)
 
-[sub_resource type="Resource" id="Resource_75rvy"]
+[sub_resource type="Resource" id="Resource_uuurr"]
 script = ExtResource("3_28d03")
 ExportBool = true
 ExportInt = 0
@@ -74,10 +73,10 @@ ExportBasis = Basis(0, 0, 0, 0, 0, 0, 0, 0, 0)
 ExportTransform3D = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 ExportProjection = Projection(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 ExportColor = Color(0, 0, 0, 0)
-ExportStringName = null
-ExportNodePath = null
-ExportDictionary = null
-ExportArray = null
+ExportStringName = &""
+ExportNodePath = NodePath("")
+ExportDictionary = {}
+ExportArray = []
 ExportPackedByteArray = PackedByteArray()
 ExportPackedInt32Array = PackedInt32Array()
 ExportPackedInt64Array = PackedInt64Array()
@@ -87,9 +86,8 @@ ExportPackedStringArray = PackedStringArray()
 ExportPackedVector2Array = PackedVector2Array()
 ExportPackedVector3Array = PackedVector3Array()
 ExportPackedColorArray = PackedColorArray()
-ExportPackedVector4Array = PackedVector4Array()
 
-[sub_resource type="Resource" id="Resource_h84kr"]
+[sub_resource type="Resource" id="Resource_h3e78"]
 script = ExtResource("5_08x04")
 ExportBool = true
 ExportInt = 100
@@ -118,7 +116,7 @@ ExportDictionary = {
 Vector2i(20, 20): true
 }
 ExportArray = [Color(1, 1, 1, 1), 200, "text"]
-ExportPackedByteArray = PackedByteArray("FB4o")
+ExportPackedByteArray = PackedByteArray(20, 30, 40)
 ExportPackedInt32Array = PackedInt32Array(1234, 4321, 4544, 1131)
 ExportPackedInt64Array = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
 ExportPackedFloat32Array = PackedFloat32Array(1234, 4321, 4544, 1131)
@@ -127,8 +125,7 @@ ExportPackedStringArray = PackedStringArray("hello world", "new value", "third")
 ExportPackedVector2Array = PackedVector2Array(100, 100, 200, 200, 300, 300)
 ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
 ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-ExportPackedVector4Array = PackedVector4Array(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100)
-Inner = SubResource("Resource_75rvy")
+Inner = SubResource("Resource_uuurr")
 
 [sub_resource type="Resource" id="Resource_jcvuu"]
 script = ExtResource("9_jcvuu")
@@ -151,25 +148,25 @@ BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"RemoveAllImpl"
 metadata/default_values = {
-&"BoundArgs": [],
-&"CallableMethodName": &"RemoveAllImpl",
-&"ClipText": true,
-&"Disabled": false,
-&"Icon": "",
-&"IconAlignment": 0,
-&"IconAlignmentVertical": 1,
-&"IconTexture": null,
-&"MarginBottom": 0,
-&"MarginLeft": 0,
-&"MarginRight": 0,
-&"MarginTop": 0,
-&"MaxWidth": 200,
-&"MinHeight": 0,
-&"Modulate": Color(1, 1, 1, 1),
-&"SizeFlags": -1,
-&"Text": "Remove All",
-&"TooltipText": "",
-&"UnbindNext": 0
+"BoundArgs": [],
+"CallableMethodName": &"RemoveAllImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Remove All",
+"TooltipText": "",
+"UnbindNext": 0
 }
 
 [sub_resource type="Resource" id="Resource_mqgjl"]
@@ -193,32 +190,32 @@ BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleConnectImpl"
 metadata/default_values = {
-&"BoundArgs": [],
-&"CallableMethodName": &"ToggleConnectImpl",
-&"ClipText": true,
-&"Disabled": false,
-&"Icon": "",
-&"IconAlignment": 0,
-&"IconAlignmentVertical": 1,
-&"IconTexture": null,
-&"MarginBottom": 0,
-&"MarginLeft": 0,
-&"MarginRight": 8,
-&"MarginTop": 4,
-&"MaxWidth": 200,
-&"MinHeight": 0,
-&"Modulate": Color(1, 1, 0, 1),
-&"SizeFlags": 8,
-&"Text": "Toggle Connect",
-&"TooltipText": "",
-&"UnbindNext": 0
+"BoundArgs": [],
+"CallableMethodName": &"ToggleConnectImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 8,
+"MarginTop": 4,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 0, 1),
+"SizeFlags": 8,
+"Text": "Toggle Connect",
+"TooltipText": "",
+"UnbindNext": 0
 }
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_mqgjl"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1yi76"]
 seed = 1234
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wjsgh"]
-noise = SubResource("FastNoiseLite_mqgjl")
+noise = SubResource("FastNoiseLite_1yi76")
 
 [node name="Node" type="Node"]
 metadata/rlink_skip = false
@@ -252,7 +249,7 @@ ExportDictionary = {
 Vector2i(20, 20): true
 }
 ExportArray = [Color(1, 1, 1, 1), 200, "text"]
-ExportPackedByteArray = PackedByteArray("FB4o")
+ExportPackedByteArray = PackedByteArray(20, 30, 40)
 ExportPackedInt32Array = PackedInt32Array(1234, 4321, 4544, 1131)
 ExportPackedInt64Array = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
 ExportPackedFloat32Array = PackedFloat32Array(1234, 4321, 4544, 1131)
@@ -261,7 +258,6 @@ ExportPackedStringArray = PackedStringArray("hello world", "new value", "third")
 ExportPackedVector2Array = PackedVector2Array(100, 100, 200, 200, 300, 300)
 ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
 ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-ExportPackedVector4Array = PackedVector4Array(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100)
 
 [node name="ValidateInner" type="Node" parent="."]
 script = ExtResource("2_ykr5n")
@@ -269,7 +265,7 @@ Inner = SubResource("Resource_wjsgh")
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
 script = ExtResource("4_28d03")
-Inner = SubResource("Resource_h84kr")
+Inner = SubResource("Resource_h3e78")
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_a5adi")
@@ -312,7 +308,7 @@ NoiseTexture = SubResource("NoiseTexture2D_wjsgh")
 
 [node name="RLinkAsync" type="Node" parent="."]
 script = ExtResource("11_wjsgh")
-IntVar = 2
+IntVar = 4
 Success = true
 
 [connection signal="CustomPressed" from="RLinkScene/SceneExport" to="RLinkScene" method="ScenePressed" binds= ["hello SceneExport"]]

@@ -79,13 +79,14 @@ func _set_runtime_object(buffer: RLinkBuffer, runtime: Object, tool_obj: Object,
     
     var res := __scan_cache.get_search(runtime)
     if tool_obj is Node:
-        if tool_obj.name: runtime.name = tool_obj.name
+        if tool_obj.name and runtime.name != tool_obj.name:
+            buffer.object_add_changes(runtime, &"name", runtime.name, tool_obj.name)
         _copy_groups(buffer, runtime, tool_obj)
     
     for prop in tool_obj.get_property_list():
         if _skip_type(buffer, prop["type"], depth): continue
         if _skip_property(res.skip_properties, res.allowed_properties, prop): continue
-            
+
         var prop_name: StringName = prop["name"]
         var original_value: Variant = runtime.get(prop_name)
         if _skip_object(original_value): continue
@@ -116,12 +117,12 @@ func _set_runtime_object(buffer: RLinkBuffer, runtime: Object, tool_obj: Object,
 
 
 func _copy_groups(buffer: RLinkBuffer, runtime: Node, tool_obj: Node) -> void:
-    var to_erase: Array[StringName]
+    var to_erase: Array[StringName] = []
     for group in runtime.get_groups():
         if "_root_canvas" in group: continue
         to_erase.push_back(group)
         
-    var to_add: Array[StringName]
+    var to_add: Array[StringName] = []
     for group in tool_obj.get_groups():
         var idx := to_erase.find(group)
         if idx != -1:
@@ -143,7 +144,6 @@ func _get_runtime_array(buffer: RLinkBuffer, array: Array, depth: int) -> Array:
 func _get_runtime_dictionary(buffer: RLinkBuffer, dict: Dictionary, depth: int) -> Dictionary:
     var copy := dict.duplicate()
     copy.clear()
-    @warning_ignore("untyped_declaration")
     for key in dict:
         copy[_get_runtime_value(buffer, key, depth)] = _get_runtime_value(buffer, dict[key], depth)
     return copy

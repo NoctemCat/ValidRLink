@@ -21,6 +21,6 @@ public partial class test_settings_local_cs_SkipProps : Node
 
     static public RLinkSettingsCS GetRLinkSettings()
     {
-        return new RLinkSettingsCS().SetSkipProperties(["FloatVar", "Inner"]);
+        return new RLinkSettingsCS().SetSkipProperties(new Godot.Collections.Array<StringName> { "FloatVar", "Inner" });
     }
 }

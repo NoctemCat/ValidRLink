@@ -40,27 +40,21 @@ func test_validate_basic_inner() -> void:
     
 
 func _check_default(basic_export: Resource) -> void:
-    var script_basic: Script = get_cs_script("BasicExports.cs")
-
-    @warning_ignore("untyped_declaration")
-    for value in script_basic.GetValues():
+    for value in basic_export.GetValues():
         var type := typeof(value)
-        var normal_name: String = "Normal%s" % script_basic.GetTypeString(type)
-        var export_name: String = "Export%s" % script_basic.GetTypeString(type)
+        var normal_name: String = "Normal%s" % basic_export.GetTypeString(type)
+        var export_name: String = "Export%s" % basic_export.GetTypeString(type)
 
-        assert_eq(basic_export.get(normal_name), script_basic.GetDefault(type))
-        assert_eq(basic_export.get(export_name), script_basic.GetDefault(type))
+        assert_eq(basic_export.get(normal_name), basic_export.GetDefault(type))
+        assert_eq(basic_export.get(export_name), basic_export.GetDefault(type))
 
 
 func _check_export_set(basic_export: Resource) -> void:
-    var script_basic: Script = get_cs_script("BasicExports.cs")
-
-    @warning_ignore("untyped_declaration")
-    for value in script_basic.GetValues():
+    for value in basic_export.GetValues():
         var type := typeof(value)
-        var normal_name: String = "Normal%s" % script_basic.GetTypeString(type)
-        var export_name: String = "Export%s" % script_basic.GetTypeString(type)
+        var normal_name: String = "Normal%s" % basic_export.GetTypeString(type)
+        var export_name: String = "Export%s" % basic_export.GetTypeString(type)
         
-        assert_eq(basic_export.get(normal_name), script_basic.GetDefault(type))
-        assert_ne(basic_export.get(export_name), script_basic.GetDefault(type))
+        assert_eq(basic_export.get(normal_name), basic_export.GetDefault(type))
+        assert_ne(basic_export.get(export_name), basic_export.GetDefault(type))
         assert_eq(basic_export.get(export_name), value)

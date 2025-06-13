@@ -19,8 +19,7 @@ class ErrorDiscard extends Node:
         return false
         
         
-    @warning_ignore("untyped_declaration")
-    func callable_discard():
+    func callable_discard() -> Variant:
         int_var = 202
         return null
         
@@ -30,8 +29,7 @@ class ErrorDiscard extends Node:
         return false
         
         
-    @warning_ignore("untyped_declaration")
-    func btn_discard():
+    func btn_discard() -> Variant:
         int_var = 204
         return null
         
@@ -55,4 +53,3 @@ func test_error_discard() -> void:
     assert_eq(node.int_var, int())
     data.call_rlink_button(&"button_bool")
     assert_eq(node.int_var, int())
-    

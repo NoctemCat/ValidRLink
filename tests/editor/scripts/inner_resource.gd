@@ -1,3 +1,4 @@
+class_name EditorInnerResource
 extends Resource
 
 var set_values := [
@@ -12,18 +13,18 @@ var set_values := [
     Vector3(100.0, 100.0, 100.0),
     Vector3i(100, 100, 100),
     Transform2D(Vector2(100.0, 100.0), Vector2(200.0, 200.0), Vector2(300.0, 300.0)),
-    Vector4(100.0, 100.0, 100.0,100.0),
+    Vector4(100.0, 100.0, 100.0, 100.0),
     Vector4i(100, 100, 100, 100),
     Plane(100.0, 100.0, 100.0, 100.0),
     Quaternion.from_euler(Vector3(100.0, 100.0, 100.0)),
     AABB(Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0)),
     Basis(Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0), Vector3(100.0, 100.0, 100.0)),
     Transform3D(Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0), Vector3(100.0, 100.0, 100.0), Vector3(200.0, 200.0, 200.0)),
-    Projection(Vector4(200.0, 200.0, 200.0,200.0), Vector4(300.0, 300.0, 300.0,300.0), Vector4(400.0, 400.0, 400.0,100.0), Vector4(100.0, 100.0, 100.0,100.0)),
+    Projection(Vector4(200.0, 200.0, 200.0, 200.0), Vector4(300.0, 300.0, 300.0, 300.0), Vector4(400.0, 400.0, 400.0, 100.0), Vector4(100.0, 100.0, 100.0, 100.0)),
     Color(0.3, 0.4, 0.5, 1),
     StringName("new stringname"),
     NodePath("../ValidateInner"),
-    { "key1": 100, Vector2i(20, 20): true },
+    {"key1": 100, Vector2i(20, 20): true},
     [Color.WHITE, 200, "text"],
     PackedByteArray([20, 30, 40]),
     PackedInt32Array([1234, 4321, 4544, 1131]),
@@ -34,7 +35,6 @@ var set_values := [
     PackedVector2Array([Vector2(100.0, 100.0), Vector2(200.0, 200.0), Vector2(300.0, 300.0)]),
     PackedVector3Array([Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0)]),
     PackedColorArray([Color.WHITE, Color.FLORAL_WHITE, Color(0.3, 0.4, 0.5, 1)]),
-    PackedVector4Array([Vector4(200.0, 200.0, 200.0,200.0), Vector4(300.0, 300.0, 300.0,300.0), Vector4(400.0, 400.0, 400.0,100.0)]),
 ]
 @export var export_bool_var: bool
 @export var export_int_var: int
@@ -69,4 +69,3 @@ var set_values := [
 @export var export_PackedVector2Array_var: PackedVector2Array
 @export var export_PackedVector3Array_var: PackedVector3Array
 @export var export_PackedColorArray_var: PackedColorArray
-@export var export_PackedVector4Array_var: PackedVector4Array

@@ -8,8 +8,9 @@ func test_call_buttons() -> void:
     assert_eq(node.IntVar, int())
     await data.call_rlink_button_cs(&"Button")
     assert_eq(node.IntVar, 50)
-    await data.call_callable(&"CallableVar")
-    assert_eq(node.IntVar, 100)
+    if callables_supported():
+        await data.call_callable(&"CallableVar")
+        assert_eq(node.IntVar, 100)
 
 
 func test_await() -> void:

@@ -15,6 +15,7 @@ var _popup: PopupMenu
 var _refresh_timer: Timer
 var _refresh_callable: Callable
 var _csharp_unload_detector: Node
+var _csharp_db: Node
 var _clear_entered: bool
 
 
@@ -60,7 +61,7 @@ func _exit_tree() -> void:
     if _csharp_unload_detector != null:
         _csharp_unload_detector.call(&"FreeHandle")
         _csharp_unload_detector.queue_free()
-        _csharp_unload_detector = null
+        _csharp_db.queue_free()
     _popup.queue_free()
     _refresh_timer.queue_free()
     remove_inspector_plugin(_inspector)
@@ -92,9 +93,12 @@ func _handle_csharp_support() -> void:
     _ctx.csharp_helper_script = load(Context.RUNTIME_PATH + "RLinkCS.cs")
     _ctx.csharp_button_script = load(Context.RUNTIME_PATH + "RLinkButtonCS.cs")
     _ctx.csharp_settings_script = load(Context.RUNTIME_PATH + "RLinkSettingsCS.cs")
-    var detector_script: Script = load(Context.SOURCE_PATH + "RLinkUnloadDetector.cs")
-    _csharp_unload_detector = detector_script.new()
+    
+    _csharp_unload_detector = load(Context.SOURCE_PATH + "RLinkUnloadDetector.cs").new()
     add_child(_csharp_unload_detector, true)
+    _csharp_db = load(Context.SOURCE_PATH + "RLinkDB.cs").new()
+    add_child(_csharp_db, true)
+    _ctx.csharp_db = _csharp_db
 
 
 func _connect_signals() -> void:
@@ -173,47 +177,3 @@ func _copy_button_theme() -> void:
 
     theme.set_type_variation(&"IconButton", &"Button")
     
-
-    return
-    # gg, I spend so much time figuring this when I could've just set the popup's
-    # theme to the editor theme. I'm not deleting it, as it is still useful, but...
-    
-    @warning_ignore("unreachable_code", "untyped_declaration")
-    for data_type in [
-        Theme.DATA_TYPE_CONSTANT,
-        Theme.DATA_TYPE_FONT,
-        Theme.DATA_TYPE_FONT_SIZE,
-        Theme.DATA_TYPE_ICON,
-        Theme.DATA_TYPE_STYLEBOX,
-    ]:
-        for item_name in editor_theme.get_theme_item_list(data_type, "Popup"):
-            editor_theme.get_theme_item(data_type, item_name, "Popup")
-            var value: Variant = editor_theme.get_theme_item(data_type, item_name, "Popup")
-            if value is StyleBox: value = value.duplicate()
-            theme.set_theme_item(data_type, item_name, "PopupMenu", value)
-
-    @warning_ignore("untyped_declaration")
-    for data_type in [
-        Theme.DATA_TYPE_CONSTANT,
-        Theme.DATA_TYPE_FONT,
-        Theme.DATA_TYPE_FONT_SIZE,
-        Theme.DATA_TYPE_ICON,
-        Theme.DATA_TYPE_STYLEBOX,
-    ]:
-        for item_name in editor_theme.get_theme_item_list(data_type, "PopupMenu"):
-            editor_theme.get_theme_item(data_type, item_name, "PopupMenu")
-            var value: Variant = editor_theme.get_theme_item(data_type, item_name, "PopupMenu")
-            if value is StyleBox: value = value.duplicate()
-            theme.set_theme_item(data_type, item_name, "PopupMenu", value)
-    
-    @warning_ignore("untyped_declaration")
-    for item_name in ["font_separator_size", "font_size"]:
-        if not base.has_theme_font_size(item_name, "PopupMenu"): continue
-        var item := base.get_theme_font_size(item_name, "PopupMenu")
-        theme.set_font_size(item_name, "PopupMenu", item)
-    
-    @warning_ignore("untyped_declaration")
-    for item_name in ["h_separation", "icon_max_width", "indent", "item_end_padding", "item_start_padding", "outline_size", "separator_outline_size", "v_separation"]:
-        if not base.has_theme_constant(item_name, "PopupMenu"): continue
-        var item := base.get_theme_constant(item_name, "PopupMenu")
-        theme.set_constant(item_name, "PopupMenu", item)

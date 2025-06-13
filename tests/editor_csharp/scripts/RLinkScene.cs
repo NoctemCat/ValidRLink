@@ -52,16 +52,16 @@ public partial class RLinkScene : Node
         if (rlink.SignalIsConnected(customPressed, ScenePressed))
             rlink.SignalDisconnect(customPressed, ScenePressed);
         else
-            rlink.SignalConnect(customPressed, ScenePressed, ["hello SceneExport"]);
+            rlink.SignalConnect(customPressed, ScenePressed, new Godot.Collections.Array { "hello SceneExport" });
 
         customPressed = SceneLoad!.Get(SimpleScene.SignalName.CustomPressed).AsSignal();
         if (rlink.SignalIsConnected(customPressed, ScenePressed))
             rlink.SignalDisconnect(customPressed, ScenePressed);
         else
-            rlink.SignalConnect(customPressed, ScenePressed, ["hello SceneLoad"]);
+            rlink.SignalConnect(customPressed, ScenePressed, new Godot.Collections.Array { "hello SceneLoad" });
 
         customPressed = SceneFile!.Get(SimpleScene.SignalName.CustomPressed).AsSignal();
-        rlink.SignalToggle(customPressed, ScenePressed, ["hello SceneFile"]);
+        rlink.SignalToggle(customPressed, ScenePressed, new Godot.Collections.Array { "hello SceneFile" });
     }
 
     public void ScenePressed(string text)

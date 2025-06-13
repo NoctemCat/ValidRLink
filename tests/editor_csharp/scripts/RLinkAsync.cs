@@ -23,7 +23,7 @@ public partial class RLinkAsync : Node
     public async Task<bool> SetIntCheckedAsync(RLinkCS _, CancellationToken token)
     {
         IntVar += 1;
-        GD.Print("Before delay"); //
+        GD.Print("Before delay"); 
         await Task.Delay(4000, token); 
         IntVar += 1;
         GD.Print("After delay");

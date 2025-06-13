@@ -8,14 +8,14 @@ namespace ValidRLink;
 
 public partial class BasicNode : Node
 {
-    public static string GetTypeString(Variant.Type type)
+    public string GetTypeString(Variant.Type type)
     {
         return type.ToString();
     }
 
-    public static Godot.Collections.Array GetValues()
+    public Godot.Collections.Array GetValues()
     {
-        return [
+        return new Godot.Collections.Array{
             true,
             100,
             100.0,
@@ -49,12 +49,11 @@ public partial class BasicNode : Node
             new Vector2[] {new(100.0f, 100.0f), new(200.0f, 200.0f), new(300.0f, 300.0f)},
             new Vector3[] {new(300.0f, 300.0f, 300.0f), new(200.0f, 200.0f, 200.0f)},
             new Color[] {Colors.White, Colors.Wheat, Colors.FloralWhite, new(0.3f, 0.4f, 0.5f, 1)},
-            new Vector4[] {new(200.0f, 200.0f, 200.0f,200.0f), new(300.0f, 300.0f, 300.0f,300.0f), new(400.0f, 400.0f, 400.0f,100.0f)} ,
-        ];
+        };
     }
 
 
-    public static Variant GetDefault(Variant.Type type)
+    public Variant GetDefault(Variant.Type type)
     {
         return type switch
         {
@@ -96,7 +95,9 @@ public partial class BasicNode : Node
             Variant.Type.PackedVector2Array => Array.Empty<Vector2>(),
             Variant.Type.PackedVector3Array => Array.Empty<Vector3>(),
             Variant.Type.PackedColorArray => Array.Empty<Color>(),
+#if GODOT4_3_OR_GREATER
             Variant.Type.PackedVector4Array => Array.Empty<Vector4>(),
+#endif
             _ => NullVariant(),
         };
 

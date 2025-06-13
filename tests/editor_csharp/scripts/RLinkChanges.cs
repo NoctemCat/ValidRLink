@@ -38,13 +38,13 @@ public partial class RLinkChanges : Node
 
         if (((FastNoiseLite)NoiseTexture.Noise).Seed == 0)
         {
-            rlink.AddDoMethod(NoiseTexture.Noise, FastNoiseLite.MethodName.SetSeed, [1234]);
-            rlink.AddUndoMethod(NoiseTexture.Noise, FastNoiseLite.MethodName.SetSeed, [0]);
+            rlink.AddDoMethod(NoiseTexture.Noise, FastNoiseLite.MethodName.SetSeed, new Godot.Collections.Array { 1234 });
+            rlink.AddUndoMethod(NoiseTexture.Noise, FastNoiseLite.MethodName.SetSeed, new Godot.Collections.Array { 0 });
         }
         else
         {
-            rlink.AddDoMethod(NoiseTexture.Noise, FastNoiseLite.MethodName.SetSeed, [0]);
-            rlink.AddUndoMethod(NoiseTexture.Noise, FastNoiseLite.MethodName.SetSeed, [1234]);
+            rlink.AddDoMethod(NoiseTexture.Noise, FastNoiseLite.MethodName.SetSeed, new Godot.Collections.Array { 0 });
+            rlink.AddUndoMethod(NoiseTexture.Noise, FastNoiseLite.MethodName.SetSeed, new Godot.Collections.Array { 1234 });
         }
 
         return true;

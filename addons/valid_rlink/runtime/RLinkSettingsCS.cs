@@ -36,8 +36,8 @@ public partial class RLinkSettingsCS : Resource
 
     public RLinkSettingsCS()
     {
-        SkipProperties ??= [];
-        AllowedProperties ??= [];
+        SkipProperties ??= new();
+        AllowedProperties ??= new();
         ValidateName ??= new StringName();
     }
 
@@ -77,7 +77,7 @@ public partial class RLinkSettingsCS : Resource
     /// <inheritdoc cref="SkipProperties"/>
     public RLinkSettingsCS SetSkipProperties(System.Collections.Generic.IEnumerable<StringName> properties)
     {
-        SkipProperties = [.. properties];
+        SkipProperties = new(properties);
         return this;
     }
 
@@ -98,7 +98,7 @@ public partial class RLinkSettingsCS : Resource
     /// <inheritdoc cref="AllowedProperties"/>
     public RLinkSettingsCS SetAllowedProperties(System.Collections.Generic.IEnumerable<StringName> properties)
     {
-        AllowedProperties = [.. properties];
+        AllowedProperties = new(properties);
         return this;
     }
 

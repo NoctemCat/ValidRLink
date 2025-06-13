@@ -125,13 +125,11 @@ func _validate_visit_variant(name: String, v_visit: Dictionary, value: Variant, 
 
 
 func _validate_visit_array(name: String, v_visit: Dictionary, array: Array, depth: int) -> void:
-    @warning_ignore("untyped_declaration")
     for elem in array:
         _validate_visit_variant(name, v_visit, elem, depth)
 
 
 func _validate_visit_dictionary(name: String, v_visit: Dictionary, dictionary: Dictionary, depth: int) -> void:
-    @warning_ignore("untyped_declaration")
     for key in dictionary:
         _validate_visit_variant(name, v_visit, key, depth)
         _validate_visit_variant(name, v_visit, dictionary[key], depth)

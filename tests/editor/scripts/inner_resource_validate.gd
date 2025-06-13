@@ -13,18 +13,18 @@ var set_values := [
     Vector3(100.0, 100.0, 100.0),
     Vector3i(100, 100, 100),
     Transform2D(Vector2(100.0, 100.0), Vector2(200.0, 200.0), Vector2(300.0, 300.0)),
-    Vector4(100.0, 100.0, 100.0,100.0),
+    Vector4(100.0, 100.0, 100.0, 100.0),
     Vector4i(100, 100, 100, 100),
     Plane(100.0, 100.0, 100.0, 100.0),
     Quaternion.from_euler(Vector3(100.0, 100.0, 100.0)),
     AABB(Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0)),
     Basis(Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0), Vector3(100.0, 100.0, 100.0)),
     Transform3D(Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0), Vector3(100.0, 100.0, 100.0), Vector3(200.0, 200.0, 200.0)),
-    Projection(Vector4(200.0, 200.0, 200.0,200.0), Vector4(300.0, 300.0, 300.0,300.0), Vector4(400.0, 400.0, 400.0,100.0), Vector4(100.0, 100.0, 100.0,100.0)),
+    Projection(Vector4(200.0, 200.0, 200.0, 200.0), Vector4(300.0, 300.0, 300.0, 300.0), Vector4(400.0, 400.0, 400.0, 100.0), Vector4(100.0, 100.0, 100.0, 100.0)),
     Color(0.3, 0.4, 0.5, 1),
     StringName("new stringname"),
     NodePath("../ValidateInner"),
-    { "key1": 100, Vector2i(20, 20): true },
+    {"key1": 100, Vector2i(20, 20): true},
     [Color.WHITE, 200, "text"],
     PackedByteArray([20, 30, 40]),
     PackedInt32Array([1234, 4321, 4544, 1131]),
@@ -35,7 +35,6 @@ var set_values := [
     PackedVector2Array([Vector2(100.0, 100.0), Vector2(200.0, 200.0), Vector2(300.0, 300.0)]),
     PackedVector3Array([Vector3(300.0, 300.0, 300.0), Vector3(200.0, 200.0, 200.0)]),
     PackedColorArray([Color.WHITE, Color.FLORAL_WHITE, Color(0.3, 0.4, 0.5, 1)]),
-    PackedVector4Array([Vector4(200.0, 200.0, 200.0,200.0), Vector4(300.0, 300.0, 300.0,300.0), Vector4(400.0, 400.0, 400.0,100.0)]),
 ]
 
 @export var export_bool_var: bool
@@ -71,7 +70,6 @@ var set_values := [
 @export var export_PackedVector2Array_var: PackedVector2Array
 @export var export_PackedVector3Array_var: PackedVector3Array
 @export var export_PackedColorArray_var: PackedColorArray
-@export var export_PackedVector4Array_var: PackedVector4Array
 
 @export var inner: InnerResource
 
@@ -80,7 +78,51 @@ func validate_changes() -> void:
     if inner == null:
         inner = InnerResource.new()
     inner.export_bool_var = true
-    @warning_ignore("untyped_declaration")
     for value in set_values:
         var type := typeof(value)
-        set("export_%s_var" % type_string(type), value)
+        set("export_%s_var" % type_to_string(type), value)
+
+
+func type_to_string(type: Variant.Type) -> String:
+    var types: Array[String] = [
+        "Nil", # 0
+        "bool", # 1
+        "int", # 2
+        "float", # 3
+        "String", # 4
+        "Vector2", # 5
+        "Vector2i", # 6
+        "Rect2", # 7
+        "Rect2i", # 8
+        "Vector3", # 9
+        "Vector3i", # 10
+        "Transform2D", # 11
+        "Vector4", # 12
+        "Vector4i", # 13
+        "Plane", # 14
+        "Quaternion", # 15
+        "AABB", # 16
+        "Basis", # 17
+        "Transform3D", # 18
+        "Projection", # 19
+        "Color", # 20
+        "StringName", # 21
+        "NodePath", # 22
+        "RID", # 23
+        "Object", # 24
+        "Callable", # 25
+        "Signal", # 26
+        "Dictionary", # 27
+        "Array", # 28
+        "PackedByteArray", # 29
+        "PackedInt32Array", # 30
+        "PackedInt64Array", # 31
+        "PackedFloat32Array", # 32
+        "PackedFloat64Array", # 33
+        "PackedStringArray", # 34
+        "PackedVector2Array", # 35
+        "PackedVector3Array", # 36
+        "PackedColorArray", # 37
+        "PackedVector4Array", # 38
+    ]
+    return types[type]

@@ -10,6 +10,6 @@ public partial class SimpleScene : Control
 
     private void OnButtonPressed()
     {
-        EmitSignalCustomPressed();
+        EmitSignal(SignalName.CustomPressed);
     }
 }

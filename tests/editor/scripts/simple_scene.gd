@@ -3,9 +3,7 @@ extends Control
 
 signal custom_pressed
 
-@export var int_var: int:
-    set(value):
-        int_var = value
+@export var int_var: int
 
 
 func _on_button_pressed() -> void:

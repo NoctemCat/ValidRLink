@@ -20,6 +20,6 @@ public partial class test_settings_local_cs_AllowProps : Node
 
     static public RLinkSettingsCS GetRLinkSettings()
     {
-        return new RLinkSettingsCS().SetAllowedProperties(["Inner", "FloatVar"]);
+        return new RLinkSettingsCS().SetAllowedProperties(new Godot.Collections.Array<StringName> { "Inner", "FloatVar" });
     }
 }

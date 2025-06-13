@@ -24,14 +24,13 @@ var max_depth_params := [
     [1, 3, 0],
 ]
 
-func test_max_depth(params: Array = use_parameters(max_depth_params)) -> void:    
+func test_max_depth(params: Array = use_parameters(max_depth_params)) -> void:
     settings.max_depth = params[0]
     
     var node: MaxDepth = autofree(MaxDepth.new())
     var data := rlink_data_cache.get_data(node)
     
     var temp: Object = node
-    @warning_ignore("untyped_declaration")
     for i in params[1]:
         temp.inner = Inner.new()
         temp = temp.inner
@@ -104,7 +103,6 @@ func test_custom_settings_name() -> void:
     assert_eq(node.int_var, 100)
 
 
-
 class ExternalResource extends Node:
     @export var res: External
     @export var copy_int: int
@@ -137,6 +135,3 @@ func test_external_resource() -> void:
     assert_ne(res.int_var, original)
     assert_eq(res.int_var, 500)
     res.int_var = original
-    
-    
-    

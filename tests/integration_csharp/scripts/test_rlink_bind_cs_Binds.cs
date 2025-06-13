@@ -13,23 +13,23 @@ public partial class test_rlink_bind_cs_Binds : Node
     public static string Concat2(string a, string b) => a + b;
     public static string Concat1(string a) => a;
 
-    public static RLinkButtonCS Get5()
+    public RLinkButtonCS Get5()
     {
         return new(Concat5);
     }
-    public static RLinkButtonCS Get4()
+    public RLinkButtonCS Get4()
     {
         return new(Concat4);
     }
-    public static RLinkButtonCS Get3()
+    public RLinkButtonCS Get3()
     {
         return new(Concat3);
     }
-    public static RLinkButtonCS Get2()
+    public RLinkButtonCS Get2()
     {
         return new(Concat2);
     }
-    public static RLinkButtonCS Get1()
+    public RLinkButtonCS Get1()
     {
         return new(Concat1);
     }
