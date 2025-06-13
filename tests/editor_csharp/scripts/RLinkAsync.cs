@@ -24,7 +24,7 @@ public partial class RLinkAsync : Node
     {
         IntVar += 1;
         GD.Print("Before delay"); 
-        await Task.Delay(8000, token); 
+        await Task.Delay(4000, token); 
         IntVar += 1;
         GD.Print("After delay");
         return Success;

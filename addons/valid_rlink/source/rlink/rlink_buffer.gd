@@ -307,7 +307,7 @@ func push_validate_action(name: String, object: Object) -> void:
 
 # Pretty ugly workaround
 func _update_tree() -> void:
-    if __compat.engine_version >= 0x040200:
+    if __compat.engine_version >= 0x040300:
         return
     
     var root: Node = Engine.get_main_loop().edited_scene_root
