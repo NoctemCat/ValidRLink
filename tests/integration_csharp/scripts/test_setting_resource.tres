@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="test_setting_resource_cs" load_steps=2 format=3 uid="uid://dka5g5d0x2q1p"]
+
+[ext_resource type="Script" uid="uid://dadsrip16qx1h" path="res://tests/integration_csharp/scripts/test_setting_resource_cs.cs" id="1_25se5"]
+
+[resource]
+script = ExtResource("1_25se5")
+IntVar = 333
+FloatVar = 111.5
+metadata/_custom_type_script = "uid://dadsrip16qx1h"

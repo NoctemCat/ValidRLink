@@ -6,7 +6,7 @@ const Settings = Context.Settings
 const Compat = Context.Compatibility
 
 var object_id: int
-
+var object_name: String
 var skip: bool
 var max_depth: int
 var validate_name: StringName
@@ -21,22 +21,31 @@ var _methods_arg_infos: Dictionary
 
 
 func _init(ctx: Context, object: Object) -> void:
-    skip = object.get_meta(&"rlink_skip", false)
+    skip = false
     max_depth = ctx.settings.max_depth
     validate_name = &""
     validate_arg_count = -1
     validate_check_return = false
     skip_properties = [&"_import_path", &"resource_path"]
-    #__settings = ctx.settings
-    #var compat := ctx.compat
     object_id = object.get_instance_id()
     
+    var script: Script = object.get_script()
+    
+    if object is Node and object.name:
+        object_name = object.name
+    elif object is Resource and object.resource_name:
+        object_name = object.resource_name
+    else:
+        if script != null:
+            object_name = script.resource_path.get_file()
+        else:
+            object_name = object.to_string()
+            
     if skip: return
     if object is Script:
         skip = true
         return
 
-    var script: Script = object.get_script()
     if script != null and not script.is_tool():
         handle_script(ctx, object, script)
     else:
@@ -50,17 +59,18 @@ func handle_native(ctx: Context, object: Object) -> void:
 func handle_script(ctx: Context, object: Object, script_or_native: Object) -> void:
     var rlink_settings: RLinkSettings = null
     ## Uncomment for autocomplete, then comment it again to make it optional
-    #var rlink_settings_cs: RLinkSettingsCS = null
+    #var rlink_settings_cs: RLinkSettingsCS = null 
     var rlink_settings_cs: Resource = null
+    var methods := _parse_methods(ctx, object)
     for name in ctx.settings.get_rlink_settings_names:
         # TODO: Check in 4.1
-        if name in script_or_native:
+        if methods.has(name):
             var settings: Variant = script_or_native.call(name)
             if settings is Dictionary:
                 rlink_settings = RLinkSettings.new(settings)
             elif settings is RLinkSettings:
                 rlink_settings = settings
-            elif ctx.csharp_enabled and settings is Object and settings.get_sctipt() == ctx.csharp_settings_script:
+            elif ctx.csharp_enabled and settings is Object and settings.get_script() == ctx.csharp_settings_script:
                 rlink_settings_cs = settings
             else:
                 push_error("ValidRLink: get settings function must return 'RLinkSettings' or dictionary [scan_result.handle_script]")
@@ -165,3 +175,20 @@ func _parse_method_info(method: StringName) -> MethodInfo:
 class MethodInfo:
     var arg_count: int
     var check_return: bool
+
+func _parse_methods(ctx: Context, object: Object) -> Dictionary:
+    var dict := {}
+    var script: Script = object.get_script() as Script
+    
+    var methods: Array[Dictionary]
+    if script != null: methods = script.get_script_method_list()
+    else: methods = object.get_method_list()
+    
+    for method in methods:
+        var name: String = method["name"]
+        var return_info: Dictionary = method["return"]
+        const FLAG_STATIC = 32
+        if ctx.compat.engine_version >= 0x040200 and (method["flags"] & FLAG_STATIC) != FLAG_STATIC:
+            continue
+        dict[name] = return_info
+    return dict

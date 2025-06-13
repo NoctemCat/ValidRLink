@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://8rot1okdp2cx" path="res://tests/editor_csharp/scripts/RLinkChanges.cs" id="10_mqgjl"]
 [ext_resource type="Script" uid="uid://dj8jidkak0kcq" path="res://tests/editor_csharp/scripts/RLinkAsync.cs" id="11_wjsgh"]
 
-[sub_resource type="Resource" id="Resource_ykr5n"]
+[sub_resource type="Resource" id="Resource_wjsgh"]
 script = ExtResource("3_28d03")
 ExportBool = true
 ExportInt = 100
@@ -52,7 +52,7 @@ ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
 ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 ExportPackedVector4Array = PackedVector4Array(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100)
 
-[sub_resource type="Resource" id="Resource_pcce3"]
+[sub_resource type="Resource" id="Resource_75rvy"]
 script = ExtResource("3_28d03")
 ExportBool = true
 ExportInt = 0
@@ -68,16 +68,16 @@ ExportTransform2D = Transform2D(0, 0, 0, 0, 0, 0)
 ExportVector4 = Vector4(0, 0, 0, 0)
 ExportVector4I = Vector4i(0, 0, 0, 0)
 ExportPlane = Plane(0, 0, 0, 0)
-ExportQuaternion = Quaternion(0, 0, 0, 1)
+ExportQuaternion = Quaternion(0, 0, 0, 0)
 ExportAabb = AABB(0, 0, 0, 0, 0, 0)
 ExportBasis = Basis(0, 0, 0, 0, 0, 0, 0, 0, 0)
 ExportTransform3D = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 ExportProjection = Projection(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 ExportColor = Color(0, 0, 0, 0)
-ExportStringName = &""
-ExportNodePath = NodePath("")
-ExportDictionary = {}
-ExportArray = []
+ExportStringName = null
+ExportNodePath = null
+ExportDictionary = null
+ExportArray = null
 ExportPackedByteArray = PackedByteArray()
 ExportPackedInt32Array = PackedInt32Array()
 ExportPackedInt64Array = PackedInt64Array()
@@ -89,7 +89,7 @@ ExportPackedVector3Array = PackedVector3Array()
 ExportPackedColorArray = PackedColorArray()
 ExportPackedVector4Array = PackedVector4Array()
 
-[sub_resource type="Resource" id="Resource_a5adi"]
+[sub_resource type="Resource" id="Resource_h84kr"]
 script = ExtResource("5_08x04")
 ExportBool = true
 ExportInt = 100
@@ -128,7 +128,7 @@ ExportPackedVector2Array = PackedVector2Array(100, 100, 200, 200, 300, 300)
 ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
 ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 ExportPackedVector4Array = PackedVector4Array(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100)
-Inner = SubResource("Resource_pcce3")
+Inner = SubResource("Resource_75rvy")
 
 [sub_resource type="Resource" id="Resource_jcvuu"]
 script = ExtResource("9_jcvuu")
@@ -203,12 +203,12 @@ metadata/default_values = {
 &"IconTexture": null,
 &"MarginBottom": 0,
 &"MarginLeft": 0,
-&"MarginRight": 0,
-&"MarginTop": 0,
+&"MarginRight": 8,
+&"MarginTop": 4,
 &"MaxWidth": 200,
 &"MinHeight": 0,
-&"Modulate": Color(1, 1, 1, 1),
-&"SizeFlags": -1,
+&"Modulate": Color(1, 1, 0, 1),
+&"SizeFlags": 8,
 &"Text": "Toggle Connect",
 &"TooltipText": "",
 &"UnbindNext": 0
@@ -265,11 +265,11 @@ ExportPackedVector4Array = PackedVector4Array(200, 200, 200, 200, 300, 300, 300,
 
 [node name="ValidateInner" type="Node" parent="."]
 script = ExtResource("2_ykr5n")
-Inner = SubResource("Resource_ykr5n")
+Inner = SubResource("Resource_wjsgh")
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
 script = ExtResource("4_28d03")
-Inner = SubResource("Resource_a5adi")
+Inner = SubResource("Resource_h84kr")
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_a5adi")
@@ -277,29 +277,15 @@ metadata/rlink_skip = false
 
 [node name="DirectChild" type="Node" parent="RLinkChild"]
 
-[node name="ChildPath" type="Node" parent="RLinkChild/DirectChild"]
+[node name="HasFrom" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="GetParent" type="Node" parent="RLinkChild/DirectChild"]
 
 [node name="ChildFrom" type="Node" parent="RLinkChild/DirectChild"]
 
-[node name="HasFrom" type="Node" parent="RLinkChild/DirectChild"]
+[node name="ChildPath" type="Node" parent="RLinkChild/DirectChild"]
 
 [node name="DirectChildPath" type="Node" parent="RLinkChild"]
-
-[node name="RLinkChild2" type="Node" parent="."]
-script = ExtResource("6_a5adi")
-metadata/rlink_skip = false
-
-[node name="DirectChild" type="Node" parent="RLinkChild2"]
-
-[node name="ChildPath" type="Node" parent="RLinkChild2/DirectChild"]
-
-[node name="ChildFrom" type="Node" parent="RLinkChild2/DirectChild"]
-
-[node name="HasFrom" type="Node" parent="RLinkChild2/DirectChild"]
-
-[node name="GetParent" type="Node" parent="RLinkChild2/DirectChild"]
-
-[node name="DirectChildPath" type="Node" parent="RLinkChild2"]
 
 [node name="RLinkScene" type="Node" parent="." node_paths=PackedStringArray("SceneExport", "SceneLoad", "SceneFile")]
 script = ExtResource("7_a5adi")
@@ -326,7 +312,7 @@ NoiseTexture = SubResource("NoiseTexture2D_wjsgh")
 
 [node name="RLinkAsync" type="Node" parent="."]
 script = ExtResource("11_wjsgh")
-IntVar = 6
+IntVar = 2
 Success = true
 
 [connection signal="CustomPressed" from="RLinkScene/SceneExport" to="RLinkScene" method="ScenePressed" binds= ["hello SceneExport"]]

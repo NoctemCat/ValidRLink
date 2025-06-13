@@ -8,11 +8,12 @@ const Compat = Context.Compatibility
 const ScanResult = preload("./scan_result.gd")
 const ScanCache = preload("./scan_cache.gd")
 const RLinkMap = preload("./rlink_map.gd")
-
+const RLinkBuffer = preload("./rlink_buffer.gd")
+const ToTool = preload(Context.SOURCE_PATH + "converters/converter_to_tool.gd")
+const ToRuntime = preload(Context.SOURCE_PATH + "converters/converter_to_runtime.gd")
 const RLinkScript = preload(Context.RUNTIME_PATH + "rlink.gd")
 
 signal busy_changed(status: bool, id: int)
-signal converted_object(id: int)
 
 var __context: Context
 var __settings: Settings
@@ -20,19 +21,25 @@ var __compat: Compat
 var __undo_redo: EditorUndoRedoManager
 var __scan_cache: ScanCache
 var __map: RLinkMap
-var __conv_to_tool: RefCounted
-var __conv_to_runtime: RefCounted
+var __conv_to_tool: ToTool
+var __conv_to_runtime: ToRuntime
 
 var _object_id: int
 var runtime: Object:
     get: return instance_from_id(_object_id)
 var tool_obj: Object ## Keeps RefCounted alive
-var _result: ScanResult
-var _helper: RefCounted
+var _buffer: RLinkBuffer
+
+var _helper: RLinkScript
+var _helper_cs: RefCounted
+
 var _validate_queued: String
+var _validate_exceptions: Dictionary
+var _validate_max_depth: int
 var busy: bool:
     get: return busy
     set(value):
+        if !value: _buffer.discard_changes()
         busy = value
         if !value and _validate_queued != "":
             var copy := _validate_queued
@@ -40,105 +47,146 @@ var busy: bool:
             validate_changes(copy)
         busy_changed.emit(busy, get_instance_id())
 
-#region: Converter State
-var max_depth: int
-var visit: Dictionary
-var script_error := false
-var converter_converted_object := false
-var has_changes := false
-var track_tool_instances := true
-#endregion
 
-#region: Buffer State
-var _changes: Array
-var _remove_metas: Array
-var _add_groups: Dictionary
-var _erase_groups: Dictionary
-var _add_children: Dictionary
-var _remove_children: Dictionary
-var _connect_signals: Array
-var _disconnect_signals: Array
-var _do_methods: Array
-var _undo_methods: Array
-#endregion
-
-
-func _init(context: Context, object: Object, in_result: ScanResult) -> void:
-    __context = context
-    __settings = context.settings
-    __compat = context.compat
-    __undo_redo = context.undo_redo
-    __scan_cache = context.scan_cache
-    __map = context.rlink_map
-    __conv_to_tool = context.converter_to_tool
-    __conv_to_runtime = context.converter_to_runtime
+func _init(ctx: Context, object: Object, in_result: ScanResult) -> void:
+    __context = ctx
+    __settings = ctx.settings
+    __compat = ctx.compat
+    __undo_redo = ctx.undo_redo
+    __scan_cache = ctx.scan_cache
+    __map = ctx.rlink_map
+    __conv_to_tool = ctx.converter_to_tool
+    __conv_to_runtime = ctx.converter_to_runtime
     
     _object_id = object.get_instance_id()
-    _result = in_result
-    max_depth = _result.max_depth
+    _validate_max_depth = in_result.max_depth
     
-    tool_obj = __conv_to_tool._convert_value(self, runtime)
-    if (
-        object.get_script() != null
-        and object.get_script().get_class() == "CSharpScript"
-    ):
-        _helper = context.csharp_helper_script.new(self)
-    else:
-        _helper = RLinkScript.new(self)
+    _buffer = RLinkBuffer.new(ctx)
+    tool_obj = __conv_to_tool._convert_value(_buffer, runtime)
+    
+    _helper = RLinkScript.new(self)
+    if ctx.csharp_enabled:
+        _helper_cs = ctx.csharp_helper_script.new(self)
+        
     __context.cancel_tasks.connect(_on_cancel_tasks)
 
 
 func _on_cancel_tasks() -> void:
-    discard_changes()
+    _buffer.discard_changes()
     busy = false
 
 
-func reflect_to_tool(object: Object = null, depth: int = 0) -> Object:
-    if object == null: object = runtime
-    return __conv_to_tool._convert_value(self, object, depth)
+func add_validate_exception(tool_id: int) -> void:
+    _validate_exceptions[tool_id] = true
     
     
-func reflect_to_runtime(object: Object = null, depth: int = 0) -> Object:
-    if object == null: object = tool_obj
-    return __conv_to_runtime._convert_value(self, object, depth)
+func remove_validate_exception(tool_id: int) -> void:
+    _validate_exceptions.erase(tool_id)
+
+
+func check_valid() -> bool:
+    if not is_instance_valid(tool_obj):
+        busy = false
+        __context.clear_and_refresh()
+        return true
+    return false
+
+
+func convert_to_tool(object: Object, depth: int = 0) -> Object:
+    return __conv_to_tool._convert_value(_buffer, object, depth)
+    
+    
+func convert_to_runtime(object: Object, depth: int = 0) -> Object:
+    return __conv_to_runtime._convert_value(_buffer, object, depth)
  
 
 func validate_changes(object_name: String) -> void:
+    if check_valid(): return
+    if object_name.is_empty():
+        object_name = "[EmptyName]"
     if busy:
-        _validate_queued = object_name if object_name else "[EmptyName]"
+        _validate_queued = object_name
         return
-    if not _result.has_validate: return
-    
     busy = true
-    if reflect_to_tool() == null: return
-    
-    if _result.validate_check_return:
-        var call_res: Variant = _call_validate(tool_obj)
-        if discard_if_same(is_same(call_res, true), false): return
-    else:
-        _call_validate(tool_obj)
-        
-    converted_object.emit(_object_id)
-    if discard_if_same(reflect_to_runtime(), null): return
-    if has_changes and __settings.validate_use_history:
-        create_action("Validate '%s'" % object_name, UndoRedo.MERGE_ALL, runtime)
-        flush_changes()
-        commit_action()
-    elif has_changes:
-        flush_changes(false)
-    else:
-        discard_changes()
+    _validate_visit_object(object_name, {}, tool_obj, 0)
     busy = false
 
 
-func _call_validate(call_obj: Object) -> Variant:
-    if _result.validate_arg_count == 0: return call_obj.call(_result.validate_name)
-    elif _result.validate_arg_count == 1: return call_obj.call(_result.validate_name, _helper)
+func _validate_visit_variant(name: String, v_visit: Dictionary, value: Variant, depth: int) -> void:
+    if value == null: return
+
+    var type := typeof(value)
+    if type == TYPE_OBJECT:
+        _validate_visit_object(name, v_visit, value, depth)
+    elif type == TYPE_ARRAY:
+        _validate_visit_array(name, v_visit, value, depth)
+    elif type == TYPE_DICTIONARY:
+        _validate_visit_dictionary(name, v_visit, value, depth)
+
+
+func _validate_visit_array(name: String, v_visit: Dictionary, array: Array, depth: int) -> void:
+    @warning_ignore("untyped_declaration")
+    for elem in array:
+        _validate_visit_variant(name, v_visit, elem, depth)
+
+
+func _validate_visit_dictionary(name: String, v_visit: Dictionary, dictionary: Dictionary, depth: int) -> void:
+    @warning_ignore("untyped_declaration")
+    for key in dictionary:
+        _validate_visit_variant(name, v_visit, key, depth)
+        _validate_visit_variant(name, v_visit, dictionary[key], depth)
+
+
+func _validate_visit_object(name: String, v_visit: Dictionary, object: Object, depth: int) -> void:
+    var object_id := object.get_instance_id()
+    if _validate_exceptions.has(object_id): return
+    if v_visit.has(object_id): return
+    v_visit[object_id] = true
+
+    var res := __scan_cache.get_search(object)
+
+    for prop in object.get_property_list():
+        if depth + 1 >= _validate_max_depth: continue
+        if not __conv_to_tool.can_contain_object(prop["type"]): continue
+        if __conv_to_tool._skip_property(res.skip_properties, res.allowed_properties, prop): continue
+        
+        var prop_name: StringName = prop["name"]
+        if prop_name == &"script": continue
+        var value: Variant = object.get(prop_name)
+        if __conv_to_tool._skip_object(value): continue
+        
+        _validate_visit_variant(name, v_visit, value, depth + 1)
+
+    if res.has_validate:
+        validate_object(name, object, res)
+
+
+func validate_object(name: String, object: Object, result: ScanResult) -> void:
+    var obj_runtime := __map.runtime_from_obj(object)
+    if obj_runtime == null: return
+    if convert_to_tool(obj_runtime) == null: return
+    
+    var call_res: Variant = _call_validate(object, result)
+    if result.validate_check_return and not is_same(call_res, true):
+        _buffer.discard_changes()
+        return
+        
+    if convert_to_runtime(object) == null:
+        _buffer.discard_changes()
+        return
+    
+    _buffer.push_validate_action("Validate '%s'" % name, obj_runtime)
+
+
+func _call_validate(object: Object, result: ScanResult) -> Variant:
+    if result.validate_arg_count == 0: return object.call(result.validate_name)
+    elif result.validate_arg_count == 1: return object.call(result.validate_name, _get_helper(object))
     else: push_error("ValidRLink: Validate function takes maximum 1 argument [rlink_data._call_validate]")
     return null
-    
-    
+
+
 func call_callable(prop_name: StringName) -> void:
+    if check_valid(): return
     if busy: return
     var to_call := tool_obj.get(prop_name) as Callable
     if to_call == null:
@@ -148,7 +196,8 @@ func call_callable(prop_name: StringName) -> void:
     var info: ScanResult.MethodInfo = null
     var arg_count: int
     if to_call.is_standard():
-        info = _result.get_method_info(to_call.get_method())
+        var res := __scan_cache.get_search(runtime)
+        info = res.get_method_info(to_call.get_method())
         arg_count = info.arg_count
     elif __compat.callable_arg_count_available():
         arg_count = __compat.get_arg_count(to_call)
@@ -159,37 +208,32 @@ func call_callable(prop_name: StringName) -> void:
         return
         
     busy = true
-    if reflect_to_tool() == null: return
-    if info != null and info.check_return:
-        var call_res: Variant = await _call_callable_impl(arg_count, to_call)
-        #var call_res: Variant = _call_callable_impl(arg_count, to_call)
-        if discard_if_same(is_same(call_res, true), false): return
-    else:
-        await _call_callable_impl(arg_count, to_call)
-        #_call_callable_impl(arg_count, to_call)
+    if convert_to_tool(runtime) == null:
+        busy = false
+        return
+    
+    var call_res: Variant = await _call_callable_impl(arg_count, to_call)
+    if info != null and info.check_return and not is_same(call_res, true):
+        busy = false
+        return
         
-    converted_object.emit(_object_id)
-    if discard_if_same(reflect_to_runtime(), null): return
+    if convert_to_runtime(tool_obj) == null:
+        busy = false
+        return
     
     var action_name := prop_name.capitalize()
-    create_action(__settings.call_action_template % action_name)
-    if has_changes:
-        flush_changes()
-    else:
-        # unlikely to store changes, but if for some reason 
-        # any are present discard them
-        discard_changes()
-    commit_action()
+    _buffer.push_action(__settings.call_action_template % action_name, runtime)
     busy = false
 
 
 func _call_callable_impl(arg_count: int, to_call: Callable) -> Variant:
     if arg_count == 0: return await to_call.call()
-    elif arg_count == 1: return await to_call.call(_helper)
+    elif arg_count == 1: return await to_call.call(_get_helper(runtime))
     return null
 
 
 func call_rlink_button(prop_name: StringName) -> void:
+    if check_valid(): return
     if busy: return
     var to_call := tool_obj.get(prop_name) as RLinkButton
     if to_call == null:
@@ -197,49 +241,38 @@ func call_rlink_button(prop_name: StringName) -> void:
         return
     to_call.set_object(tool_obj)
         
-    # var info := _result.get_method_info(to_call.callable_method_name)
     var final_count := to_call.get_arg_count()
     if final_count < 0 or final_count > 1:
         push_error("ValidRLink: '%s' takes maximum 1 argument [rlink_data.call_rlink_button]" % to_call.callable_method_name)
         return
     
     busy = true
-    if reflect_to_tool() == null: return
-    if to_call.needs_check:
-        var call_res: Variant = await _call_rlink_button_impl(final_count, to_call)
-        if discard_if_same(is_same(call_res, true), false): return
-    else:
-        await _call_rlink_button_impl(final_count, to_call)
-    
-    converted_object.emit(_object_id)
-    if discard_if_same(reflect_to_runtime(), null): return
+    if convert_to_tool(runtime) == null:
+        busy = false
+        return
+        
+    var call_res: Variant = await _call_rlink_button_impl(final_count, to_call)
+    if to_call.needs_check and not is_same(call_res, true):
+        busy = false
+        return
+
+    if convert_to_runtime(tool_obj) == null:
+        busy = false
+        return
     
     var action_name := to_call.text if to_call.text else prop_name.capitalize()
-    create_action(__settings.call_action_template % action_name)
-    if has_changes:
-        flush_changes()
-    else:
-        # unlikely to store changes, but if for some reason 
-        # any are present discard them
-        discard_changes()
-    commit_action()
+    _buffer.push_action(__settings.call_action_template % action_name, runtime)
     busy = false
 
 
 func _call_rlink_button_impl(arg_count: int, to_call: RLinkButton) -> Variant:
     if arg_count == 0: return await to_call.rlink_callv_await([])
-    elif arg_count == 1: return await to_call.rlink_callv_await([_helper])
+    elif arg_count == 1: return await to_call.rlink_callv_await([_get_helper(runtime)])
     return null
-
-func print_res(res: Variant) -> void:
-    prints("!!gg", res)
-
-func cancel(res: Resource) -> void:
-    res.CancelTask()
-    busy = false
 
 
 func call_rlink_button_cs(prop_name: StringName) -> Variant:
+    if check_valid(): return
     if busy: return
     var to_call := tool_obj.get(prop_name) as RefCounted
     if to_call == null or to_call.get_script() != __context.csharp_button_script:
@@ -258,50 +291,51 @@ func call_rlink_button_cs(prop_name: StringName) -> Variant:
         return
     
     busy = true
-    if reflect_to_tool() == null: return
+    if convert_to_tool(runtime) == null:
+        busy = false
+        return
     
     var signal_var: Signal = _call_rlink_button_cs_impl(final_count, to_call)
-    signal_var.connect(call_rlink_button_cs_continue.bind(to_call.get_instance_id(), prop_name), CONNECT_ONE_SHOT)
+    signal_var.connect(_call_rlink_button_cs_continue.bind(to_call.get_instance_id(), prop_name), CONNECT_ONE_SHOT)
     return signal_var
         
 
 func _call_rlink_button_cs_impl(arg_count: int, to_call: RefCounted) -> Variant:
     if arg_count == 0: return to_call.RLinkCallvAwait([])
-    elif arg_count == 1: return to_call.RLinkCallvAwait([_helper])
+    elif arg_count == 1: return to_call.RLinkCallvAwait([_get_helper(runtime)])
     return null
 
 
-func call_rlink_button_cs_continue(result: Variant, to_call_id: int, prop_name: String) -> void:
+func _call_rlink_button_cs_continue(result: Variant, to_call_id: int, prop_name: String) -> void:
+    if check_valid(): return
+    
     var to_call: RefCounted = instance_from_id(to_call_id)
     if to_call == null:
-        push_error("ValidRLink: Idk, shouldn't happen [rlink_data.call_rlink_button_cs_continue]")
-        discard_if_same(true, true)
+        push_error("ValidRLink: Idk, shouldn't happen [rlink_data._call_rlink_button_cs_continue]")
+        busy = false
         return
 
-    if to_call.NeedsCheck:
-        if discard_if_same(is_same(result, true), false): return
+    if to_call.NeedsCheck and not is_same(result, true):
+        busy = false
+        return
     
-    converted_object.emit(_object_id)
-    if discard_if_same(reflect_to_runtime(), null): return
-
+    if convert_to_runtime(tool_obj) == null:
+        busy = false
+        return
+    
     var action_name: String = to_call.Text if to_call.Text else prop_name.capitalize()
-    create_action(__settings.call_action_template % action_name)
-    if has_changes:
-        flush_changes()
-    else:
-        # unlikely to store changes, but if for some reason 
-        # any are present discard them
-        discard_changes()
-    commit_action()
+    _buffer.push_action(__settings.call_action_template % action_name, runtime)
     busy = false
 
 
-func discard_if_same(value1: Variant, value2: Variant) -> bool:
-    if is_same(value1, value2):
-        discard_changes()
-        busy = false
-        return true
-    return false
+func _get_helper(object: Object) -> RefCounted:
+    var script: Script = object.get_script()
+    var rlink: RefCounted = null
+    if script != null and _helper_cs != null and script.get_class() == "CSharpScript":
+        rlink = _helper_cs
+    else:
+        rlink = _helper
+    return rlink
 
 
 #region: RLink connection
@@ -336,45 +370,43 @@ func rlink_is_pair_valid(obj: Object, delete_if_invalid: bool) -> bool:
 
 
 func rlink_add_changes(object: Object, property: StringName, old_value: Variant, value: Variant) -> void:
-    var runtime_obj: Object = __conv_to_runtime._convert_value(self, object)
+    var runtime_obj: Object = __conv_to_runtime._convert_value(_buffer, object)
     if runtime_obj == null: return
-    var old_value_runtime: Variant = __conv_to_runtime._convert_value(self, old_value, 1)
-    var new_value_runtime: Variant = __conv_to_runtime._convert_value(self, value, 1)
-    object_add_changes(runtime_obj, property, old_value_runtime, new_value_runtime)
-    has_changes = true
+    var old_value_runtime: Variant = __conv_to_runtime._convert_value(_buffer, old_value, 1, runtime_obj)
+    var new_value_runtime: Variant = __conv_to_runtime._convert_value(_buffer, value, 1, runtime_obj)
+    _buffer.object_add_changes(runtime_obj, property, old_value_runtime, new_value_runtime)
+    _buffer.has_changes = true
     
 
 func rlink_add_do_method(object: Object, method: StringName, args: Array) -> void:
     if not is_native_resource(object):
         push_error("ValidRLink: This method only supports native resources [rlink_data.add_do_method]")
         return
-    var args_runtime: Array = __conv_to_runtime._convert_value(self, args, 1)
+    var args_runtime: Array = __conv_to_runtime._convert_value(_buffer, args, 1, object)
     args_runtime.push_front(method)
     args_runtime.push_front(object)
-    _do_methods.push_back(args_runtime)
-    has_changes = true
+    _buffer.add_do_method(args_runtime)
 
 
 func rlink_add_undo_method(object: Object, method: StringName, args: Array) -> void:
     if not is_native_resource(object):
         push_error("ValidRLink: This method only supports native resources [rlink_data.add_undo_method]")
         return
-    var args_runtime: Array = __conv_to_runtime._convert_value(self, args, 1)
+    var args_runtime: Array = __conv_to_runtime._convert_value(_buffer, args, 1, object)
     args_runtime.push_front(method)
     args_runtime.push_front(object)
-    _undo_methods.push_back(args_runtime)
-    has_changes = true
+    _buffer.add_undo_method(args_runtime)
     
     
 func rlink_convert_to_tool(runtime_obj: Object, custom_depth: int) -> Object:
-    return __conv_to_tool._convert_value(self, runtime_obj, custom_depth)
+    return __conv_to_tool._convert_value(_buffer, runtime_obj, custom_depth)
     
     
 func rlink_convert_to_runtime(tool_obj_in: Object, custom_depth: int, track_instances: bool) -> Object:
-    var old := track_tool_instances
-    track_tool_instances = track_instances
-    var value: Object = __conv_to_runtime._convert_value(self, tool_obj_in, custom_depth)
-    track_tool_instances = old
+    var old := _buffer.track_tool_instances
+    _buffer.track_tool_instances = track_instances
+    var value: Object = __conv_to_runtime._convert_value(_buffer, tool_obj_in, custom_depth)
+    _buffer.track_tool_instances = old
     return value
 
 
@@ -387,11 +419,11 @@ func rlink_is_runtime_object(object: Object) -> bool:
     
     
 func rlink_add_child_to(node: Node, child: Node) -> void:
-    node_add_child(node, child)
+    _buffer.node_add_child(node, child)
     
     
 func rlink_remove_child_from(node: Node, child: Node) -> void:
-    node_remove_child(node, child)
+    _buffer.node_remove_child(node, child)
     
     
 func rlink_get_tool(runtime_obj: Object) -> Object:
@@ -413,7 +445,7 @@ func rlink_signal_connect(signal_value: Signal, callable: Callable, bindv_args: 
     if runtime_signal.is_null() or runtime_callable.is_null():
         push_error("ValidRLink: Runtime pair is not registered [rlink_data.signal_connect]")
         return
-    signal_add_connect(runtime_signal, runtime_callable)
+    _buffer.signal_add_connect(runtime_signal, runtime_callable)
 
 
 func rlink_signal_disconnect(signal_value: Signal, callable: Callable, bindv_args: Array, unbind: int) -> void:
@@ -427,7 +459,7 @@ func rlink_signal_disconnect(signal_value: Signal, callable: Callable, bindv_arg
     if runtime_signal.is_null() or runtime_callable.is_null():
         push_error("ValidRLink: Runtime pair is not registered [rlink_data.signal_disconnect]")
         return
-    signal_add_disconnect(runtime_signal, runtime_callable)
+    _buffer.signal_add_disconnect(runtime_signal, runtime_callable)
 
 
 func rlink_signal_is_connected(signal_value: Signal, callable: Callable, bindv_args: Array, unbind: int) -> bool:
@@ -469,8 +501,8 @@ func get_runtime_callable(callable: Callable, bindv_args: Array, unbind: int) ->
         
     var runtime_callable := Callable(callable_object, callable.get_method())
     if bindv_args.size() > 0:
-        var run_args: Array = __conv_to_runtime._convert_value(self, bindv_args, 1)
-        if converter_converted_object:
+        var run_args: Array = __conv_to_runtime._convert_value(_buffer, bindv_args, 1, callable_object)
+        if _buffer.converter_converted_object:
             push_error("ValidRLink: Binding object persistingly is not supported [rlink_data.get_runtime_callable]")
             return null
         runtime_callable = runtime_callable.bindv(run_args)
@@ -480,278 +512,5 @@ func get_runtime_callable(callable: Callable, bindv_args: Array, unbind: int) ->
 
 func is_native_resource(value: Variant) -> bool:
     return value is Resource and value.get_script() == null
-#endregion
-
-
-#region: Changes buffer
-func object_add_changes(object: Object, property: StringName, old_value: Variant, new_value: Variant) -> void:
-    _changes.push_back(object)
-    _changes.push_back(property)
-    _changes.push_back(old_value)
-    _changes.push_back(new_value)
-    has_changes = true
-
-
-func object_remove_meta(object: Object, property: StringName) -> void:
-    _remove_metas.push_back(object)
-    _remove_metas.push_back(property)
-    has_changes = true
-
-
-func node_add_groups(node: Node, groups: Array[StringName]) -> void:
-    var arr: Variant = _add_groups.get(node)
-    if arr == null:
-        arr = Array([], TYPE_STRING_NAME, &"", null)
-        _add_groups[node] = arr
-    arr.append_array(groups)
-    has_changes = true
-
-
-func node_remove_groups(node: Node, groups: Array[StringName]) -> void:
-    var arr: Variant = _erase_groups.get(node)
-    if arr == null:
-        arr = Array([], TYPE_STRING_NAME, &"", null)
-        _erase_groups[node] = arr
-    arr.append_array(groups)
-    has_changes = true
     
-    
-func node_add_child(node: Node, child: Node) -> void:
-    var arr: Variant = _add_children.get(node)
-    if arr == null:
-        arr = Array([], TYPE_OBJECT, &"Node", null)
-        _add_children[node] = arr
-    arr.append(child)
-    has_changes = true
-
-
-func node_remove_child(node: Node, child: Node) -> void:
-    var arr: Variant = _remove_children.get(node)
-    if arr == null:
-        arr = Array([], TYPE_OBJECT, &"Node", null)
-        _remove_children[node] = arr
-    arr.append(child)
-    has_changes = true
-
-
-func signal_add_connect(signal_value: Signal, callable: Callable) -> void:
-    _connect_signals.push_back(signal_value)
-    _connect_signals.push_back(callable)
-    has_changes = true
-
-
-func signal_add_disconnect(signal_value: Signal, callable: Callable) -> void:
-    _disconnect_signals.push_back(signal_value)
-    _disconnect_signals.push_back(callable)
-    has_changes = true
-
-
-func flush_changes(use_history: bool = true) -> void:
-    if __undo_redo == null: use_history = false
-    
-    if use_history: _flush_changes_history()
-    else: _flush_changes_direct()
-    
-    var needs_updating := _connect_signals.size() > 0 or _disconnect_signals.size() > 0
-    _clear_buffer()
-    if needs_updating: _update_tree()
-
-
-## Made a separate method, so that if for some reason any of them failed, 
-## clear functions after it still got called
-func _flush_changes_history() -> void:
-    # obj, prop_name, original, new
-    for i in range(0, _changes.size(), 4):
-        __undo_redo.add_undo_property(_changes[i], _changes[i + 1], _changes[i + 2])
-        
-    for i in range(0, _remove_metas.size(), 2):
-        var object: Object = _remove_metas[i]
-        var meta: StringName = _remove_metas[i + 1]
-        __undo_redo.add_undo_method(object, &"set_meta", meta, object.get_meta(meta))
-    
-    @warning_ignore("untyped_declaration")
-    for node in _add_children:
-        @warning_ignore("untyped_declaration")
-        for child in _add_children[node]:
-            __undo_redo.add_do_method(node, &"add_child", child, true)
-            if node.is_inside_tree():
-                __undo_redo.add_do_method(child, &"set_owner", node.owner if node.owner != null else node)
-            __undo_redo.add_do_reference(child)
-            __undo_redo.add_undo_method(node, &"remove_child", child)
-
-    @warning_ignore("untyped_declaration")
-    for node in _remove_children:
-        @warning_ignore("untyped_declaration")
-        for child in _remove_children[node]:
-            __undo_redo.add_do_method(node, &"remove_child", child)
-            __undo_redo.add_undo_method(node, &"add_child", child, true)
-            if node.is_inside_tree():
-                var owner: Node = node.owner if node.owner != null else node
-                var owned: Array[Node]
-                _get_owned_by(owner, child, owned)
-                __undo_redo.add_undo_method(self, &"_set_owners", owner, owned)
-            __undo_redo.add_undo_method(node, &"move_child", child, child.get_index())
-            __undo_redo.add_undo_reference(child)
-            
-    # obj, prop_name, original, new
-    for i in range(0, _changes.size(), 4):
-        __undo_redo.add_do_property(_changes[i], _changes[i + 1], _changes[i + 3])
-        
-    for i in range(0, _remove_metas.size(), 2):
-        var object: Object = _remove_metas[i]
-        var meta: StringName = _remove_metas[i + 1]
-        __undo_redo.add_do_method(object, &"remove_meta", meta)
-        
-    for i in range(0, _do_methods.size(), 1):
-        __undo_redo.callv(&"add_do_method", _do_methods[i])
-        
-    for i in range(0, _undo_methods.size(), 1):
-        __undo_redo.callv(&"add_undo_method", _undo_methods[i])
-    
-    @warning_ignore("untyped_declaration")
-    for node in _add_groups:
-        @warning_ignore("untyped_declaration")
-        for group in _add_groups[node]:
-            __undo_redo.add_do_method(node, &"add_to_group", group, true)
-            __undo_redo.add_undo_method(node, &"remove_from_group", group)
-
-    @warning_ignore("untyped_declaration")
-    for node in _erase_groups:
-        @warning_ignore("untyped_declaration")
-        for group in _erase_groups[node]:
-            __undo_redo.add_do_method(node, &"remove_from_group", group)
-            __undo_redo.add_undo_method(node, &"add_to_group", group, true)
-    
-    for i in range(0, _connect_signals.size(), 2):
-        var signal_value: Signal = _connect_signals[i]
-        var callable: Callable = _connect_signals[i + 1]
-
-        __undo_redo.add_do_method(signal_value.get_object(), &"connect", signal_value.get_name(), callable, Object.CONNECT_PERSIST)
-        __undo_redo.add_undo_method(signal_value.get_object(), &"disconnect", signal_value.get_name(), callable)
-        
-    for i in range(0, _disconnect_signals.size(), 2):
-        var signal_value: Signal = _disconnect_signals[i]
-        var callable: Callable = _disconnect_signals[i + 1]
-        
-        __undo_redo.add_do_method(signal_value.get_object(), &"disconnect", signal_value.get_name(), callable)
-        __undo_redo.add_undo_method(signal_value.get_object(), &"connect", signal_value.get_name(), callable, Object.CONNECT_PERSIST)
-
-
-func _flush_changes_direct() -> void:
-    @warning_ignore("untyped_declaration")
-    for node in _add_children:
-        @warning_ignore("untyped_declaration")
-        for child in _add_children[node]:
-            node.add_child(child, true)
-            if node.is_inside_tree():
-                child.owner = node.owner if node.owner != null else node
-
-    @warning_ignore("untyped_declaration")
-    for node in _remove_children:
-        @warning_ignore("untyped_declaration")
-        for child in _remove_children[node]:
-            node.remove_child(child)
-            
-    # obj, prop_name, original, new
-    for i in range(0, _changes.size(), 4):
-        _changes[i].set(_changes[i + 1], _changes[i + 3])
-        
-    for i in range(0, _remove_metas.size(), 2):
-        var object: Object = _remove_metas[i]
-        object.remove_meta(_remove_metas[i + 1])
-        
-    for i in range(0, _do_methods.size(), 1):
-        var args: Array = _do_methods[i]
-        var object: Object = args.pop_front()
-        var method: StringName = args.pop_front()
-        object.callv(method, args)
-
-    @warning_ignore("untyped_declaration")
-    for node in _add_groups:
-        @warning_ignore("untyped_declaration")
-        for group in _add_groups[node]:
-            node.add_to_group(group, true)
-    
-    @warning_ignore("untyped_declaration")
-    for node in _erase_groups:
-        @warning_ignore("untyped_declaration")
-        for group in _erase_groups[node]:
-            node.remove_from_group(group)
-    
-    for i in range(0, _connect_signals.size(), 2):
-        var signal_value: Signal = _connect_signals[i]
-        var callable: Callable = _connect_signals[i + 1]
-        signal_value.connect(callable, Object.CONNECT_PERSIST)
-        
-    for i in range(0, _disconnect_signals.size(), 2):
-        var signal_value: Signal = _disconnect_signals[i]
-        var callable: Callable = _disconnect_signals[i + 1]
-        signal_value.disconnect(callable)
-
-
-func discard_changes() -> void:
-    @warning_ignore("untyped_declaration")
-    for node in _add_children:
-        @warning_ignore("untyped_declaration")
-        for child in _add_children[node]:
-            child.queue_free()
-    _clear_buffer()
-   
-
-func _clear_buffer() -> void:
-    _add_children.clear()
-    _remove_children.clear()
-    _changes.clear()
-    _remove_metas.clear()
-    _do_methods.clear()
-    _undo_methods.clear()
-    _add_groups.clear()
-    _erase_groups.clear()
-    _connect_signals.clear()
-    _disconnect_signals.clear()
-    has_changes = false
-
-
-func commit_action(execute: bool = true) -> void:
-    if __undo_redo != null:
-        __undo_redo.commit_action(execute)
-    #__undo_redo.add_do_method()
-    
-    
-func create_action(
-    name: String,
-    merge_mode: UndoRedo.MergeMode = UndoRedo.MERGE_DISABLE,
-    custom_context: Object = null,
-    backward_undo_ops: bool = false
-) -> void:
-    if custom_context == null:
-        custom_context = runtime
-    if __undo_redo != null:
-        __undo_redo.create_action(name, merge_mode, custom_context, backward_undo_ops)
-    
-
-# Pretty ugly workaround
-func _update_tree() -> void:
-    if __compat.engine_version >= 0x040400:
-        return
-    @warning_ignore("unsafe_property_access")
-    var root: Node = Engine.get_main_loop().edited_scene_root
-    if root != null:
-        var temp := Node.new()
-        root.add_child(temp)
-        temp.owner = root
-        temp.queue_free()
-        
-        
-func _get_owned_by(owner: Node, node: Node, owned: Array[Node]) -> void:
-    if owner == node.owner:
-        owned.push_back(node)
-    
-    for idx in node.get_child_count():
-        _get_owned_by(owner, node.get_child(idx), owned)
-
-
-func _set_owners(owner: Node, owned: Array[Node]) -> void:
-    for node in owned:
-        node.owner = owner
 #endregion

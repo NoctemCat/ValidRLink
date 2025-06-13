@@ -6,8 +6,6 @@ const Settings = Context.Settings
 const MetaWrapper = preload("./meta_wrapper.gd")
 const RLinkData = preload(Context.RLINK_PATH + "rlink_data.gd")
 
-#var _compat: Compatibility 
-#var __ctx: Context
 var __settings: Settings
 
 # self type
@@ -35,9 +33,11 @@ func _enter_tree() -> void:
         get_parent().set_meta("_rlink_watcher", MetaWrapper.new(self))
         
     _search_parent_property.call_deferred()
+    _add_exception_in_parent.call_deferred()
     
     
 func _exit_tree() -> void:
+    _remove_exception_in_parent()
     if _data != null:
         get_parent().set_meta("_rlink_watcher", null)
     _data = null
@@ -58,8 +58,8 @@ func _update_property() -> void:
 
 
 func _input(event: InputEvent) -> void:
-    var mouse_event := event  as InputEventMouseButton
-    if mouse_event != null and mouse_event.button_index == MOUSE_BUTTON_LEFT: 
+    var mouse_event := event as InputEventMouseButton
+    if mouse_event != null and mouse_event.button_index == MOUSE_BUTTON_LEFT:
         _timer.paused = mouse_event.pressed
 
 
@@ -68,18 +68,30 @@ func _search_parent_property() -> void:
     while node != null and node.get_class() != "InspectorDock":
         node = node.get_parent()
         
-        if node.has_meta("_rlink_watcher"):
-            var wrapper: MetaWrapper = node.get_meta("_rlink_watcher")
-            if is_instance_id_valid(wrapper.value_id):
-                _parent_property_id = wrapper.value_id
-                object_name = _parent_property.object_name
-            else:
-                node.set_meta("_rlink_watcher", null)
-            break
+        if not node.has_meta("_rlink_watcher"): continue
+        var wrapper: MetaWrapper = node.get_meta("_rlink_watcher")
+        if is_instance_id_valid(wrapper.value_id):
+            _parent_property_id = wrapper.value_id
+            object_name = _parent_property.object_name
+        else:
+            node.set_meta("_rlink_watcher", null)
+        break
+
+
+func _add_exception_in_parent() -> void:
+    if _parent_property != null and _data != null:
+        @warning_ignore("unsafe_method_access")
+        _parent_property._add_data_exception(_data.tool_obj.get_instance_id())
+
+
+func _remove_exception_in_parent() -> void:
+    if _parent_property != null and _data != null:
+        @warning_ignore("unsafe_method_access")
+        _parent_property._remove_data_exception(_data.tool_obj.get_instance_id())
 
 
 func call_validate_changes() -> void:
-    if _data != null: 
+    if _data != null:
         _data.validate_changes(object_name)
 
 
@@ -90,3 +102,21 @@ func _propagate_validate() -> void:
         
     #elif Settings.save_after_validate: 
         #Settings.compat.save_scene()
+
+
+func _add_data_exception(tool_id: int) -> void:
+    if _data != null:
+        _data.add_validate_exception(tool_id)
+    
+    if _parent_property != null:
+        @warning_ignore("unsafe_method_access")
+        _parent_property._add_data_exception(tool_id)
+
+
+func _remove_data_exception(tool_id: int) -> void:
+    if _data != null:
+        _data.remove_validate_exception(tool_id)
+    
+    if _parent_property != null:
+        @warning_ignore("unsafe_method_access")
+        _parent_property._remove_data_exception(tool_id)

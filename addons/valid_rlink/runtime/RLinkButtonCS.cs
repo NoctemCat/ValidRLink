@@ -437,9 +437,17 @@ public partial class RLinkButtonCS : Resource
         RestoreDefault();
     }
 
+    protected override void Dispose(bool disposing)
+    {
+        CancelTask();
+        base.Dispose(disposing);
+    }
+
     /// <inheritdoc cref="SetObject(GodotObject, StringName?)"/>
     [RequiresUnreferencedCode("Getting method by its name")]
-    public RLinkButtonCS SetObject(GodotObject obj) => SetObject(obj, null);
+    public RLinkButtonCS SetObject(GodotObject obj)
+        => SetObject(obj, null);
+
     /// <summary>
     /// Sets object and, optionally, method to prepare it for calling. 
     /// If possible stores MethodInfo from GetMethod. If no MethodInfo is found
@@ -609,12 +617,16 @@ public partial class RLinkButtonCS : Resource
     }
 
     /// <inheritdoc cref="RLinkCallv(Godot.Collections.Array)" />
-    /// <param name="arg">Argument passed to method. Bound arguments will be added after</param>
-    public Variant RLinkCall(Variant? arg = null)
+    public Variant RLinkCall()
     {
-        Godot.Collections.Array args = [];
-        if (arg is not null) args.Add(arg.Value);
-        return RLinkCallv(args);
+        return RLinkCallv([]);
+    }
+
+    /// <inheritdoc cref="RLinkCallv(Godot.Collections.Array)" />
+    /// <param name="arg">Argument passed to method. Bound arguments will be added after</param>
+    public Variant RLinkCall(Variant arg)
+    {
+        return RLinkCallv([arg]);
     }
 
     /// <summary>
@@ -676,15 +688,20 @@ public partial class RLinkButtonCS : Resource
         }
 
     }
+    /// <inheritdoc cref="RLinkCallvAwait(Godot.Collections.Array)" />
+    [RequiresUnreferencedCode("Needed for getting result from Task<>")]
+    public Signal RLinkCallAwait()
+    {
+        _ = RLinkCallvAwaitTask([]);
+        return new Signal(this, SignalName.Completed);
+    }
 
     /// <inheritdoc cref="RLinkCallvAwait(Godot.Collections.Array)" />
     /// <param name="arg">Argument passed to method. Bound arguments will be added after</param>
     [RequiresUnreferencedCode("Needed for getting result from Task<>")]
-    public Signal RLinkCallAwait(Variant arg = new Variant())
+    public Signal RLinkCallAwait(Variant arg)
     {
-        Godot.Collections.Array args = [];
-        if (arg.VariantType != Variant.Type.Nil) args.Add(arg);
-        _ = RLinkCallvAwaitTask(args);
+        _ = RLinkCallvAwaitTask([arg]);
         return new Signal(this, SignalName.Completed);
     }
 
@@ -700,8 +717,6 @@ public partial class RLinkButtonCS : Resource
         return new Signal(this, SignalName.Completed);
     }
 
-    /// <inheritdoc cref="RLinkCallvAwaitTask(Godot.Collections.Array)" />
-    public Task RLinkCallvAwaitTask(params Variant[] args) => RLinkCallvAwaitTask(new Godot.Collections.Array(args));
     /// <summary>
     /// Calls and awaits a method. Gets result using reflection if exist. Emits <c>Completed</c> signal with deferred on any result
     /// if the result is convertible to Variant it gets emitted with signal, if not passes null Variant
@@ -756,6 +771,12 @@ public partial class RLinkButtonCS : Resource
                     {
                         CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
                         return;
+                    }
+                    catch (Exception e)
+                    {
+                        GD.PushError(e);
+                        CallDeferred(GodotObject.MethodName.EmitSignal, [SignalName.Completed, new Variant()]);
+                        throw;
                     }
                     finally
                     {
@@ -897,7 +918,7 @@ public partial class RLinkButtonCS : Resource
     }
 
     /// <summary>
-    /// Communicates a request for cancellation to a task if it is running
+    /// Communicates a request for cancellation to a running task if it exists
     /// </summary>
     public void CancelTask()
     {

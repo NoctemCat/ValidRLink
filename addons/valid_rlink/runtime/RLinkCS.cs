@@ -57,6 +57,7 @@ public partial class RLinkCS : RefCounted
     /// <typeparam name="T">The type of your class</typeparam>
     public T? GetToolFrom<T>(GodotObject runtime) where T : GodotObject
         => (T?)GetToolFrom(runtime);
+
     /// <summary>
     /// Retrieves tool object if exist
     /// </summary>
@@ -71,6 +72,7 @@ public partial class RLinkCS : RefCounted
     /// <typeparam name="T">Base native Godot type</typeparam>
     public T? GetRuntimeFrom<T>(GodotObject tool) where T : GodotObject
         => (T?)GetRuntimeFrom(tool);
+
     /// <summary>
     /// Retrieves placeholder object if exist
     /// </summary>
@@ -120,7 +122,8 @@ public partial class RLinkCS : RefCounted
     /// Check if the registered pair is invalid. For nodes being outside of tree counts as invalid
     /// </summary>
     /// <param name="deleteIfInvalid">If pair is not valid, on true frees passed obj if it was created by this plugin</param>
-    public bool IsPairInvalid(GodotObject obj, bool deleteIfInvalid = true) => !IsPairValid(obj, deleteIfInvalid);
+    public bool IsPairInvalid(GodotObject obj, bool deleteIfInvalid = true)
+        => !IsPairValid(obj, deleteIfInvalid);
 
     /// <summary>
     /// Check if the registered pair is valid. For nodes being outside of treee counts as invalid
@@ -166,7 +169,9 @@ public partial class RLinkCS : RefCounted
     /// <summary>
     /// Gets parent as real type
     /// </summary>
-    public T? GetParent<T>() where T : Node => (T?)GetParent();
+    public T? GetParent<T>() where T : Node
+        => (T?)GetParent();
+
     /// <summary>
     /// Gets parent as real type
     /// </summary>
@@ -181,7 +186,9 @@ public partial class RLinkCS : RefCounted
     /// <summary>
     /// Gets parent for node as real type
     /// </summary>
-    public T? GetParentFor<T>(Node toolNode) where T : Node => (T?)GetParentFor(toolNode);
+    public T? GetParentFor<T>(Node toolNode) where T : Node
+        => (T?)GetParentFor(toolNode);
+
     /// <summary>
     /// Gets parent for node as real type
     /// </summary>
@@ -201,7 +208,9 @@ public partial class RLinkCS : RefCounted
     /// <summary>
     /// Gets node as real type
     /// </summary>
-    public Node? GetNodeOrNull(scoped in NodePath path) => GetNodeOrNull<Node>(path);
+    public Node? GetNodeOrNull(scoped in NodePath path)
+        => GetNodeOrNull<Node>(path);
+
     /// <summary>
     /// Gets node as real type
     /// </summary>
@@ -215,7 +224,9 @@ public partial class RLinkCS : RefCounted
     /// <summary>
     /// Gets node from node as real type
     /// </summary>
-    public Node? GetNodeOrNullFrom(Node toolNode, scoped in NodePath path) => GetNodeOrNullFrom<Node>(toolNode, path);
+    public Node? GetNodeOrNullFrom(Node toolNode, scoped in NodePath path)
+        => GetNodeOrNullFrom<Node>(toolNode, path);
+
     /// <summary>
     /// Gets node from node as real type
     /// </summary>
@@ -397,6 +408,7 @@ public partial class RLinkCS : RefCounted
     /// <inheritdoc cref="SignalConnect(in Signal, in Variant, Godot.Collections.Array?, int)" />
     public void SignalConnect(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalConnect(signal, DelegateToCallable(method), bindvArgs, unbind);
+
     /// <summary>
     /// Connects them persistingly, bound arguments get added first, then unbind. Callables are treated as connected if they have the
     /// same object and method, so different binds are treated as the same callable
@@ -410,6 +422,7 @@ public partial class RLinkCS : RefCounted
     /// <inheritdoc cref="SignalDisconnect(in Signal, in Variant, Godot.Collections.Array?, int)" />
     public void SignalDisconnect(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalDisconnect(signal, DelegateToCallable(method), bindvArgs, unbind);
+
     /// <summary>
     /// Disconnects them, bound arguments get added first, then unbind. Callables are treated as connected if they have the
     /// same object and method, so different binds are treated as the same callable
@@ -423,6 +436,7 @@ public partial class RLinkCS : RefCounted
     /// <inheritdoc cref="SignalIsConnected(in Signal, in Variant, Godot.Collections.Array?, int)" />
     public bool SignalIsConnected(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalIsConnected(signal, DelegateToCallable(method), bindvArgs, unbind);
+
     /// <summary>
     /// Check if callable connected to the signal. Callables are treated as connected if they have the
     /// same object and method, so different binds are treated as the same callable
@@ -436,6 +450,7 @@ public partial class RLinkCS : RefCounted
     /// <inheritdoc cref="SignalToggle(in Signal, in Variant, Godot.Collections.Array?, int)" />
     public void SignalToggle(scoped in Signal signal, Delegate method, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
         => SignalToggle(signal, DelegateToCallable(method), bindvArgs, unbind);
+
     /// <summary>
     /// Checks if connected, if connected disconnects callable, if not callable is connected
     /// </summary>
@@ -465,7 +480,7 @@ public partial class RLinkCS : RefCounted
         {
             // Static methods still don't work, but I'm going to just leave it, theoretically it should work
             // and it prints correct method name, even could be called, just doesn't pass "is_valid" check
-            GD.PushWarning("ValidRLink: Currently can't create valid Callable for static method [RLinkCS.DelegateToCallable]");
+            GD.PushWarning("ValidRLink: Currently can't create a valid Callable for a static C# method [RLinkCS.DelegateToCallable]");
 
             Type? type = callable.Method.DeclaringType;
             if (type is null || !typeof(GodotObject).IsAssignableFrom(type))

@@ -11,7 +11,7 @@ namespace ValidRLink;
 /// Specifies settings on a class level
 /// </summary>
 [Tool, GlobalClass]
-public partial class RLinkSettingsCS : RefCounted
+public partial class RLinkSettingsCS : Resource
 {
     /// <summary>
     /// If true, this class will never get duplicated
@@ -73,12 +73,6 @@ public partial class RLinkSettingsCS : RefCounted
         return this;
     }
 
-    /// <inheritdoc cref="SkipProperties"/>
-    public RLinkSettingsCS SetSkipProperties(StringName[] properties)
-    {
-        SkipProperties = [.. properties];
-        return this;
-    }
 
     /// <inheritdoc cref="SkipProperties"/>
     public RLinkSettingsCS SetSkipProperties(System.Collections.Generic.IEnumerable<StringName> properties)
@@ -98,13 +92,6 @@ public partial class RLinkSettingsCS : RefCounted
     public RLinkSettingsCS SetAllowedProperties(Godot.Collections.Array<StringName> properties)
     {
         AllowedProperties = properties;
-        return this;
-    }
-
-    /// <inheritdoc cref="AllowedProperties"/>
-    public RLinkSettingsCS SetAllowedProperties(StringName[] properties)
-    {
-        AllowedProperties = [.. properties];
         return this;
     }
 

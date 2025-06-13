@@ -5,7 +5,7 @@ const InnerResource = preload("./inner_resource.gd")
 
 
 func validate_changes() -> void:
-    if inner == null:
+    if not inner is InnerResource:
         inner = InnerResource.new()
         
     @warning_ignore("untyped_declaration")

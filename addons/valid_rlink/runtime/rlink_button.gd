@@ -17,7 +17,7 @@ enum ControlSizes {
     SIZE_SHRINK_END = 8,
 }
 
-static var get_unbound_count_expr: Expression ## Calls [method Callable.get_unbound_arguments_count] through [Expression]
+static var get_unbound_count_expr: Expression = null ## Calls [method Callable.get_unbound_arguments_count] through [Expression]
 static var unbound_count_available: bool ## Is true if current Godot version supports it
 
 @export

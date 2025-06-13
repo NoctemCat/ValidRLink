@@ -500,7 +500,7 @@ public static class GodotHelper
         }
 
         /// <summary>
-        /// Calls GDScript's constructor, was needed for Callable to static method
+        /// Calls GDScript's constructor, was needed for Callable to static method. Still doesn't return valid Callable :/
         /// </summary>
         /// <returns>Callable as variant</returns>
         public static Variant CallConstructor(Variant godotObject, StringName method)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://de06e31f7iu5i"]
+[gd_scene load_steps=22 format=4 uid="uid://de06e31f7iu5i"]
 
 [ext_resource type="Script" uid="uid://c0776xyhyin8h" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
 [ext_resource type="Script" uid="uid://cdsgv6uw5huvs" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://cl578xaoh1it6" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
 [ext_resource type="PackedScene" uid="uid://dyftaq5bcj40m" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
 [ext_resource type="Script" uid="uid://beknapxgoro47" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
+[ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="10_p40gm"]
 [ext_resource type="Script" uid="uid://cy812ttkiutkj" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
 [ext_resource type="Script" uid="uid://c7o2ghum5gwo5" path="res://tests/editor/scripts/rlink_await.gd" id="11_65005"]
 
@@ -89,7 +90,7 @@ export_PackedVector3Array_var = PackedVector3Array()
 export_PackedColorArray_var = PackedColorArray()
 export_PackedVector4Array_var = PackedVector4Array()
 
-[sub_resource type="Resource" id="Resource_utf88"]
+[sub_resource type="Resource" id="Resource_d0cf0"]
 script = ExtResource("4_4dnud")
 export_bool_var = true
 export_int_var = 100
@@ -172,15 +173,16 @@ metadata/default_values = {
 &"unbind_next": 0
 }
 
-[sub_resource type="Resource" id="Resource_d0cf0"]
+[sub_resource type="Resource" id="Resource_utf88"]
 script = ExtResource("9_65005")
 text = "Toggle Connect"
 tooltip_text = ""
 icon = ""
+icon_texture = ExtResource("10_p40gm")
 icon_alignment = 0
 icon_alignment_vertical = 1
-modulate = Color(1, 1, 1, 1)
-max_width = 200
+modulate = Color(0, 1, 1, 1)
+max_width = 110
 min_height = 0
 margin_left = 0
 margin_top = 0
@@ -205,9 +207,9 @@ metadata/default_values = {
 &"margin_left": 0,
 &"margin_right": 0,
 &"margin_top": 0,
-&"max_width": 200,
+&"max_width": 110,
 &"min_height": 0,
-&"modulate": Color(1, 1, 1, 1),
+&"modulate": Color(0, 1, 1, 1),
 &"size_flags": -1,
 &"text": "Toggle Connect",
 &"tooltip_text": "",
@@ -215,6 +217,7 @@ metadata/default_values = {
 }
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_65005"]
+seed = 1234
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_py022"]
 noise = SubResource("FastNoiseLite_65005")
@@ -348,10 +351,12 @@ export_PackedVector4Array_var = PackedVector4Array(200, 200, 200, 200, 300, 300,
 [node name="ValidateInner" type="Node" parent="."]
 script = ExtResource("2_2l0tt")
 inner = SubResource("Resource_65005")
+metadata/rlink_skip = false
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
 script = ExtResource("2_mgxhu")
-inner = SubResource("Resource_utf88")
+inner = SubResource("Resource_d0cf0")
+metadata/rlink_skip = false
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_baol1")
@@ -361,13 +366,11 @@ metadata/rlink_skip = false
 
 [node name="ChildPath" type="Node" parent="RLinkChild/DirectChild"]
 
-[node name="ChildFromPath" type="Node" parent="RLinkChild/DirectChild"]
-
 [node name="ChildFrom" type="Node" parent="RLinkChild/DirectChild"]
 
-[node name="HasFrom" type="Node" parent="RLinkChild/DirectChild"]
-
 [node name="GetParent" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="HasFrom" type="Node" parent="RLinkChild/DirectChild"]
 
 [node name="DirectChildPath" type="Node" parent="RLinkChild"]
 
@@ -378,18 +381,22 @@ scene_export = NodePath("SceneExport")
 scene_load = NodePath("SceneLoad")
 scene_file = NodePath("SceneFile")
 remove_all = SubResource("Resource_b5c2a")
-toggle_connect = SubResource("Resource_d0cf0")
+toggle_connect = SubResource("Resource_utf88")
 metadata/rlink_skip = false
 
 [node name="SceneExport" parent="RLinkScene" instance=ExtResource("8_tvfff")]
+int_var = 100
+metadata/_edit_use_anchors_ = true
 
 [node name="SceneLoad" parent="RLinkScene" instance=ExtResource("8_tvfff")]
 offset_top = 50.0
 offset_bottom = 50.0
+int_var = 100
 
 [node name="SceneFile" parent="RLinkScene" instance=ExtResource("8_tvfff")]
 offset_top = 100.0
 offset_bottom = 100.0
+int_var = 100
 
 [node name="RLinkChanges" type="Node" parent="."]
 script = ExtResource("10_py022")
@@ -397,7 +404,7 @@ noise_texture = SubResource("NoiseTexture2D_py022")
 
 [node name="RLinkAwait" type="Node" parent="."]
 script = ExtResource("11_65005")
-int_var = -2
+int_var = 8
 set_int = SubResource("Resource_asyf6")
 success = true
 set_int_checked = SubResource("Resource_hoejj")

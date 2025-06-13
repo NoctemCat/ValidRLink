@@ -4,6 +4,7 @@ using Godot;
 
 namespace ValidRLink;
 
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "For ease of getting connected test by name")]
 public partial class test_discard_cs_ErrorDiscard : Node
 {
     [Export] public int IntVar { get; set; }

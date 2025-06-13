@@ -52,7 +52,7 @@ func after_each() -> void:
 #Runs once after all tests
 func after_all() -> void:
     _ctx.free()
-    queue_free()
+    #queue_free()
     
 
 func clear() -> void:

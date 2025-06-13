@@ -27,7 +27,6 @@ func _get_plugin_icon() -> Texture2D:
 
     
 func _enter_tree() -> void:
-    print("--------- leaked")
     _ctx = Context.new()
     _ctx.settings = Settings.new()
     _settings = _ctx.settings
@@ -142,10 +141,10 @@ func _on_settings_changed() -> void:
 
 
 func _refresh_inspector() -> void:
-    if _ctx == null or _ctx.rlink_data_cache == null: return
-    var obj := instance_from_id(_ctx.rlink_data_cache.last_accessed_object)
-    if obj == null: return
-    obj.notify_property_list_changed()
+    var selection: EditorSelection = _ctx.compat.interface.get_selection()
+    var nodes := selection.get_selected_nodes()
+    if nodes.size() == 1:
+        nodes[0].notify_property_list_changed()
 
 
 func _copy_button_theme() -> void:

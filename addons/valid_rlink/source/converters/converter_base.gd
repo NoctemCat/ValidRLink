@@ -6,7 +6,7 @@ const Settings = Context.Settings
 const RLinkMap = preload(Context.RLINK_PATH + "rlink_map.gd")
 const ScanResult = preload(Context.RLINK_PATH + "scan_result.gd")
 const ScanCache = preload(Context.RLINK_PATH + "scan_cache.gd")
-const RLinkData = preload(Context.RLINK_PATH + "rlink_data.gd")
+const RLinkBuffer = preload(Context.RLINK_PATH + "rlink_buffer.gd")
 
 var __ctx: Context
 var __map: RLinkMap
@@ -21,7 +21,7 @@ func _init(context: Context) -> void:
     __scan_cache = context.scan_cache
 
 
-func _convert_value(_data: RLinkData, value: Variant, _depth: int = 0) -> Variant:
+func _convert_value(_data: RLinkBuffer, value: Variant, _depth: int = 0, _search_ctx: Object = null) -> Variant:
     push_warning("ValidRLink: Don't call this base method [converter_base._convert_value]")
     return value
 
@@ -60,18 +60,28 @@ func _skip_property(to_skip: Array[StringName], allowed: Array[StringName], prop
     #)
     #return (is_builtin and __settings.copy_builtin_resources & class_flag == 0) \
         #or (is_external and __settings.copy_external_resources & class_flag == 0)
+        
+        
+func _skip_type(data: RLinkBuffer, type: Variant.Type, depth: int) -> bool:
+    return depth + 1 >= data.max_depth and can_contain_object(type)
 
 
-func _skip_value(data: RLinkData, prop: Dictionary, value: Variant, depth: int) -> bool:
+func _skip_object(value: Variant) -> bool:
+    return value is Object and (
+        value.get_meta(&"rlink_skip", false)
+        or __scan_cache.get_search(value).skip
+    )
+
+
+func _skip_value(data: RLinkBuffer, prop: Dictionary, value: Variant, depth: int) -> bool:
     var value_type: int = prop["type"]
-    if depth + 1 >= data.max_depth and (
-        value_type == TYPE_OBJECT
-        or value_type == TYPE_ARRAY
-        or value_type == TYPE_DICTIONARY
-    ):
+    if depth + 1 >= data.max_depth and can_contain_object(value_type):
         return true
 
-    if value is Object and __scan_cache.get_search(value).skip:
+    if value is Object and (
+        value.get_meta(&"rlink_skip", false)
+         or __scan_cache.get_search(value).skip
+    ):
         return true
 
     return false
@@ -96,5 +106,10 @@ func _is_external_resource(value: Variant) -> bool:
 
 func _is_rlink_button(prop: Dictionary) -> bool:
     return prop["type"] == TYPE_OBJECT and (
-        prop["hint_string"] == RLinkButton.CLASS_NAME 
-        or prop["hint_string"] == RLinkButton.CLASS_NAME_CS)
+        prop["hint_string"] == RLinkButton.CLASS_NAME
+        or prop["hint_string"] == RLinkButton.CLASS_NAME_CS
+    )
+
+
+func can_contain_object(type: Variant.Type) -> bool:
+    return type == TYPE_OBJECT or type == TYPE_ARRAY or type == TYPE_DICTIONARY

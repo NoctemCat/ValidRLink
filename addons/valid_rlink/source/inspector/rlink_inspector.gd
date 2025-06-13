@@ -55,6 +55,7 @@ func _can_handle(object: Object) -> bool:
     if needs_clear:
         clear()
         _watchers.clear()
+        
     var res := _scan_cache.get_search(object)
     if res.skip or object.get_meta(&"rlink_skip", false): return false
     
@@ -136,7 +137,7 @@ func _create_watcher(object: Object, data: RLinkData = null) -> void:
     
     var object_name: String = _prop_names.get(object.get_instance_id(), "")
     if object_name.is_empty():
-        if object is Node:
+        if object is Node and object.name:
             object_name = object.name
         elif object is Resource and object.resource_name:
             object_name = object.resource_name
@@ -174,15 +175,3 @@ func clear() -> void:
     _scan_cache.clear()
     _rlink_data_cache.clear()
     _prop_names.clear()
-
-
-func establish_tracking(runtime: Object, name: String) -> void:
-    var btn: Resource = runtime.get(name)
-    if btn == null: return
-    var tool: Object = _rlink_map.tool_from_obj(runtime)
-    if tool == null: return
-    var tool_btn: Object = tool.get(name)
-    if tool_btn == null: return
-    
-    _rlink_map.add_pair_no_tracking(btn, tool_btn)
-    btn.changed.emit()

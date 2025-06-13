@@ -3,11 +3,9 @@ extends MarginContainer
 
 const Context = preload("./../context.gd")
 const Compat = Context.Compatibility
-#const ScanResult = preload("./scan_result.gd")
-#const ScanCache = preload("./scan_cache.gd")
 const RLinkMap = preload(Context.RLINK_PATH + "rlink_map.gd")
 const RLinkData = preload(Context.RLINK_PATH + "rlink_data.gd")
-#const RLinkDataCache = preload("./rlink_data_cache.gd")
+const RLinkBuffer = preload(Context.RLINK_PATH + "rlink_buffer.gd")
 
 enum ContextActions {
     Edit,
@@ -19,16 +17,14 @@ enum ContextActions {
 signal pressed
 
 var __ctx: Context
-#var ___undo_redo: RLinkUndoRedo
 var __compat: Compat
 var __rlink_map: RLinkMap
-#var __scan_cache: ScanCache
-#var __rlink_data_cache: RLinkDataCache
 
-#var _object_id: int
 var _data_id: int
 var _data: RLinkData:
     get: return instance_from_id(_data_id)
+var _buffer: RLinkBuffer:
+    get: return _data._buffer
 var _property: StringName
 var property_is_readonly: bool = false
 var _button_id: int
@@ -47,11 +43,8 @@ var _size_override: int = -1
 
 func _init(context: Context, data: RLinkData, property: String, rlink_button: Resource = null) -> void:
     __ctx = context
-    #___undo_redo = context.undo_redo
     __compat = context.compat
     __rlink_map = context.rlink_map
-    #__scan_cache = context.scan_cache
-    #__rlink_data_cache = context.rlink_data_cache
     _data_id = data.get_instance_id()
     _property = property
     
@@ -87,10 +80,10 @@ func setup(rlink_button: RLinkButton, property: String) -> void:
         if rlink_button.text.is_empty():
             rlink_button.text = property.capitalize()
         rlink_button.set_current_as_default()
-        _data.create_action("Buttons Set Default", UndoRedo.MERGE_ALL)
-        _data.reflect_to_runtime(_rlink_button)
-        _data.flush_changes()
-        _data.commit_action()
+        _data.convert_to_runtime(_rlink_button)
+        _buffer.create_action("Buttons Set Default", UndoRedo.MERGE_ALL, _data.runtime)
+        _buffer.flush_changes()
+        _buffer.commit_action()
         
     _rlink_button.changed.connect(_on_rlink_button_changed)
     _on_rlink_button_changed()
@@ -103,10 +96,10 @@ func setup_cs(rlink_button_cs: Resource, property: String) -> void:
         if rlink_button_cs.Text.is_empty():
             rlink_button_cs.Text = property.capitalize()
         rlink_button_cs.SetCurrentAsDefault()
-        _data.create_action("Buttons Set Default", UndoRedo.MERGE_ALL)
-        _data.reflect_to_runtime(rlink_button_cs)
-        _data.flush_changes()
-        _data.commit_action()
+        _data.convert_to_runtime(rlink_button_cs)
+        _buffer.create_action("Buttons Set Default", UndoRedo.MERGE_ALL, _data.runtime)
+        _buffer.flush_changes()
+        _buffer.commit_action()
         
     _rlink_button_cs.changed.connect(_on_rlink_button_changed_cs)
     _on_rlink_button_changed_cs()
@@ -129,7 +122,9 @@ func _on_rlink_button_changed() -> void:
     if _rlink_button.icon_texture != null:
         _button.icon = _rlink_button.icon_texture
     elif _rlink_button.icon:
-        _button.icon = __compat.get_editor_theme().get_icon(_rlink_button.icon, "EditorIcons")
+        _button.icon = __compat.get_editor_theme().get_icon(_rlink_button.icon, &"EditorIcons")
+    else:
+        _button.icon = null
 
     _button.text = _rlink_button.text
     _button.tooltip_text = _rlink_button.tooltip_text
@@ -156,7 +151,9 @@ func _on_rlink_button_changed_cs() -> void:
         _button.icon = _rlink_button_cs.IconTexture
     elif _rlink_button_cs.icon:
         _button.icon = __compat.get_editor_theme().get_icon(_rlink_button_cs.Icon, "EditorIcons")
-
+    else:
+        _button.icon = null
+        
     _button.text = _rlink_button_cs.Text
     _button.tooltip_text = _rlink_button_cs.TooltipText
     _button.icon_alignment = _rlink_button_cs.IconAlignment as HorizontalAlignment
@@ -199,10 +196,10 @@ func _on_gui_input(input_event: InputEvent) -> void:
     var event := input_event as InputEventMouseButton
     if event and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
         var ed_theme := __compat.get_editor_theme()
-        var edit_icon := ed_theme.get_icon("Edit", "EditorIcons")
-        var reload_icon := ed_theme.get_icon("Reload", "EditorIcons")
-        var clear_icon := ed_theme.get_icon("Clear", "EditorIcons")
-        var bucket_icon := ed_theme.get_icon("Bucket", "EditorIcons")
+        var edit_icon := ed_theme.get_icon(&"Edit", &"EditorIcons")
+        var reload_icon := ed_theme.get_icon(&"Reload", &"EditorIcons")
+        var clear_icon := ed_theme.get_icon(&"Clear", &"EditorIcons")
+        var bucket_icon := ed_theme.get_icon(&"Bucket", &"EditorIcons")
         __ctx.popup.clear()
         __ctx.popup.add_icon_item(edit_icon, "Edit", ContextActions.Edit)
         __ctx.popup.add_icon_item(bucket_icon, "Set Current as Default", ContextActions.SetCurrentAsDefault)
@@ -217,40 +214,33 @@ func _on_gui_input(input_event: InputEvent) -> void:
 
 func _on_id_pressed(id: int) -> void:
     if _data == null or _data.busy: return
+    var obj := _data.runtime
     if id == ContextActions.Edit:
-        var obj := _data.runtime
         var rlink_runtime: RLinkButton = __rlink_map.runtime_from_obj(_rlink_button)
         
         if rlink_runtime == null:
             var text := "Default"
             if "text" in _rlink_button:
                 text = _rlink_button.text
-            _data.create_action("Create '%s'" % text)
-            rlink_runtime = _data.reflect_to_runtime(_rlink_button, 1)
-            _data.object_add_changes(obj, _property, null, rlink_runtime)
-            _data.__undo_redo.add_do_method(__ctx.rlink_data_cache, "clear")
-            _data.__undo_redo.add_do_method(obj, "notify_property_list_changed")
-            _data.flush_changes()
-            _data.__undo_redo.add_undo_method(__ctx.rlink_data_cache, "clear")
-            _data.__undo_redo.add_undo_method(obj, "notify_property_list_changed")
-            _data.commit_action()
-            #_data.reflect_to_tool(rlink_runtime)
+            rlink_runtime = _data.convert_to_runtime(_rlink_button)
+            _buffer.object_add_changes(obj, _property, null, rlink_runtime)
+            _buffer.add_do_method([__ctx.rlink_data_cache, &"clear"])
+            _buffer.add_do_method([obj, &"notify_property_list_changed"])
+            _buffer.add_undo_method([__ctx.rlink_data_cache, &"clear"])
+            _buffer.add_undo_method([obj, &"notify_property_list_changed"])
+            _buffer.push_action("Create '%s'" % text, obj)
             
         __compat.interface.edit_resource(rlink_runtime)
         
     elif id == ContextActions.SetCurrentAsDefault:
         _rlink_button.set_current_as_default()
-        _data.create_action("Set Current as Default '%s'" % _rlink_button.text)
-        _data.reflect_to_runtime(_rlink_button)
-        _data.flush_changes()
-        _data.commit_action()
+        _data.convert_to_runtime(_rlink_button)
+        _buffer.push_action("Set Current as Default '%s'" % _rlink_button.text, obj)
         
     elif id == ContextActions.Reset:
         _rlink_button.restore_default()
-        _data.create_action("Reset '%s'" % _rlink_button.text)
-        _data.reflect_to_runtime(_rlink_button)
-        _data.flush_changes()
-        _data.commit_action()
+        _data.convert_to_runtime(_rlink_button)
+        _buffer.push_action("Reset '%s'" % _rlink_button.text, obj)
         
     elif id == ContextActions.Clear:
         var rlink_runtime: Resource = __ctx.rlink_map.runtime_from_obj(_rlink_button)
@@ -259,56 +249,42 @@ func _on_id_pressed(id: int) -> void:
         var text := "Default"
         if "text" in _rlink_button:
             text = _rlink_button.text
-        var obj := _data.runtime
-        _data.create_action("Clear '%s'" % text, UndoRedo.MERGE_DISABLE, obj)
-        _data.object_add_changes(obj, _property, rlink_runtime, null)
-        _data.__undo_redo.add_do_method(__ctx.rlink_data_cache, "clear")
-        _data.__undo_redo.add_do_method(__ctx.rlink_map, "clear")
-        _data.__undo_redo.add_do_method(obj, "notify_property_list_changed")
-        _data.flush_changes()
-        _data.__undo_redo.add_undo_method(__ctx.rlink_data_cache, "clear")
-        _data.__undo_redo.add_undo_method(__ctx.rlink_map, "clear")
-        _data.__undo_redo.add_undo_method(obj, "notify_property_list_changed")
-        _data.__undo_redo.add_undo_method(__ctx.rlink_inspector, "establish_tracking", obj, _property)
-        _data.commit_action()
+        _buffer.object_add_changes(obj, _property, rlink_runtime, null)
+        _buffer.add_do_method([__ctx, &"clear_and_refresh"])
+        _buffer.add_undo_method([__ctx, &"clear_and_refresh"])
+        _buffer.add_undo_method([__ctx, &"establish_tracking", obj, _property])
+        _buffer.push_action("Clear '%s'" % text, obj)
 
 
 func _on_id_pressed_cs(id: int) -> void:
     if _data == null or _data.busy: return
+    var obj := _data.runtime
     if id == ContextActions.Edit:
-        var obj := _data.runtime
         var rlink_runtime_cs: Resource = __rlink_map.runtime_from_obj(_rlink_button_cs)
         
         if rlink_runtime_cs == null:
             var text := "Default"
             if "Text" in _rlink_button_cs:
                 text = _rlink_button_cs.Text
-            _data.create_action("Create '%s'" % text)
-            rlink_runtime_cs = _data.reflect_to_runtime(_rlink_button_cs, 1)
-            _data.object_add_changes(obj, _property, null, rlink_runtime_cs)
-            _data.__undo_redo.add_do_method(__ctx.rlink_data_cache, "clear")
-            _data.__undo_redo.add_do_method(obj, "notify_property_list_changed")
-            _data.flush_changes()
-            _data.__undo_redo.add_undo_method(__ctx.rlink_data_cache, "clear")
-            _data.__undo_redo.add_undo_method(obj, "notify_property_list_changed")
-            _data.commit_action()
-            #_data.reflect_to_tool(rlink_runtime)
+            rlink_runtime_cs = _data.convert_to_runtime(_rlink_button_cs)
+            _buffer.object_add_changes(obj, _property, null, rlink_runtime_cs)
+            _buffer.add_do_method([__ctx.rlink_data_cache, &"clear"])
+            _buffer.add_do_method([obj, &"notify_property_list_changed"])
+            _buffer.add_undo_method([__ctx.rlink_data_cache, &"clear"])
+            _buffer.add_undo_method([obj, &"notify_property_list_changed"])
+            _buffer.push_action("Create '%s'" % text, obj)
             
         __compat.interface.edit_resource(rlink_runtime_cs)
         
     elif id == ContextActions.SetCurrentAsDefault:
         _rlink_button_cs.SetCurrentAsDefault()
-        _data.create_action("Set Current as Default '%s'" % _rlink_button_cs.Text)
-        _data.reflect_to_runtime(_rlink_button_cs)
-        _data.flush_changes()
-        _data.commit_action()
+        _data.convert_to_runtime(_rlink_button_cs)
+        _buffer.push_action("Set Current as Default '%s'" % _rlink_button_cs.Text, obj)
         
     elif id == ContextActions.Reset:
         _rlink_button_cs.RestoreDefault()
-        _data.create_action("Reset '%s'" % _rlink_button_cs.Text)
-        _data.reflect_to_runtime(_rlink_button_cs)
-        _data.flush_changes()
-        _data.commit_action()
+        _data.convert_to_runtime(_rlink_button_cs)
+        _buffer.push_action("Reset '%s'" % _rlink_button_cs.Text, obj)
         
     elif id == ContextActions.Clear:
         var rlink_runtime_cs: Resource = __ctx.rlink_map.runtime_from_obj(_rlink_button_cs)
@@ -317,18 +293,11 @@ func _on_id_pressed_cs(id: int) -> void:
         var text := "Default"
         if "Text" in _rlink_button_cs:
             text = _rlink_button_cs.Text
-        var obj := _data.runtime
-        _data.create_action("Clear '%s'" % text, UndoRedo.MERGE_DISABLE, obj)
-        _data.object_add_changes(obj, _property, rlink_runtime_cs, null)
-        _data.__undo_redo.add_do_method(__ctx.rlink_data_cache, "clear")
-        _data.__undo_redo.add_do_method(__ctx.rlink_map, "clear")
-        _data.__undo_redo.add_do_method(obj, "notify_property_list_changed")
-        _data.flush_changes()
-        _data.__undo_redo.add_undo_method(__ctx.rlink_data_cache, "clear")
-        _data.__undo_redo.add_undo_method(__ctx.rlink_map, "clear")
-        _data.__undo_redo.add_undo_method(obj, "notify_property_list_changed")
-        _data.__undo_redo.add_undo_method(__ctx.rlink_inspector, "establish_tracking", obj, _property)
-        _data.commit_action()
+        _buffer.object_add_changes(obj, _property, rlink_runtime_cs, null)
+        _buffer.add_do_method([__ctx, &"clear_and_refresh"])
+        _buffer.add_undo_method([__ctx, &"clear_and_refresh"])
+        _buffer.add_undo_method([__ctx, &"establish_tracking", obj, _property])
+        _buffer.push_action("Clear '%s'" % text, obj)
 
 
 func _on_hide() -> void:

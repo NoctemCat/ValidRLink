@@ -6,7 +6,7 @@ using Godot;
 namespace ValidRLink;
 
 [Tool]
-public partial class RLinkUnloadDetector : Node
+public partial class RLinkUnloadDetector : Node, ISerializationListener
 {
     public static RLinkUnloadDetector Instance { get; private set; } = null!;
     // private System.Runtime.InteropServices.GCHandle? _handle;
@@ -99,5 +99,16 @@ public partial class RLinkUnloadDetector : Node
         // _handle?.Free();
         // _handle = null;
     }
+
+    // While this is working, use it
+    public void OnBeforeSerialize()
+    {
+        if (_ctx is not null)
+        {
+            Unload(_ctx);
+        }
+    }
+
+    public void OnAfterDeserialize() { }
 }
 #endif

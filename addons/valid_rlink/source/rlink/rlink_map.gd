@@ -1,10 +1,8 @@
 @tool
 extends RefCounted
 
-const Context = preload("./../context.gd")
-
 var _created_objects_ids: Array[int]
-var _tool_ids_table: Dictionary 
+var _tool_ids_table: Dictionary
 var _runtime_ids_table: Dictionary
 
 
@@ -84,7 +82,7 @@ func is_runtime(object: Object) -> bool:
 func clear() -> void:
     for tool_id in _created_objects_ids:
         var tool_obj := instance_from_id(tool_id)
-        if tool_obj != null and not tool_obj is Resource: 
+        if tool_obj != null and not tool_obj is Resource:
             tool_obj.free()
 
     _created_objects_ids.clear()

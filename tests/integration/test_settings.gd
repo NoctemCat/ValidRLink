@@ -136,7 +136,7 @@ func test_external_resource() -> void:
     var res: External = load("res://tests/integration/test_setting_external.tres")
     assert_ne(res.int_var, original)
     assert_eq(res.int_var, 500)
-    res.int_var = 500
+    res.int_var = original
     
     
     

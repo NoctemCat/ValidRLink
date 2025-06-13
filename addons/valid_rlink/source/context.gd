@@ -36,3 +36,31 @@ func emit_cancel_tasks() -> void:
 
 func object_is_button(object: Object) -> bool:
     return object is RLinkButton or (csharp_enabled and object.get_script() == csharp_button_script)
+
+
+func clear_and_refresh() -> void:
+    cancel_tasks.emit()
+    rlink_inspector.clear()
+    var selection: EditorSelection = compat.interface.get_selection()
+    var nodes := selection.get_selected_nodes()
+    if nodes.size() == 1:
+        nodes[0].notify_property_list_changed()
+
+
+## Used in rlink_buffer.gd
+func establish_tracking(runtime: Object, name: String) -> void:
+    var btn: Resource = runtime.get(name)
+    if btn == null: return
+    var tool: Object = rlink_map.tool_from_obj(runtime)
+    if tool == null: return
+    var tool_btn: Object = tool.get(name)
+    if tool_btn == null: return
+    
+    rlink_map.add_pair_no_tracking(btn, tool_btn)
+    btn.changed.emit()
+
+
+## Used in rlink_buffer.gd
+func set_owners(owner: Node, owned: Array[Node]) -> void:
+    for node in owned:
+        node.owner = owner

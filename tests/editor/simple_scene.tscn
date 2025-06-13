@@ -10,10 +10,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_7rfpg")
+int_var = 270
 
-[node name="Button" type="Button" parent="."]
+[node name="MyName" type="Button" parent="."]
 layout_mode = 0
 offset_right = 112.0
 offset_bottom = 33.0
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="MyName" to="." method="_on_button_pressed"]
