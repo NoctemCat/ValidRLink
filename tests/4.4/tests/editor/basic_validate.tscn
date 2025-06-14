@@ -1,17 +1,18 @@
-[gd_scene load_steps=22 format=3]
+[gd_scene load_steps=23 format=3 uid="uid://d3dut4dsdaetg"]
 
-[ext_resource type="Script" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
-[ext_resource type="Script" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
-[ext_resource type="Script" path="res://tests/editor/scripts/validate_inner_base.gd" id="2_mgxhu"]
-[ext_resource type="Script" path="res://tests/editor/scripts/inner_resource.gd" id="3_mgxhu"]
-[ext_resource type="Script" path="res://tests/editor/scripts/inner_resource_validate.gd" id="5_xpbgq"]
-[ext_resource type="Script" path="res://tests/editor/scripts/rlink_child.gd" id="6_baol1"]
-[ext_resource type="Script" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
-[ext_resource type="PackedScene" uid="uid://dyftaq5bcj40m" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
-[ext_resource type="Script" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
+[ext_resource type="Script" uid="uid://c0776xyhyin8h" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
+[ext_resource type="Script" uid="uid://cdsgv6uw5huvs" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
+[ext_resource type="Script" uid="uid://chy5s74q5ag1v" path="res://tests/editor/scripts/validate_inner_base.gd" id="2_mgxhu"]
+[ext_resource type="Script" uid="uid://2ywss7l6kc6v" path="res://tests/editor/scripts/inner_resource.gd" id="3_mgxhu"]
+[ext_resource type="Script" uid="uid://dyvwgoa8khf0n" path="res://tests/editor/scripts/inner_resource_validate.gd" id="5_xpbgq"]
+[ext_resource type="Script" uid="uid://reta8lv7tvd8" path="res://tests/editor/scripts/rlink_child.gd" id="6_baol1"]
+[ext_resource type="Script" uid="uid://bu6htwwslgynt" path="res://tests/editor/scripts/validate_packed.gd" id="6_utf88"]
+[ext_resource type="Script" uid="uid://cl578xaoh1it6" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
+[ext_resource type="PackedScene" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
+[ext_resource type="Script" uid="uid://beknapxgoro47" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
 [ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="10_p40gm"]
-[ext_resource type="Script" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
-[ext_resource type="Script" path="res://tests/editor/scripts/rlink_await.gd" id="11_65005"]
+[ext_resource type="Script" uid="uid://cy812ttkiutkj" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
+[ext_resource type="Script" uid="uid://c7o2ghum5gwo5" path="res://tests/editor/scripts/rlink_await.gd" id="11_65005"]
 
 [sub_resource type="Resource" id="Resource_e88u2"]
 script = ExtResource("3_mgxhu")
@@ -52,7 +53,7 @@ export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 
-[sub_resource type="Resource" id="Resource_of3dg"]
+[sub_resource type="Resource" id="Resource_d0cf0"]
 script = ExtResource("3_mgxhu")
 export_bool_var = true
 export_int_var = 0
@@ -88,7 +89,7 @@ export_PackedVector2Array_var = PackedVector2Array()
 export_PackedVector3Array_var = PackedVector3Array()
 export_PackedColorArray_var = PackedColorArray()
 
-[sub_resource type="Resource" id="Resource_flfwn"]
+[sub_resource type="Resource" id="Resource_kfynm"]
 script = ExtResource("5_xpbgq")
 export_bool_var = true
 export_int_var = 100
@@ -126,7 +127,7 @@ export_PackedStringArray_var = PackedStringArray("hello world", "new value", "th
 export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-inner = SubResource("Resource_of3dg")
+inner = SubResource("Resource_d0cf0")
 
 [sub_resource type="Resource" id="Resource_b5c2a"]
 script = ExtResource("9_65005")
@@ -351,8 +352,11 @@ metadata/rlink_skip = false
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
 script = ExtResource("2_mgxhu")
-inner = SubResource("Resource_flfwn")
+inner = SubResource("Resource_kfynm")
 metadata/rlink_skip = false
+
+[node name="ValidatePacked" type="Node" parent="."]
+script = ExtResource("6_utf88")
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_baol1")

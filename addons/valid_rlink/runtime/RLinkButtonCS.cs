@@ -433,9 +433,10 @@ public partial class RLinkButtonCS : Resource
     }
 #if GODOT4_4_OR_GREATER
     public override void _ResetState()
-#endif
+#else
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "It exists in a newer version")]
     public void _ResetState()
+#endif
     {
         RestoreDefault();
     }
