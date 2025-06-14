@@ -433,11 +433,11 @@ public partial class RLinkButtonCS : Resource
         RestoreDefault();
     }
 
-    protected override void Dispose(bool disposing)
-    {
-        CancelTask();
-        base.Dispose(disposing);
-    }
+    // protected override void Dispose(bool disposing)
+    // {
+    //     CancelTask();
+    //     base.Dispose(disposing);
+    // }
 
     private void SetDefaults()
     {
@@ -448,46 +448,6 @@ public partial class RLinkButtonCS : Resource
         MaxWidth = 200;
         ClipText = true;
         SizeFlags = ControlSizes.SizeUnset;
-
-        using Script rlinkScript = ResourceLoader.Load<Script>("res://addons/valid_rlink/runtime/rlink_button.gd");
-
-        string path = ProjectSettings.GetSettingWithOverride("addons/valid_rlink/default_button_path").AsString();
-        if (!string.IsNullOrWhiteSpace(path) && ResourceLoader.Exists(path))
-        {
-            using Resource defaultBtn = ResourceLoader.Load(path);
-            using Script? btnScript = defaultBtn.GetScript().AsGodotObject() as Script;
-
-            Dictionary<StringName, StringName> map = new()
-            {
-                {"text", "Text"},
-                {"tooltip_text", "TooltipText"},
-                {"icon", "Icon"},
-                {"icon_texture", "IconTexture"},
-                {"icon_alignment", "IconAlignment"},
-                {"icon_alignment_vertical", "IconAlignmentVertical"},
-                {"modulate", "Modulate"},
-                {"max_width", "MaxWidth"},
-                {"min_height", "MinHeight"},
-                {"margin_left", "MarginLeft"},
-                {"margin_top", "MarginTop"},
-                {"margin_right", "MarginRight"},
-                {"margin_bottom", "MarginBottom"},
-                {"disabled", "Disabled"},
-                {"clip_text", "ClipText"},
-                {"size_flags", "SizeFlags"},
-                {"bound_args", "BoundArgs"},
-                {"unbind_next", "UnbindNext"},
-                {"callable_method_name", "CallableMethodName"},
-            };
-            if (btnScript is not null && btnScript == rlinkScript)
-            {
-                foreach (StringName propNameGD in GodotHelper.GetObjectProperties(defaultBtn))
-                {
-                    StringName propName = map[propNameGD];
-                    Set(propName, defaultBtn.Get(propNameGD));
-                }
-            }
-        }
     }
 
     /// <inheritdoc cref="SetObject(GodotObject, StringName?)"/>

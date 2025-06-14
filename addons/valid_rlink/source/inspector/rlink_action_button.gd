@@ -79,6 +79,7 @@ func setup(rlink_button: RLinkButton, property: String) -> void:
     if not rlink_button.has_meta(&"default_values"):
         if rlink_button.text.is_empty():
             rlink_button.text = property.capitalize()
+        _set_default(rlink_button)
         rlink_button.set_current_as_default()
         var old_runtime: Resource = _data.runtime.get(property)
         var run_button: Resource = rlink_button.duplicate()
@@ -87,6 +88,7 @@ func setup(rlink_button: RLinkButton, property: String) -> void:
         _buffer.flush_changes()
         _buffer.commit_action()
         __rlink_map.add_pair(run_button, rlink_button)
+        __ctx.converter_to_tool._connect_rlink_buttons(_buffer, run_button)
         
     _rlink_button.changed.connect(_on_rlink_button_changed)
     _on_rlink_button_changed()
@@ -98,6 +100,7 @@ func setup_cs(rlink_button_cs: Resource, property: String) -> void:
     if not rlink_button_cs.has_meta(&"default_values"):
         if rlink_button_cs.Text.is_empty():
             rlink_button_cs.Text = property.capitalize()
+        _set_default(rlink_button_cs)
         rlink_button_cs.SetCurrentAsDefault()
         
         var old_runtime: Resource = _data.runtime.get(property)
@@ -107,9 +110,68 @@ func setup_cs(rlink_button_cs: Resource, property: String) -> void:
         _buffer.flush_changes()
         _buffer.commit_action()
         __rlink_map.add_pair(run_button, rlink_button_cs)
+        __ctx.converter_to_tool._connect_rlink_buttons(_buffer, run_button)
         
     _rlink_button_cs.changed.connect(_on_rlink_button_changed_cs)
     _on_rlink_button_changed_cs()
+
+
+func _set_default(rlink_button: Resource) -> void:
+    var real_defaults: Dictionary = {
+        icon_alignment = HORIZONTAL_ALIGNMENT_LEFT,
+        icon_alignment_vertical = VERTICAL_ALIGNMENT_CENTER,
+        modulate = Color.WHITE,
+        max_width = 200,
+        clip_text = true,
+        size_flags = RLinkButton.ControlSizes.SIZE_UNSET,
+    }
+    
+    if not __ctx.settings.default_button_path or not ResourceLoader.exists(__ctx.settings.default_button_path):
+        return
+        
+    var default_btn: Resource = load(__ctx.settings.default_button_path)
+    if default_btn == null or not default_btn is RLinkButton:
+        return
+    
+    if rlink_button is RLinkButton:
+        var comb_flag: int = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+        for prop in default_btn.get_property_list():
+            if (prop["usage"] & comb_flag) != comb_flag: continue
+            var prop_name: StringName = prop["name"]
+            var current: Variant = rlink_button.get(prop_name)
+            var default: Variant = real_defaults.get(prop_name)
+            if not current or (default != null and current == default):
+                rlink_button.set(prop_name, default_btn.get(prop_name))
+    else:
+        var map: Dictionary = {
+            &"text": &"Text",
+            &"tooltip_text": &"TooltipText",
+            &"icon": &"Icon",
+            &"icon_texture": &"IconTexture",
+            &"icon_alignment": &"IconAlignment",
+            &"icon_alignment_vertical": &"IconAlignmentVertical",
+            &"modulate": &"Modulate",
+            &"max_width": &"MaxWidth",
+            &"min_height": &"MinHeight",
+            &"margin_left": &"MarginLeft",
+            &"margin_top": &"MarginTop",
+            &"margin_right": &"MarginRight",
+            &"margin_bottom": &"MarginBottom",
+            &"disabled": &"Disabled",
+            &"clip_text": &"ClipText",
+            &"size_flags": &"SizeFlags",
+            &"bound_args": &"BoundArgs",
+            &"unbind_next": &"UnbindNext",
+            &"callable_method_name": &"CallableMethodName",
+        }
+        var comb_flag: int = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+        for prop in default_btn.get_property_list():
+            if (prop["usage"] & comb_flag) != comb_flag: continue
+            var prop_name: StringName = prop["name"]
+            var current: Variant = rlink_button.get(map[prop_name])
+            var default: Variant = real_defaults.get(prop_name)
+            if not current or (default != null and current == default):
+                rlink_button.set(map[prop_name], default_btn.get(prop_name))
 
 
 func _on_busy_changed(_status: bool, _id: int) -> void:

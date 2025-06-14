@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://clwknig30ctig"]
+[gd_scene load_steps=32 format=3 uid="uid://clwknig30ctig"]
 
 [ext_resource type="Script" uid="uid://cswdnxsjfowri" path="res://tests/editor_csharp/scripts/ValidateBasic.cs" id="1_tyrjc"]
 [ext_resource type="Script" uid="uid://bt0ngtfnsuu3" path="res://tests/editor_csharp/scripts/ValidateInner.cs" id="2_ykr5n"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://oiivtaepeo5h" path="res://tests/editor_csharp/scripts/RLinkChild.cs" id="6_a5adi"]
 [ext_resource type="Script" uid="uid://dfu5kjfjxc3m0" path="res://tests/editor_csharp/scripts/RLinkScene.cs" id="7_a5adi"]
 [ext_resource type="PackedScene" path="res://tests/editor_csharp/simple_scene.tscn" id="8_5qioq"]
-[ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="8_75rvy"]
 [ext_resource type="Script" uid="uid://bvn01egv77461" path="res://addons/valid_rlink/runtime/RLinkButtonCS.cs" id="9_jcvuu"]
 [ext_resource type="Script" uid="uid://8rot1okdp2cx" path="res://tests/editor_csharp/scripts/RLinkChanges.cs" id="10_mqgjl"]
 [ext_resource type="Script" uid="uid://dj8jidkak0kcq" path="res://tests/editor_csharp/scripts/RLinkAsync.cs" id="11_wjsgh"]
@@ -135,13 +134,13 @@ TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 1, 1)
-MaxWidth = 200
+Modulate = Color(0.488731, 0.466175, 0.444257, 1)
+MaxWidth = 195
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 2
 MarginRight = 0
-MarginBottom = 2
+MarginBottom = 0
 Disabled = false
 ClipText = true
 SizeFlags = -1
@@ -153,18 +152,18 @@ metadata/default_values = {
 &"CallableMethodName": &"ToggleDirectChildImpl",
 &"ClipText": true,
 &"Disabled": false,
-&"Icon": "Clear",
+&"Icon": "",
 &"IconAlignment": 0,
 &"IconAlignmentVertical": 1,
 &"IconTexture": null,
-&"MarginBottom": 2,
+&"MarginBottom": 0,
 &"MarginLeft": 0,
 &"MarginRight": 0,
 &"MarginTop": 2,
-&"MaxWidth": 0,
+&"MaxWidth": 195,
 &"MinHeight": 0,
-&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
-&"SizeFlags": 3,
+&"Modulate": Color(0.488731, 0.466175, 0.444257, 1),
+&"SizeFlags": -1,
 &"Text": "Toggle Direct Child",
 &"TooltipText": "",
 &"UnbindNext": 0
@@ -175,19 +174,18 @@ script = ExtResource("9_jcvuu")
 Text = "Toggle Direct Child Path"
 TooltipText = ""
 Icon = ""
-IconTexture = ExtResource("8_75rvy")
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 1, 1)
-MaxWidth = 0
+Modulate = Color(0.488731, 0.466175, 0.444257, 1)
+MaxWidth = 195
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 2
 MarginRight = 0
-MarginBottom = 2
+MarginBottom = 0
 Disabled = false
 ClipText = true
-SizeFlags = 3
+SizeFlags = -1
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleDirectChildPathImpl"
@@ -196,18 +194,18 @@ metadata/default_values = {
 &"CallableMethodName": &"ToggleDirectChildPathImpl",
 &"ClipText": true,
 &"Disabled": false,
-&"Icon": "Clear",
+&"Icon": "",
 &"IconAlignment": 0,
 &"IconAlignmentVertical": 1,
 &"IconTexture": null,
-&"MarginBottom": 2,
+&"MarginBottom": 0,
 &"MarginLeft": 0,
 &"MarginRight": 0,
 &"MarginTop": 2,
-&"MaxWidth": 0,
+&"MaxWidth": 195,
 &"MinHeight": 0,
-&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
-&"SizeFlags": 3,
+&"Modulate": Color(0.488731, 0.466175, 0.444257, 1),
+&"SizeFlags": -1,
 &"Text": "Toggle Direct Child Path",
 &"TooltipText": "",
 &"UnbindNext": 0
@@ -217,19 +215,19 @@ metadata/default_values = {
 script = ExtResource("9_jcvuu")
 Text = "Toggle Child Path"
 TooltipText = ""
-Icon = "Clear"
+Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
-MaxWidth = 0
+Modulate = Color(0.488731, 0.466175, 0.444257, 1)
+MaxWidth = 195
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 2
 MarginRight = 0
-MarginBottom = 2
+MarginBottom = 0
 Disabled = false
 ClipText = true
-SizeFlags = 3
+SizeFlags = -1
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleChildPathImpl"
@@ -238,18 +236,18 @@ metadata/default_values = {
 &"CallableMethodName": &"ToggleChildPathImpl",
 &"ClipText": true,
 &"Disabled": false,
-&"Icon": "Clear",
+&"Icon": "",
 &"IconAlignment": 0,
 &"IconAlignmentVertical": 1,
 &"IconTexture": null,
-&"MarginBottom": 2,
+&"MarginBottom": 0,
 &"MarginLeft": 0,
 &"MarginRight": 0,
 &"MarginTop": 2,
-&"MaxWidth": 0,
+&"MaxWidth": 195,
 &"MinHeight": 0,
-&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
-&"SizeFlags": 3,
+&"Modulate": Color(0.488731, 0.466175, 0.444257, 1),
+&"SizeFlags": -1,
 &"Text": "Toggle Child Path",
 &"TooltipText": "",
 &"UnbindNext": 0
@@ -259,19 +257,19 @@ metadata/default_values = {
 script = ExtResource("9_jcvuu")
 Text = "Toggle Child From"
 TooltipText = ""
-Icon = "Clear"
+Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
-MaxWidth = 0
+Modulate = Color(0.488731, 0.466175, 0.444257, 1)
+MaxWidth = 195
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 2
 MarginRight = 0
-MarginBottom = 2
+MarginBottom = 0
 Disabled = false
 ClipText = true
-SizeFlags = 3
+SizeFlags = -1
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleChildFromImpl"
@@ -280,18 +278,18 @@ metadata/default_values = {
 &"CallableMethodName": &"ToggleChildFromImpl",
 &"ClipText": true,
 &"Disabled": false,
-&"Icon": "Clear",
+&"Icon": "",
 &"IconAlignment": 0,
 &"IconAlignmentVertical": 1,
 &"IconTexture": null,
-&"MarginBottom": 2,
+&"MarginBottom": 0,
 &"MarginLeft": 0,
 &"MarginRight": 0,
 &"MarginTop": 2,
-&"MaxWidth": 0,
+&"MaxWidth": 195,
 &"MinHeight": 0,
-&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
-&"SizeFlags": 3,
+&"Modulate": Color(0.488731, 0.466175, 0.444257, 1),
+&"SizeFlags": -1,
 &"Text": "Toggle Child From",
 &"TooltipText": "",
 &"UnbindNext": 0
@@ -301,19 +299,19 @@ metadata/default_values = {
 script = ExtResource("9_jcvuu")
 Text = "Toggle Child Get Parent"
 TooltipText = ""
-Icon = "Clear"
+Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
-MaxWidth = 0
+Modulate = Color(0.488731, 0.466175, 0.444257, 1)
+MaxWidth = 195
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 2
 MarginRight = 0
-MarginBottom = 2
+MarginBottom = 0
 Disabled = false
 ClipText = true
-SizeFlags = 3
+SizeFlags = -1
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleChildGetParentImpl"
@@ -322,18 +320,18 @@ metadata/default_values = {
 &"CallableMethodName": &"ToggleChildGetParentImpl",
 &"ClipText": true,
 &"Disabled": false,
-&"Icon": "Clear",
+&"Icon": "",
 &"IconAlignment": 0,
 &"IconAlignmentVertical": 1,
 &"IconTexture": null,
-&"MarginBottom": 2,
+&"MarginBottom": 0,
 &"MarginLeft": 0,
 &"MarginRight": 0,
 &"MarginTop": 2,
-&"MaxWidth": 0,
+&"MaxWidth": 195,
 &"MinHeight": 0,
-&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
-&"SizeFlags": 3,
+&"Modulate": Color(0.488731, 0.466175, 0.444257, 1),
+&"SizeFlags": -1,
 &"Text": "Toggle Child Get Parent",
 &"TooltipText": "",
 &"UnbindNext": 0
@@ -343,19 +341,19 @@ metadata/default_values = {
 script = ExtResource("9_jcvuu")
 Text = "Toggle Has From"
 TooltipText = ""
-Icon = "Clear"
+Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
-MaxWidth = 0
+Modulate = Color(0.488731, 0.466175, 0.444257, 1)
+MaxWidth = 195
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 2
 MarginRight = 0
-MarginBottom = 2
+MarginBottom = 0
 Disabled = false
 ClipText = true
-SizeFlags = 3
+SizeFlags = -1
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleHasFromImpl"
@@ -364,18 +362,18 @@ metadata/default_values = {
 &"CallableMethodName": &"ToggleHasFromImpl",
 &"ClipText": true,
 &"Disabled": false,
-&"Icon": "Clear",
+&"Icon": "",
 &"IconAlignment": 0,
 &"IconAlignmentVertical": 1,
 &"IconTexture": null,
-&"MarginBottom": 2,
+&"MarginBottom": 0,
 &"MarginLeft": 0,
 &"MarginRight": 0,
 &"MarginTop": 2,
-&"MaxWidth": 0,
+&"MaxWidth": 195,
 &"MinHeight": 0,
-&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
-&"SizeFlags": 3,
+&"Modulate": Color(0.488731, 0.466175, 0.444257, 1),
+&"SizeFlags": -1,
 &"Text": "Toggle Has From",
 &"TooltipText": "",
 &"UnbindNext": 0
@@ -385,19 +383,19 @@ metadata/default_values = {
 script = ExtResource("9_jcvuu")
 Text = "Remove All Children"
 TooltipText = ""
-Icon = "Clear"
+Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(0.870588, 0, 0, 1)
-MaxWidth = 0
+Modulate = Color(0.880241, 0, 0.153971, 1)
+MaxWidth = 195
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 2
 MarginRight = 0
-MarginBottom = 2
+MarginBottom = 0
 Disabled = false
 ClipText = true
-SizeFlags = 3
+SizeFlags = -1
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"RemoveAllChildrenImpl"
@@ -406,18 +404,18 @@ metadata/default_values = {
 &"CallableMethodName": &"RemoveAllChildrenImpl",
 &"ClipText": true,
 &"Disabled": false,
-&"Icon": "Clear",
+&"Icon": "",
 &"IconAlignment": 0,
 &"IconAlignmentVertical": 1,
 &"IconTexture": null,
-&"MarginBottom": 2,
+&"MarginBottom": 0,
 &"MarginLeft": 0,
 &"MarginRight": 0,
 &"MarginTop": 2,
-&"MaxWidth": 0,
+&"MaxWidth": 195,
 &"MinHeight": 0,
-&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
-&"SizeFlags": 3,
+&"Modulate": Color(0.488731, 0.466175, 0.444257, 1),
+&"SizeFlags": -1,
 &"Text": "Remove All Children",
 &"TooltipText": "",
 &"UnbindNext": 0
@@ -427,19 +425,19 @@ metadata/default_values = {
 script = ExtResource("9_jcvuu")
 Text = "Remove All Children From"
 TooltipText = ""
-Icon = "Clear"
+Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
-MaxWidth = 0
+Modulate = Color(0.488731, 0.466175, 0.444257, 1)
+MaxWidth = 195
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 2
 MarginRight = 0
-MarginBottom = 2
+MarginBottom = 0
 Disabled = false
 ClipText = true
-SizeFlags = 3
+SizeFlags = -1
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"RemoveAllChildrenFromImpl"
@@ -448,18 +446,18 @@ metadata/default_values = {
 &"CallableMethodName": &"RemoveAllChildrenFromImpl",
 &"ClipText": true,
 &"Disabled": false,
-&"Icon": "Clear",
+&"Icon": "",
 &"IconAlignment": 0,
 &"IconAlignmentVertical": 1,
 &"IconTexture": null,
-&"MarginBottom": 2,
+&"MarginBottom": 0,
 &"MarginLeft": 0,
 &"MarginRight": 0,
 &"MarginTop": 2,
-&"MaxWidth": 0,
+&"MaxWidth": 195,
 &"MinHeight": 0,
-&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
-&"SizeFlags": 3,
+&"Modulate": Color(0.488731, 0.466175, 0.444257, 1),
+&"SizeFlags": -1,
 &"Text": "Remove All Children From",
 &"TooltipText": "",
 &"UnbindNext": 0
@@ -469,19 +467,19 @@ metadata/default_values = {
 script = ExtResource("9_jcvuu")
 Text = "Remove All Children Path"
 TooltipText = ""
-Icon = "Clear"
+Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
-MaxWidth = 0
+Modulate = Color(0.488731, 0.466175, 0.444257, 1)
+MaxWidth = 195
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 2
 MarginRight = 0
-MarginBottom = 2
+MarginBottom = 0
 Disabled = false
 ClipText = true
-SizeFlags = 3
+SizeFlags = -1
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"RemoveAllChildrenPathImpl"
@@ -490,18 +488,18 @@ metadata/default_values = {
 &"CallableMethodName": &"RemoveAllChildrenPathImpl",
 &"ClipText": true,
 &"Disabled": false,
-&"Icon": "Clear",
+&"Icon": "",
 &"IconAlignment": 0,
 &"IconAlignmentVertical": 1,
 &"IconTexture": null,
-&"MarginBottom": 2,
+&"MarginBottom": 0,
 &"MarginLeft": 0,
 &"MarginRight": 0,
 &"MarginTop": 2,
-&"MaxWidth": 0,
+&"MaxWidth": 195,
 &"MinHeight": 0,
-&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
-&"SizeFlags": 3,
+&"Modulate": Color(0.488731, 0.466175, 0.444257, 1),
+&"SizeFlags": -1,
 &"Text": "Remove All Children Path",
 &"TooltipText": "",
 &"UnbindNext": 0
@@ -556,16 +554,16 @@ TooltipText = ""
 Icon = "Clear"
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(0, 0, 0, 1)
-MaxWidth = 0
+Modulate = Color(0.684796, 0.384807, 0, 1)
+MaxWidth = 195
 MinHeight = 0
-MarginLeft = 0
-MarginTop = 2
+MarginLeft = 35
+MarginTop = 32
 MarginRight = 0
 MarginBottom = 2
 Disabled = false
 ClipText = true
-SizeFlags = 3
+SizeFlags = -1
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleConnectImpl"
@@ -579,13 +577,13 @@ metadata/default_values = {
 &"IconAlignmentVertical": 1,
 &"IconTexture": null,
 &"MarginBottom": 2,
-&"MarginLeft": 0,
+&"MarginLeft": 35,
 &"MarginRight": 0,
-&"MarginTop": 2,
-&"MaxWidth": 0,
+&"MarginTop": 32,
+&"MaxWidth": 195,
 &"MinHeight": 0,
-&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
-&"SizeFlags": 3,
+&"Modulate": Color(0.684796, 0.384807, 0, 1),
+&"SizeFlags": -1,
 &"Text": "Toggle Connect",
 &"TooltipText": "",
 &"UnbindNext": 0
@@ -829,13 +827,13 @@ metadata/rlink_skip = false
 
 [node name="DirectChild" type="Node" parent="RLinkChild"]
 
-[node name="HasFrom" type="Node" parent="RLinkChild/DirectChild"]
-
-[node name="GetParent" type="Node" parent="RLinkChild/DirectChild"]
+[node name="ChildPath" type="Node" parent="RLinkChild/DirectChild"]
 
 [node name="ChildFrom" type="Node" parent="RLinkChild/DirectChild"]
 
-[node name="ChildPath" type="Node" parent="RLinkChild/DirectChild"]
+[node name="GetParent" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="HasFrom" type="Node" parent="RLinkChild/DirectChild"]
 
 [node name="DirectChildPath" type="Node" parent="RLinkChild"]
 

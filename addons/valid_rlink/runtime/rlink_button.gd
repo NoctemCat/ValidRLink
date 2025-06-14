@@ -190,17 +190,6 @@ func _set_default() -> void:
     clip_text = true
     size_flags = ControlSizes.SIZE_UNSET
 
-    var path: String = ProjectSettings.get_setting_with_override("addons/valid_rlink/default_button_path")
-    if path != "" and ResourceLoader.exists(path):
-        var default_btn: Resource = load(path)
-        if not default_btn is RLinkButton or self == default_btn:
-            return
-        var comb_flag: int = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
-        for prop in default_btn.get_property_list():
-            if (prop["usage"] & comb_flag) != comb_flag: continue
-            var prop_name: StringName = prop["name"]
-            set(prop_name, default_btn.get(prop_name))
-
 
 ## Sets object and, optionally, method to prepare it for calling
 func set_object(object: Object, method: StringName = "") -> RLinkButton:

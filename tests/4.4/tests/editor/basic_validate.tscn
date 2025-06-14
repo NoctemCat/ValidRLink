@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://d3dut4dsdaetg"]
+[gd_scene load_steps=22 format=3 uid="uid://d3dut4dsdaetg"]
 
 [ext_resource type="Script" uid="uid://c0776xyhyin8h" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
 [ext_resource type="Script" uid="uid://cdsgv6uw5huvs" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" uid="uid://cl578xaoh1it6" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
 [ext_resource type="PackedScene" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
 [ext_resource type="Script" uid="uid://beknapxgoro47" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
-[ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="10_p40gm"]
 [ext_resource type="Script" uid="uid://cy812ttkiutkj" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
 [ext_resource type="Script" uid="uid://c7o2ghum5gwo5" path="res://tests/editor/scripts/rlink_await.gd" id="11_65005"]
 
@@ -53,7 +52,7 @@ export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 
-[sub_resource type="Resource" id="Resource_d0cf0"]
+[sub_resource type="Resource" id="Resource_utf88"]
 script = ExtResource("3_mgxhu")
 export_bool_var = true
 export_int_var = 0
@@ -89,7 +88,7 @@ export_PackedVector2Array_var = PackedVector2Array()
 export_PackedVector3Array_var = PackedVector3Array()
 export_PackedColorArray_var = PackedColorArray()
 
-[sub_resource type="Resource" id="Resource_kfynm"]
+[sub_resource type="Resource" id="Resource_d0cf0"]
 script = ExtResource("5_xpbgq")
 export_bool_var = true
 export_int_var = 100
@@ -127,7 +126,7 @@ export_PackedStringArray_var = PackedStringArray("hello world", "new value", "th
 export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-inner = SubResource("Resource_d0cf0")
+inner = SubResource("Resource_utf88")
 
 [sub_resource type="Resource" id="Resource_b5c2a"]
 script = ExtResource("9_65005")
@@ -171,21 +170,20 @@ metadata/default_values = {
 "unbind_next": 0
 }
 
-[sub_resource type="Resource" id="Resource_utf88"]
+[sub_resource type="Resource" id="Resource_p40gm"]
 script = ExtResource("9_65005")
 text = "Toggle Connect"
 tooltip_text = ""
-icon = ""
-icon_texture = ExtResource("10_p40gm")
+icon = "Clear"
 icon_alignment = 0
 icon_alignment_vertical = 1
-modulate = Color(0, 1, 1, 1)
-max_width = 110
+modulate = Color(0.684796, 0.384807, 0, 1)
+max_width = 195
 min_height = 0
-margin_left = 0
-margin_top = 0
+margin_left = 35
+margin_top = 32
 margin_right = 0
-margin_bottom = 0
+margin_bottom = 2
 disabled = false
 clip_text = true
 size_flags = -1
@@ -193,32 +191,31 @@ bound_args = []
 unbind_next = 0
 callable_method_name = &"toggle_connect_impl"
 metadata/default_values = {
-"bound_args": [],
-"callable_method_name": &"toggle_connect_impl",
-"clip_text": true,
-"disabled": false,
-"icon": "",
-"icon_alignment": 0,
-"icon_alignment_vertical": 1,
-"icon_texture": null,
-"margin_bottom": 0,
-"margin_left": 0,
-"margin_right": 0,
-"margin_top": 0,
-"max_width": 110,
-"min_height": 0,
-"modulate": Color(0, 1, 1, 1),
-"size_flags": -1,
-"text": "Toggle Connect",
-"tooltip_text": "",
-"unbind_next": 0
+&"bound_args": [],
+&"callable_method_name": &"toggle_connect_impl",
+&"clip_text": true,
+&"disabled": false,
+&"icon": "Clear",
+&"icon_alignment": 0,
+&"icon_alignment_vertical": 1,
+&"icon_texture": null,
+&"margin_bottom": 2,
+&"margin_left": 35,
+&"margin_right": 0,
+&"margin_top": 32,
+&"max_width": 195,
+&"min_height": 0,
+&"modulate": Color(0.684796, 0.384807, 0, 1),
+&"size_flags": -1,
+&"text": "Toggle Connect",
+&"tooltip_text": "",
+&"unbind_next": 0
 }
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_oua4o"]
-seed = 1234
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_p40gm"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_py022"]
-noise = SubResource("FastNoiseLite_oua4o")
+noise = SubResource("FastNoiseLite_p40gm")
 
 [sub_resource type="Resource" id="Resource_asyf6"]
 script = ExtResource("9_65005")
@@ -352,11 +349,12 @@ metadata/rlink_skip = false
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
 script = ExtResource("2_mgxhu")
-inner = SubResource("Resource_kfynm")
+inner = SubResource("Resource_d0cf0")
 metadata/rlink_skip = false
 
 [node name="ValidatePacked" type="Node" parent="."]
 script = ExtResource("6_utf88")
+array = PackedInt32Array(5, 0, 0, 0, 0)
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_baol1")
@@ -381,7 +379,7 @@ scene_export = NodePath("SceneExport")
 scene_load = NodePath("SceneLoad")
 scene_file = NodePath("SceneFile")
 remove_all = SubResource("Resource_b5c2a")
-toggle_connect = SubResource("Resource_utf88")
+toggle_connect = SubResource("Resource_p40gm")
 metadata/rlink_skip = false
 
 [node name="SceneExport" parent="RLinkScene" instance=ExtResource("8_tvfff")]
