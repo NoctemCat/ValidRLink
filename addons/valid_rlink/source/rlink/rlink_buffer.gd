@@ -307,7 +307,10 @@ func push_validate_action(name: String, object: Object) -> void:
 
 # Pretty ugly workaround
 func _update_tree() -> void:
-    if __compat.engine_version >= 0x040300:
+    if not __settings.update_tree_on_signal_change:
+        return
+    
+    if __compat.engine_version >= 0x040400:
         return
     
     var root: Node = Engine.get_main_loop().edited_scene_root
@@ -324,4 +327,11 @@ func _get_owned_by(owner: Node, node: Node, owned: Array[Node]) -> void:
     
     for idx in node.get_child_count():
         _get_owned_by(owner, node.get_child(idx), owned)
+        
+
+
+static func find_child_by_class(node:Node, cls:String):
+    for child in node.get_children():
+        if child.get_class() == cls:
+            return child
 #endregion

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3]
+[gd_scene load_steps=23 format=3 uid="uid://pv4ssbpvluxj"]
 
 [ext_resource type="Script" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
 [ext_resource type="Script" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
@@ -6,8 +6,9 @@
 [ext_resource type="Script" path="res://tests/editor/scripts/inner_resource.gd" id="3_mgxhu"]
 [ext_resource type="Script" path="res://tests/editor/scripts/inner_resource_validate.gd" id="5_xpbgq"]
 [ext_resource type="Script" path="res://tests/editor/scripts/rlink_child.gd" id="6_baol1"]
+[ext_resource type="Script" path="res://tests/editor/scripts/validate_packed.gd" id="6_c8q22"]
 [ext_resource type="Script" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
-[ext_resource type="PackedScene" uid="uid://dyftaq5bcj40m" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
+[ext_resource type="PackedScene" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
 [ext_resource type="Script" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
 [ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="10_p40gm"]
 [ext_resource type="Script" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
@@ -353,6 +354,9 @@ metadata/rlink_skip = false
 script = ExtResource("2_mgxhu")
 inner = SubResource("Resource_flfwn")
 metadata/rlink_skip = false
+
+[node name="ValidatePacked" type="Node" parent="."]
+script = ExtResource("6_c8q22")
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_baol1")

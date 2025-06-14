@@ -176,4 +176,3 @@ func _copy_button_theme() -> void:
     theme.set_constant(&"h_separation", &"IconButton", roundi(left_margin))
 
     theme.set_type_variation(&"IconButton", &"Button")
-    

@@ -7,6 +7,7 @@ var _runtime_ids_table: Dictionary
 
 
 func tool_from_obj(runtime: Object) -> Object:
+    if runtime == null: return null
     var tool_id: int = _tool_ids_table.get(runtime.get_instance_id(), 0)
     if tool_id == 0: return null
     return instance_from_id(tool_id)
@@ -23,6 +24,7 @@ func tool_id_from_id(runtime_id: int) -> int:
 
 
 func runtime_from_obj(tool: Object) -> Object:
+    if tool == null: return null
     var runtime_id: int = _runtime_ids_table.get(tool.get_instance_id(), 0)
     if runtime_id == 0: return null
     return instance_from_id(runtime_id)

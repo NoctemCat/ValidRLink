@@ -8,14 +8,9 @@
 
 config_version=5
 
-[addons]
-
-valid_rlink/misc/duplicate_packed_arrays=false
-
 [application]
 
 config/name="ValidRLink"
-run/main_scene="uid://de06e31f7iu5i"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

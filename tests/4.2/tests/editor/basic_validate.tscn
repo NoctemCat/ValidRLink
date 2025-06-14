@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3]
+[gd_scene load_steps=23 format=3 uid="uid://dwaw68u3aybf3"]
 
 [ext_resource type="Script" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
 [ext_resource type="Script" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
@@ -6,14 +6,15 @@
 [ext_resource type="Script" path="res://tests/editor/scripts/inner_resource.gd" id="3_mgxhu"]
 [ext_resource type="Script" path="res://tests/editor/scripts/inner_resource_validate.gd" id="5_xpbgq"]
 [ext_resource type="Script" path="res://tests/editor/scripts/rlink_child.gd" id="6_baol1"]
+[ext_resource type="Script" path="res://tests/editor/scripts/validate_packed.gd" id="6_nmym4"]
 [ext_resource type="Script" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
-[ext_resource type="PackedScene" uid="uid://dyftaq5bcj40m" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
+[ext_resource type="PackedScene" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
 [ext_resource type="Script" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
 [ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="10_p40gm"]
 [ext_resource type="Script" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
 [ext_resource type="Script" path="res://tests/editor/scripts/rlink_await.gd" id="11_65005"]
 
-[sub_resource type="Resource" id="Resource_e88u2"]
+[sub_resource type="Resource" id="Resource_cgr2a"]
 script = ExtResource("3_mgxhu")
 export_bool_var = true
 export_int_var = 100
@@ -52,7 +53,7 @@ export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 
-[sub_resource type="Resource" id="Resource_of3dg"]
+[sub_resource type="Resource" id="Resource_gbkkc"]
 script = ExtResource("3_mgxhu")
 export_bool_var = true
 export_int_var = 0
@@ -88,7 +89,7 @@ export_PackedVector2Array_var = PackedVector2Array()
 export_PackedVector3Array_var = PackedVector3Array()
 export_PackedColorArray_var = PackedColorArray()
 
-[sub_resource type="Resource" id="Resource_flfwn"]
+[sub_resource type="Resource" id="Resource_itim8"]
 script = ExtResource("5_xpbgq")
 export_bool_var = true
 export_int_var = 100
@@ -126,7 +127,7 @@ export_PackedStringArray_var = PackedStringArray("hello world", "new value", "th
 export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-inner = SubResource("Resource_of3dg")
+inner = SubResource("Resource_gbkkc")
 
 [sub_resource type="Resource" id="Resource_b5c2a"]
 script = ExtResource("9_65005")
@@ -214,7 +215,6 @@ metadata/default_values = {
 }
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_oua4o"]
-seed = 1234
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_py022"]
 noise = SubResource("FastNoiseLite_oua4o")
@@ -346,13 +346,16 @@ export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176
 
 [node name="ValidateInner" type="Node" parent="."]
 script = ExtResource("2_2l0tt")
-inner = SubResource("Resource_e88u2")
+inner = SubResource("Resource_cgr2a")
 metadata/rlink_skip = false
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
 script = ExtResource("2_mgxhu")
-inner = SubResource("Resource_flfwn")
+inner = SubResource("Resource_itim8")
 metadata/rlink_skip = false
+
+[node name="ValidateChanges" type="Node" parent="."]
+script = ExtResource("6_nmym4")
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_baol1")
@@ -396,7 +399,7 @@ noise_texture = SubResource("NoiseTexture2D_py022")
 
 [node name="RLinkAwait" type="Node" parent="."]
 script = ExtResource("11_65005")
-int_var = 4
+int_var = 6
 set_int = SubResource("Resource_asyf6")
 success = true
 set_int_checked = SubResource("Resource_hoejj")

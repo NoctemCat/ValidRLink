@@ -162,18 +162,33 @@ func _validate_visit_object(name: String, v_visit: Dictionary, object: Object, d
 func validate_object(name: String, object: Object, result: ScanResult) -> void:
     var obj_runtime := __map.runtime_from_obj(object)
     if obj_runtime == null: return
+    
+    var rlink := _get_helper(object)
     if convert_to_tool(obj_runtime) == null: return
     
+    var restore: Callable
+    if rlink is RLink:
+        var old_id = rlink._object_id
+        rlink._object_id = obj_runtime.get_instance_id()
+        restore = func(): rlink._object_id = old_id
+    else:
+        var old_id = rlink._objectId
+        rlink._objectId = obj_runtime.get_instance_id()
+        restore = func(): rlink._objectId = old_id
+        
     var call_res: Variant = _call_validate(object, result)
     if result.validate_check_return and not is_same(call_res, true):
         _buffer.discard_changes()
+        restore.call()
         return
         
     if convert_to_runtime(object) == null:
         _buffer.discard_changes()
+        restore.call()
         return
     
     _buffer.push_validate_action("Validate '%s'" % name, obj_runtime)
+    restore.call()
 
 
 func _call_validate(object: Object, result: ScanResult) -> Variant:

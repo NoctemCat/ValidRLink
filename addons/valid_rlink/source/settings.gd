@@ -19,6 +19,7 @@ const DEFAULT_VALUES := {
     csharp_execute_pending_continuations = true,
     csharp_swallow_base_exception = true,
     duplicate_packed_arrays = true,
+    update_tree_on_signal_change = true,
 }
 
 const NAME_ALIASES := {
@@ -29,6 +30,7 @@ const NAME_ALIASES := {
     csharp_execute_pending_continuations = "csharp_assembly_unload/execute_pending_continuations",
     csharp_swallow_base_exception = "csharp_assembly_unload/swallow_base_exception",
     duplicate_packed_arrays = "misc/duplicate_packed_arrays",
+    update_tree_on_signal_change = "misc/update_tree_on_signal_change",
 }
 
 const PROP_HINTS := {
@@ -53,6 +55,7 @@ var csharp_collect_gc: bool
 var csharp_execute_pending_continuations: bool
 var csharp_swallow_base_exception: bool
 var duplicate_packed_arrays: bool
+var update_tree_on_signal_change: bool
 
 
 func _init() -> void:
