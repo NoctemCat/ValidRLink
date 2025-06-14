@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="RLinkButton" load_steps=2 format=3 uid="uid://d2hvrsan44aex"]
+
+[ext_resource type="Script" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="1_nb72d"]
+
+[resource]
+script = ExtResource("1_nb72d")
+text = ""
+tooltip_text = ""
+icon = ""
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 0, 1)
+max_width = 95
+min_height = 0
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = []
+unbind_next = 0
+callable_method_name = &""

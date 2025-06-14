@@ -452,7 +452,7 @@ public partial class RLinkCS : RefCounted
         => SignalToggle(signal, DelegateToCallable(method), bindvArgs, unbind);
 
     /// <summary>
-    /// Checks if connected, if connected disconnects callable, if not callable is connected
+    /// Checks if connected, if connected disconnects callable, if not, callable is connected
     /// </summary>
     public void SignalToggle(in Signal signal, in Variant callable, Godot.Collections.Array? bindvArgs = null, int unbind = 0)
     {

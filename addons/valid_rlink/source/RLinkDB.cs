@@ -3,13 +3,19 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace ValidRLink;
 
+[Tool]
+[SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "Godot 4.1 support")]
+
 public partial class RLinkDB : Node
 {
     private readonly Dictionary<string, Type> _types;
+
+    [RequiresUnreferencedCode("Getting method by its name")]
     public RLinkDB()
     {
         _types = new();
@@ -22,6 +28,7 @@ public partial class RLinkDB : Node
         }
     }
 
+    [RequiresUnreferencedCode("Getting method by its name")]
     public RLinkSettingsCS? GetRLinkSettings(Script script, Godot.Collections.Array<StringName> possibleNames)
     {
         if (_types.TryGetValue(script.ResourcePath, out Type? type))
@@ -39,6 +46,7 @@ public partial class RLinkDB : Node
         return null;
     }
 
+    [RequiresUnreferencedCode("Getting method by its name")]
     public Godot.Collections.Dictionary GetMethodInfo(Script script, string methodName)
     {
         Godot.Collections.Dictionary info = new();

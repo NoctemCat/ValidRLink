@@ -17,6 +17,9 @@ namespace ValidRLink;
 /// Turns a method from non-tool class into a button in editor
 /// </summary>
 [Tool, GlobalClass]
+[SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "Godot 4.1 support")]
+[SuppressMessage("Style", "IDE0300:Simplify collection initialization", Justification = "Godot 4.1 support")]
+[SuppressMessage("Style", "IDE0305:Simplify collection initialization", Justification = "Godot 4.1 support")]
 public partial class RLinkButtonCS : Resource
 {
     public static readonly StringName DefaultValuesName = "default_values";
@@ -323,17 +326,6 @@ public partial class RLinkButtonCS : Resource
     private int _baseArgCount;
     private CancellationTokenSource? _ctx;
 
-    private void SetDefaults()
-    {
-        UnbindNext = 0;
-        IconAlignment = HorizontalAlignment.Left;
-        IconAlignmentVertical = VerticalAlignment.Center;
-        Modulate = Colors.White;
-        MaxWidth = 200;
-        ClipText = true;
-        SizeFlags = ControlSizes.SizeUnset;
-    }
-
     [RequiresUnreferencedCode("Getting method by its name")]
     public RLinkButtonCS()
     {
@@ -440,10 +432,62 @@ public partial class RLinkButtonCS : Resource
     {
         RestoreDefault();
     }
+
     protected override void Dispose(bool disposing)
     {
         CancelTask();
         base.Dispose(disposing);
+    }
+
+    private void SetDefaults()
+    {
+        UnbindNext = 0;
+        IconAlignment = HorizontalAlignment.Left;
+        IconAlignmentVertical = VerticalAlignment.Center;
+        Modulate = Colors.White;
+        MaxWidth = 200;
+        ClipText = true;
+        SizeFlags = ControlSizes.SizeUnset;
+
+        using Script rlinkScript = ResourceLoader.Load<Script>("res://addons/valid_rlink/runtime/rlink_button.gd");
+
+        string path = ProjectSettings.GetSettingWithOverride("addons/valid_rlink/default_button_path").AsString();
+        if (!string.IsNullOrWhiteSpace(path) && ResourceLoader.Exists(path))
+        {
+            using Resource defaultBtn = ResourceLoader.Load(path);
+            using Script? btnScript = defaultBtn.GetScript().AsGodotObject() as Script;
+
+            Dictionary<StringName, StringName> map = new()
+            {
+                {"text", "Text"},
+                {"tooltip_text", "TooltipText"},
+                {"icon", "Icon"},
+                {"icon_texture", "IconTexture"},
+                {"icon_alignment", "IconAlignment"},
+                {"icon_alignment_vertical", "IconAlignmentVertical"},
+                {"modulate", "Modulate"},
+                {"max_width", "MaxWidth"},
+                {"min_height", "MinHeight"},
+                {"margin_left", "MarginLeft"},
+                {"margin_top", "MarginTop"},
+                {"margin_right", "MarginRight"},
+                {"margin_bottom", "MarginBottom"},
+                {"disabled", "Disabled"},
+                {"clip_text", "ClipText"},
+                {"size_flags", "SizeFlags"},
+                {"bound_args", "BoundArgs"},
+                {"unbind_next", "UnbindNext"},
+                {"callable_method_name", "CallableMethodName"},
+            };
+            if (btnScript is not null && btnScript == rlinkScript)
+            {
+                foreach (StringName propNameGD in GodotHelper.GetObjectProperties(defaultBtn))
+                {
+                    StringName propName = map[propNameGD];
+                    Set(propName, defaultBtn.Get(propNameGD));
+                }
+            }
+        }
     }
 
     /// <inheritdoc cref="SetObject(GodotObject, StringName?)"/>

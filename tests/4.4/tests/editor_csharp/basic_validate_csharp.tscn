@@ -1,18 +1,19 @@
-[gd_scene load_steps=32 format=3]
+[gd_scene load_steps=33 format=3 uid="uid://clwknig30ctig"]
 
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateBasic.cs" id="1_tyrjc"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInner.cs" id="2_ykr5n"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/InnerResource.cs" id="3_28d03"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInnerValidate.cs" id="4_28d03"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/InnerResourceValidate.cs" id="5_08x04"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkChild.cs" id="6_a5adi"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkScene.cs" id="7_a5adi"]
-[ext_resource type="PackedScene" uid="uid://cty6c0vlme0cm" path="res://tests/editor_csharp/simple_scene.tscn" id="8_5qioq"]
-[ext_resource type="Script" path="res://addons/valid_rlink/runtime/RLinkButtonCS.cs" id="9_jcvuu"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkChanges.cs" id="10_mqgjl"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkAsync.cs" id="11_wjsgh"]
+[ext_resource type="Script" uid="uid://cswdnxsjfowri" path="res://tests/editor_csharp/scripts/ValidateBasic.cs" id="1_tyrjc"]
+[ext_resource type="Script" uid="uid://bt0ngtfnsuu3" path="res://tests/editor_csharp/scripts/ValidateInner.cs" id="2_ykr5n"]
+[ext_resource type="Script" uid="uid://c2kddw4pjhaaa" path="res://tests/editor_csharp/scripts/InnerResource.cs" id="3_28d03"]
+[ext_resource type="Script" uid="uid://crply14ih1msy" path="res://tests/editor_csharp/scripts/ValidateInnerValidate.cs" id="4_28d03"]
+[ext_resource type="Script" uid="uid://b4iffjenx5sgh" path="res://tests/editor_csharp/scripts/InnerResourceValidate.cs" id="5_08x04"]
+[ext_resource type="Script" uid="uid://oiivtaepeo5h" path="res://tests/editor_csharp/scripts/RLinkChild.cs" id="6_a5adi"]
+[ext_resource type="Script" uid="uid://dfu5kjfjxc3m0" path="res://tests/editor_csharp/scripts/RLinkScene.cs" id="7_a5adi"]
+[ext_resource type="PackedScene" path="res://tests/editor_csharp/simple_scene.tscn" id="8_5qioq"]
+[ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="8_75rvy"]
+[ext_resource type="Script" uid="uid://bvn01egv77461" path="res://addons/valid_rlink/runtime/RLinkButtonCS.cs" id="9_jcvuu"]
+[ext_resource type="Script" uid="uid://8rot1okdp2cx" path="res://tests/editor_csharp/scripts/RLinkChanges.cs" id="10_mqgjl"]
+[ext_resource type="Script" uid="uid://dj8jidkak0kcq" path="res://tests/editor_csharp/scripts/RLinkAsync.cs" id="11_wjsgh"]
 
-[sub_resource type="Resource" id="Resource_6xl1r"]
+[sub_resource type="Resource" id="Resource_wjsgh"]
 script = ExtResource("3_28d03")
 ExportBool = true
 ExportInt = 100
@@ -51,7 +52,7 @@ ExportPackedVector2Array = PackedVector2Array(100, 100, 200, 200, 300, 300)
 ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
 ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 
-[sub_resource type="Resource" id="Resource_uuurr"]
+[sub_resource type="Resource" id="Resource_75rvy"]
 script = ExtResource("3_28d03")
 ExportBool = true
 ExportInt = 0
@@ -87,7 +88,7 @@ ExportPackedVector2Array = PackedVector2Array()
 ExportPackedVector3Array = PackedVector3Array()
 ExportPackedColorArray = PackedColorArray()
 
-[sub_resource type="Resource" id="Resource_h3e78"]
+[sub_resource type="Resource" id="Resource_h84kr"]
 script = ExtResource("5_08x04")
 ExportBool = true
 ExportInt = 100
@@ -125,9 +126,9 @@ ExportPackedStringArray = PackedStringArray("hello world", "new value", "third")
 ExportPackedVector2Array = PackedVector2Array(100, 100, 200, 200, 300, 300)
 ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
 ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-Inner = SubResource("Resource_uuurr")
+Inner = SubResource("Resource_75rvy")
 
-[sub_resource type="Resource" id="Resource_jyecc"]
+[sub_resource type="Resource" id="Resource_118wc"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Direct Child"
 TooltipText = ""
@@ -138,9 +139,9 @@ Modulate = Color(1, 1, 1, 1)
 MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 0
+MarginTop = 2
 MarginRight = 0
-MarginBottom = 0
+MarginBottom = 2
 Disabled = false
 ClipText = true
 SizeFlags = -1
@@ -148,361 +149,362 @@ BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleDirectChildImpl"
 metadata/default_values = {
-"BoundArgs": [],
-"CallableMethodName": &"ToggleDirectChildImpl",
-"ClipText": true,
-"Disabled": false,
-"Icon": "",
-"IconAlignment": 0,
-"IconAlignmentVertical": 1,
-"IconTexture": null,
-"MarginBottom": 0,
-"MarginLeft": 0,
-"MarginRight": 0,
-"MarginTop": 0,
-"MaxWidth": 200,
-"MinHeight": 0,
-"Modulate": Color(1, 1, 1, 1),
-"SizeFlags": -1,
-"Text": "Toggle Direct Child",
-"TooltipText": "",
-"UnbindNext": 0
+&"BoundArgs": [],
+&"CallableMethodName": &"ToggleDirectChildImpl",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 2,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 0,
+&"MinHeight": 0,
+&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
+&"SizeFlags": 3,
+&"Text": "Toggle Direct Child",
+&"TooltipText": "",
+&"UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_ewcgb"]
+[sub_resource type="Resource" id="Resource_x6nq3"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Direct Child Path"
 TooltipText = ""
 Icon = ""
+IconTexture = ExtResource("8_75rvy")
 IconAlignment = 0
 IconAlignmentVertical = 1
 Modulate = Color(1, 1, 1, 1)
-MaxWidth = 200
+MaxWidth = 0
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 0
+MarginTop = 2
 MarginRight = 0
-MarginBottom = 0
+MarginBottom = 2
 Disabled = false
 ClipText = true
-SizeFlags = -1
+SizeFlags = 3
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleDirectChildPathImpl"
 metadata/default_values = {
-"BoundArgs": [],
-"CallableMethodName": &"ToggleDirectChildPathImpl",
-"ClipText": true,
-"Disabled": false,
-"Icon": "",
-"IconAlignment": 0,
-"IconAlignmentVertical": 1,
-"IconTexture": null,
-"MarginBottom": 0,
-"MarginLeft": 0,
-"MarginRight": 0,
-"MarginTop": 0,
-"MaxWidth": 200,
-"MinHeight": 0,
-"Modulate": Color(1, 1, 1, 1),
-"SizeFlags": -1,
-"Text": "Toggle Direct Child Path",
-"TooltipText": "",
-"UnbindNext": 0
+&"BoundArgs": [],
+&"CallableMethodName": &"ToggleDirectChildPathImpl",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 2,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 0,
+&"MinHeight": 0,
+&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
+&"SizeFlags": 3,
+&"Text": "Toggle Direct Child Path",
+&"TooltipText": "",
+&"UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_ilhol"]
+[sub_resource type="Resource" id="Resource_ntaqg"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Child Path"
 TooltipText = ""
-Icon = ""
+Icon = "Clear"
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 1, 1)
-MaxWidth = 200
+Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
+MaxWidth = 0
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 0
+MarginTop = 2
 MarginRight = 0
-MarginBottom = 0
+MarginBottom = 2
 Disabled = false
 ClipText = true
-SizeFlags = -1
+SizeFlags = 3
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleChildPathImpl"
 metadata/default_values = {
-"BoundArgs": [],
-"CallableMethodName": &"ToggleChildPathImpl",
-"ClipText": true,
-"Disabled": false,
-"Icon": "",
-"IconAlignment": 0,
-"IconAlignmentVertical": 1,
-"IconTexture": null,
-"MarginBottom": 0,
-"MarginLeft": 0,
-"MarginRight": 0,
-"MarginTop": 0,
-"MaxWidth": 200,
-"MinHeight": 0,
-"Modulate": Color(1, 1, 1, 1),
-"SizeFlags": -1,
-"Text": "Toggle Child Path",
-"TooltipText": "",
-"UnbindNext": 0
+&"BoundArgs": [],
+&"CallableMethodName": &"ToggleChildPathImpl",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 2,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 0,
+&"MinHeight": 0,
+&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
+&"SizeFlags": 3,
+&"Text": "Toggle Child Path",
+&"TooltipText": "",
+&"UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_nqqtb"]
+[sub_resource type="Resource" id="Resource_7x85v"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Child From"
 TooltipText = ""
-Icon = ""
+Icon = "Clear"
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 1, 1)
-MaxWidth = 200
+Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
+MaxWidth = 0
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 0
+MarginTop = 2
 MarginRight = 0
-MarginBottom = 0
+MarginBottom = 2
 Disabled = false
 ClipText = true
-SizeFlags = -1
+SizeFlags = 3
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleChildFromImpl"
 metadata/default_values = {
-"BoundArgs": [],
-"CallableMethodName": &"ToggleChildFromImpl",
-"ClipText": true,
-"Disabled": false,
-"Icon": "",
-"IconAlignment": 0,
-"IconAlignmentVertical": 1,
-"IconTexture": null,
-"MarginBottom": 0,
-"MarginLeft": 0,
-"MarginRight": 0,
-"MarginTop": 0,
-"MaxWidth": 200,
-"MinHeight": 0,
-"Modulate": Color(1, 1, 1, 1),
-"SizeFlags": -1,
-"Text": "Toggle Child From",
-"TooltipText": "",
-"UnbindNext": 0
+&"BoundArgs": [],
+&"CallableMethodName": &"ToggleChildFromImpl",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 2,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 0,
+&"MinHeight": 0,
+&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
+&"SizeFlags": 3,
+&"Text": "Toggle Child From",
+&"TooltipText": "",
+&"UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_0sw20"]
+[sub_resource type="Resource" id="Resource_rn8wu"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Child Get Parent"
 TooltipText = ""
-Icon = ""
+Icon = "Clear"
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 1, 1)
-MaxWidth = 200
+Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
+MaxWidth = 0
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 0
+MarginTop = 2
 MarginRight = 0
-MarginBottom = 0
+MarginBottom = 2
 Disabled = false
 ClipText = true
-SizeFlags = -1
+SizeFlags = 3
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleChildGetParentImpl"
 metadata/default_values = {
-"BoundArgs": [],
-"CallableMethodName": &"ToggleChildGetParentImpl",
-"ClipText": true,
-"Disabled": false,
-"Icon": "",
-"IconAlignment": 0,
-"IconAlignmentVertical": 1,
-"IconTexture": null,
-"MarginBottom": 0,
-"MarginLeft": 0,
-"MarginRight": 0,
-"MarginTop": 0,
-"MaxWidth": 200,
-"MinHeight": 0,
-"Modulate": Color(1, 1, 1, 1),
-"SizeFlags": -1,
-"Text": "Toggle Child Get Parent",
-"TooltipText": "",
-"UnbindNext": 0
+&"BoundArgs": [],
+&"CallableMethodName": &"ToggleChildGetParentImpl",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 2,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 0,
+&"MinHeight": 0,
+&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
+&"SizeFlags": 3,
+&"Text": "Toggle Child Get Parent",
+&"TooltipText": "",
+&"UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_1nqtg"]
+[sub_resource type="Resource" id="Resource_ao556"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Has From"
 TooltipText = ""
-Icon = ""
+Icon = "Clear"
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 1, 1)
-MaxWidth = 200
+Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
+MaxWidth = 0
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 0
+MarginTop = 2
 MarginRight = 0
-MarginBottom = 0
+MarginBottom = 2
 Disabled = false
 ClipText = true
-SizeFlags = -1
+SizeFlags = 3
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleHasFromImpl"
 metadata/default_values = {
-"BoundArgs": [],
-"CallableMethodName": &"ToggleHasFromImpl",
-"ClipText": true,
-"Disabled": false,
-"Icon": "",
-"IconAlignment": 0,
-"IconAlignmentVertical": 1,
-"IconTexture": null,
-"MarginBottom": 0,
-"MarginLeft": 0,
-"MarginRight": 0,
-"MarginTop": 0,
-"MaxWidth": 200,
-"MinHeight": 0,
-"Modulate": Color(1, 1, 1, 1),
-"SizeFlags": -1,
-"Text": "Toggle Has From",
-"TooltipText": "",
-"UnbindNext": 0
+&"BoundArgs": [],
+&"CallableMethodName": &"ToggleHasFromImpl",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 2,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 0,
+&"MinHeight": 0,
+&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
+&"SizeFlags": 3,
+&"Text": "Toggle Has From",
+&"TooltipText": "",
+&"UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_ralbv"]
+[sub_resource type="Resource" id="Resource_yn6e2"]
 script = ExtResource("9_jcvuu")
 Text = "Remove All Children"
 TooltipText = ""
-Icon = ""
+Icon = "Clear"
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 1, 1)
-MaxWidth = 200
+Modulate = Color(0.870588, 0, 0, 1)
+MaxWidth = 0
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 0
+MarginTop = 2
 MarginRight = 0
-MarginBottom = 0
+MarginBottom = 2
 Disabled = false
 ClipText = true
-SizeFlags = -1
+SizeFlags = 3
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"RemoveAllChildrenImpl"
 metadata/default_values = {
-"BoundArgs": [],
-"CallableMethodName": &"RemoveAllChildrenImpl",
-"ClipText": true,
-"Disabled": false,
-"Icon": "",
-"IconAlignment": 0,
-"IconAlignmentVertical": 1,
-"IconTexture": null,
-"MarginBottom": 0,
-"MarginLeft": 0,
-"MarginRight": 0,
-"MarginTop": 0,
-"MaxWidth": 200,
-"MinHeight": 0,
-"Modulate": Color(1, 1, 1, 1),
-"SizeFlags": -1,
-"Text": "Remove All Children",
-"TooltipText": "",
-"UnbindNext": 0
+&"BoundArgs": [],
+&"CallableMethodName": &"RemoveAllChildrenImpl",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 2,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 0,
+&"MinHeight": 0,
+&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
+&"SizeFlags": 3,
+&"Text": "Remove All Children",
+&"TooltipText": "",
+&"UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_fbeda"]
+[sub_resource type="Resource" id="Resource_jnik5"]
 script = ExtResource("9_jcvuu")
 Text = "Remove All Children From"
 TooltipText = ""
-Icon = ""
+Icon = "Clear"
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 1, 1)
-MaxWidth = 200
+Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
+MaxWidth = 0
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 0
+MarginTop = 2
 MarginRight = 0
-MarginBottom = 0
+MarginBottom = 2
 Disabled = false
 ClipText = true
-SizeFlags = -1
+SizeFlags = 3
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"RemoveAllChildrenFromImpl"
 metadata/default_values = {
-"BoundArgs": [],
-"CallableMethodName": &"RemoveAllChildrenFromImpl",
-"ClipText": true,
-"Disabled": false,
-"Icon": "",
-"IconAlignment": 0,
-"IconAlignmentVertical": 1,
-"IconTexture": null,
-"MarginBottom": 0,
-"MarginLeft": 0,
-"MarginRight": 0,
-"MarginTop": 0,
-"MaxWidth": 200,
-"MinHeight": 0,
-"Modulate": Color(1, 1, 1, 1),
-"SizeFlags": -1,
-"Text": "Remove All Children From",
-"TooltipText": "",
-"UnbindNext": 0
+&"BoundArgs": [],
+&"CallableMethodName": &"RemoveAllChildrenFromImpl",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 2,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 0,
+&"MinHeight": 0,
+&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
+&"SizeFlags": 3,
+&"Text": "Remove All Children From",
+&"TooltipText": "",
+&"UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_scrrh"]
+[sub_resource type="Resource" id="Resource_5fcrl"]
 script = ExtResource("9_jcvuu")
 Text = "Remove All Children Path"
 TooltipText = ""
-Icon = ""
+Icon = "Clear"
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 1, 1)
-MaxWidth = 200
+Modulate = Color(0.65464, 0.406591, 0.0242566, 1)
+MaxWidth = 0
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 0
+MarginTop = 2
 MarginRight = 0
-MarginBottom = 0
+MarginBottom = 2
 Disabled = false
 ClipText = true
-SizeFlags = -1
+SizeFlags = 3
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"RemoveAllChildrenPathImpl"
 metadata/default_values = {
-"BoundArgs": [],
-"CallableMethodName": &"RemoveAllChildrenPathImpl",
-"ClipText": true,
-"Disabled": false,
-"Icon": "",
-"IconAlignment": 0,
-"IconAlignmentVertical": 1,
-"IconTexture": null,
-"MarginBottom": 0,
-"MarginLeft": 0,
-"MarginRight": 0,
-"MarginTop": 0,
-"MaxWidth": 200,
-"MinHeight": 0,
-"Modulate": Color(1, 1, 1, 1),
-"SizeFlags": -1,
-"Text": "Remove All Children Path",
-"TooltipText": "",
-"UnbindNext": 0
+&"BoundArgs": [],
+&"CallableMethodName": &"RemoveAllChildrenPathImpl",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 2,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 0,
+&"MinHeight": 0,
+&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
+&"SizeFlags": 3,
+&"Text": "Remove All Children Path",
+&"TooltipText": "",
+&"UnbindNext": 0
 }
 
 [sub_resource type="Resource" id="Resource_jcvuu"]
@@ -547,46 +549,46 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_mqgjl"]
+[sub_resource type="Resource" id="Resource_be5u1"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Connect"
 TooltipText = ""
-Icon = ""
+Icon = "Clear"
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 0, 1)
-MaxWidth = 200
+Modulate = Color(0, 0, 0, 1)
+MaxWidth = 0
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 4
-MarginRight = 8
-MarginBottom = 0
+MarginTop = 2
+MarginRight = 0
+MarginBottom = 2
 Disabled = false
 ClipText = true
-SizeFlags = 8
+SizeFlags = 3
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleConnectImpl"
 metadata/default_values = {
-"BoundArgs": [],
-"CallableMethodName": &"ToggleConnectImpl",
-"ClipText": true,
-"Disabled": false,
-"Icon": "",
-"IconAlignment": 0,
-"IconAlignmentVertical": 1,
-"IconTexture": null,
-"MarginBottom": 0,
-"MarginLeft": 0,
-"MarginRight": 8,
-"MarginTop": 4,
-"MaxWidth": 200,
-"MinHeight": 0,
-"Modulate": Color(1, 1, 0, 1),
-"SizeFlags": 8,
-"Text": "Toggle Connect",
-"TooltipText": "",
-"UnbindNext": 0
+&"BoundArgs": [],
+&"CallableMethodName": &"ToggleConnectImpl",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 2,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 0,
+&"MinHeight": 0,
+&"Modulate": Color(0.65464, 0.406591, 0.0242566, 1),
+&"SizeFlags": 3,
+&"Text": "Toggle Connect",
+&"TooltipText": "",
+&"UnbindNext": 0
 }
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_bph6x"]
@@ -806,23 +808,23 @@ ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.7019
 
 [node name="ValidateInner" type="Node" parent="."]
 script = ExtResource("2_ykr5n")
-Inner = SubResource("Resource_6xl1r")
+Inner = SubResource("Resource_wjsgh")
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
 script = ExtResource("4_28d03")
-Inner = SubResource("Resource_h3e78")
+Inner = SubResource("Resource_h84kr")
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_a5adi")
-ToggleDirectChild = SubResource("Resource_jyecc")
-ToggleDirectChildPath = SubResource("Resource_ewcgb")
-ToggleChildPath = SubResource("Resource_ilhol")
-ToggleChildFrom = SubResource("Resource_nqqtb")
-ToggleChildGetParent = SubResource("Resource_0sw20")
-ToggleHasFrom = SubResource("Resource_1nqtg")
-RemoveAllChildren = SubResource("Resource_ralbv")
-RemoveAllChildrenFrom = SubResource("Resource_fbeda")
-RemoveAllChildrenPath = SubResource("Resource_scrrh")
+ToggleDirectChild = SubResource("Resource_118wc")
+ToggleDirectChildPath = SubResource("Resource_x6nq3")
+ToggleChildPath = SubResource("Resource_ntaqg")
+ToggleChildFrom = SubResource("Resource_7x85v")
+ToggleChildGetParent = SubResource("Resource_rn8wu")
+ToggleHasFrom = SubResource("Resource_ao556")
+RemoveAllChildren = SubResource("Resource_yn6e2")
+RemoveAllChildrenFrom = SubResource("Resource_jnik5")
+RemoveAllChildrenPath = SubResource("Resource_5fcrl")
 metadata/rlink_skip = false
 
 [node name="DirectChild" type="Node" parent="RLinkChild"]
@@ -844,7 +846,7 @@ SceneExport = NodePath("SceneExport")
 SceneLoad = NodePath("SceneLoad")
 SceneFile = NodePath("SceneFile")
 RemoveAll = SubResource("Resource_jcvuu")
-ToggleConnect = SubResource("Resource_mqgjl")
+ToggleConnect = SubResource("Resource_be5u1")
 
 [node name="SceneExport" parent="RLinkScene" instance=ExtResource("8_5qioq")]
 

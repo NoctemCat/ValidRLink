@@ -147,14 +147,7 @@ static func _static_init() -> void:
 
 ## [param method] can be either [Callable] or name as a [String]
 func _init(method: Variant = null, properties: Dictionary = Dictionary()) -> void:
-    unbind_next = 0
-    icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
-    icon_alignment_vertical = VERTICAL_ALIGNMENT_CENTER
-    modulate = Color.WHITE
-    max_width = 200
-    clip_text = true
-    size_flags = ControlSizes.SIZE_UNSET
-    
+    _set_default()
     if method is Callable:
         if method == Callable(): return
         if "anonymous lambda" in method.get_method():
@@ -186,6 +179,27 @@ func _property_get_revert(property: StringName) -> Variant:
 
 func _reset_state() -> void:
     restore_default()
+
+
+func _set_default() -> void:
+    unbind_next = 0
+    icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
+    icon_alignment_vertical = VERTICAL_ALIGNMENT_CENTER
+    modulate = Color.WHITE
+    max_width = 200
+    clip_text = true
+    size_flags = ControlSizes.SIZE_UNSET
+
+    var path: String = ProjectSettings.get_setting_with_override("addons/valid_rlink/default_button_path")
+    if path != "" and ResourceLoader.exists(path):
+        var default_btn: Resource = load(path)
+        if not default_btn is RLinkButton or self == default_btn:
+            return
+        var comb_flag: int = PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_SCRIPT_VARIABLE
+        for prop in default_btn.get_property_list():
+            if (prop["usage"] & comb_flag) != comb_flag: continue
+            var prop_name: StringName = prop["name"]
+            set(prop_name, default_btn.get(prop_name))
 
 
 ## Sets object and, optionally, method to prepare it for calling

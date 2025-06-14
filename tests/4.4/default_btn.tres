@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="RLinkButton" load_steps=2 format=3 uid="uid://tikqnu8om506"]
+
+[ext_resource type="Script" uid="uid://beknapxgoro47" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="1_ngb7v"]
+
+[resource]
+script = ExtResource("1_ngb7v")
+text = ""
+tooltip_text = ""
+icon = "Clear"
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(0.65464, 0.406591, 0.0242566, 1)
+max_width = 0
+min_height = 0
+margin_left = 0
+margin_top = 2
+margin_right = 0
+margin_bottom = 2
+disabled = false
+clip_text = true
+size_flags = 3
+bound_args = []
+unbind_next = 0
+callable_method_name = &""
+metadata/_custom_type_script = "uid://beknapxgoro47"

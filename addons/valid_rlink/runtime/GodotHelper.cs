@@ -459,6 +459,8 @@ public static class GodotHelper
     /// <summary>
     /// Helper class to extract info from Callable
     /// </summary>
+    [SuppressMessage("Style", "IDE0300:Simplify collection initialization", Justification = "Godot 4.1 support")]
+    [SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "Godot 4.1 support")]
     public static class Callable
     {
         private static Expression CallableConstructor { get; }
@@ -472,7 +474,6 @@ public static class GodotHelper
         private static Expression CallableUnbind { get; }
         private static Expression CallableCallEmpty { get; }
         private static Expression CallableCall { get; }
-
 
         static Callable()
         {

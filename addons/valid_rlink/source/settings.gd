@@ -13,6 +13,7 @@ const DEFAULT_VALUES := {
     max_depth = 3,
     apply_changes_to_external_user_resources = false,
     call_action_template = "%s",
+    default_button_path = "",
     validate_changes_names = DEF_VALIDATE_CHANGES_NAMES,
     get_rlink_settings_names = DEF_GET_RLINK_SETTINGS_NAMES,
     csharp_collect_gc = true,
@@ -35,7 +36,8 @@ const NAME_ALIASES := {
 
 const PROP_HINTS := {
     validate_changes_names = {"hint": PROPERTY_HINT_ARRAY_TYPE, "hint_string": "%d:" % TYPE_STRING_NAME},
-    get_rlink_settings_names = {"hint": PROPERTY_HINT_ARRAY_TYPE, "hint_string": "%d:" % TYPE_STRING_NAME}
+    get_rlink_settings_names = {"hint": PROPERTY_HINT_ARRAY_TYPE, "hint_string": "%d:" % TYPE_STRING_NAME},
+    default_button_path = {"hint": PROPERTY_HINT_FILE, "hint_string": "*.tres,*.res"},
 }
 
 var plugin_version := 0x000100
@@ -47,6 +49,7 @@ var validate_use_history: bool
 var max_depth: int
 var apply_changes_to_external_user_resources: bool
 var call_action_template: String
+var default_button_path: String
 
 var validate_changes_names: Array[StringName]
 var get_rlink_settings_names: Array[StringName]

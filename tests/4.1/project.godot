@@ -8,6 +8,10 @@
 
 config_version=5
 
+[addons]
+
+valid_rlink/default_button_path="res://default_button.tres"
+
 [application]
 
 config/name="ValidRLink"

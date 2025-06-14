@@ -15,6 +15,6 @@ func validate_changes(rlink: RLink) -> void:
     return
     prints("is_edited_scene_root:", rlink.is_edited_scene_root(), rlink.placeholder)
     prints("node.owner:", rlink.placeholder.owner)
-    var child = rlink.get_node_or_null("MyName")
-    var runtime = rlink.get_runtime_from(child)
+    var child := rlink.get_node_or_null("MyName")
+    var runtime: Node = rlink.get_runtime_from(child)
     print("child.owner: ", runtime.owner)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://pv4ssbpvluxj"]
+[gd_scene load_steps=22 format=3 uid="uid://pv4ssbpvluxj"]
 
 [ext_resource type="Script" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
 [ext_resource type="Script" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
 [ext_resource type="PackedScene" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
 [ext_resource type="Script" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
-[ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="10_p40gm"]
 [ext_resource type="Script" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
 [ext_resource type="Script" path="res://tests/editor/scripts/rlink_await.gd" id="11_65005"]
 
@@ -129,7 +128,7 @@ export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 inner = SubResource("Resource_of3dg")
 
-[sub_resource type="Resource" id="Resource_b5c2a"]
+[sub_resource type="Resource" id="Resource_d0qh6"]
 script = ExtResource("9_65005")
 text = "Remove All"
 tooltip_text = ""
@@ -171,16 +170,15 @@ metadata/default_values = {
 "unbind_next": 0
 }
 
-[sub_resource type="Resource" id="Resource_utf88"]
+[sub_resource type="Resource" id="Resource_jsxkh"]
 script = ExtResource("9_65005")
 text = "Toggle Connect"
 tooltip_text = ""
 icon = ""
-icon_texture = ExtResource("10_p40gm")
 icon_alignment = 0
 icon_alignment_vertical = 1
-modulate = Color(0, 1, 1, 1)
-max_width = 110
+modulate = Color(0, 0, 0, 1)
+max_width = 95
 min_height = 0
 margin_left = 0
 margin_top = 0
@@ -205,9 +203,9 @@ metadata/default_values = {
 "margin_left": 0,
 "margin_right": 0,
 "margin_top": 0,
-"max_width": 110,
+"max_width": 95,
 "min_height": 0,
-"modulate": Color(0, 1, 1, 1),
+"modulate": Color(1, 1, 0, 1),
 "size_flags": -1,
 "text": "Toggle Connect",
 "tooltip_text": "",
@@ -357,6 +355,7 @@ metadata/rlink_skip = false
 
 [node name="ValidatePacked" type="Node" parent="."]
 script = ExtResource("6_c8q22")
+array = PackedInt32Array(3, 0, 0, 0, 0)
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_baol1")
@@ -380,8 +379,8 @@ scene = ExtResource("8_tvfff")
 scene_export = NodePath("SceneExport")
 scene_load = NodePath("SceneLoad")
 scene_file = NodePath("SceneFile")
-remove_all = SubResource("Resource_b5c2a")
-toggle_connect = SubResource("Resource_utf88")
+remove_all = SubResource("Resource_d0qh6")
+toggle_connect = SubResource("Resource_jsxkh")
 metadata/rlink_skip = false
 
 [node name="SceneExport" parent="RLinkScene" instance=ExtResource("8_tvfff")]

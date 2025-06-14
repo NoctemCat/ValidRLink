@@ -224,84 +224,84 @@ noise = SubResource("FastNoiseLite_oua4o")
 script = ExtResource("9_65005")
 text = "Set Int"
 tooltip_text = ""
-icon = ""
+icon = "Clear"
 icon_alignment = 0
 icon_alignment_vertical = 1
-modulate = Color(1, 1, 1, 1)
-max_width = 200
+modulate = Color(5.72756e-06, 0.573129, 1.92523e-07, 1)
+max_width = 160
 min_height = 0
 margin_left = 0
-margin_top = 0
+margin_top = 2
 margin_right = 0
-margin_bottom = 0
+margin_bottom = 2
 disabled = false
 clip_text = true
-size_flags = -1
+size_flags = 2
 bound_args = []
 unbind_next = 0
 callable_method_name = &"set_int_impl"
 metadata/default_values = {
-"bound_args": [],
-"callable_method_name": &"set_int_impl",
-"clip_text": true,
-"disabled": false,
-"icon": "",
-"icon_alignment": 0,
-"icon_alignment_vertical": 1,
-"icon_texture": null,
-"margin_bottom": 0,
-"margin_left": 0,
-"margin_right": 0,
-"margin_top": 0,
-"max_width": 200,
-"min_height": 0,
-"modulate": Color(1, 1, 1, 1),
-"size_flags": -1,
-"text": "Set Int",
-"tooltip_text": "",
-"unbind_next": 0
+&"bound_args": [],
+&"callable_method_name": &"set_int_impl",
+&"clip_text": true,
+&"disabled": false,
+&"icon": "Clear",
+&"icon_alignment": 0,
+&"icon_alignment_vertical": 1,
+&"icon_texture": null,
+&"margin_bottom": 2,
+&"margin_left": 0,
+&"margin_right": 0,
+&"margin_top": 2,
+&"max_width": 160,
+&"min_height": 0,
+&"modulate": Color(5.72756e-06, 0.573129, 1.92523e-07, 1),
+&"size_flags": 2,
+&"text": "Set Int",
+&"tooltip_text": "",
+&"unbind_next": 0
 }
 
 [sub_resource type="Resource" id="Resource_hoejj"]
 script = ExtResource("9_65005")
 text = "Set Int Checked"
 tooltip_text = ""
-icon = ""
+icon = "Clear"
 icon_alignment = 0
 icon_alignment_vertical = 1
-modulate = Color(1, 1, 1, 1)
-max_width = 200
+modulate = Color(5.72756e-06, 0.573129, 1.92523e-07, 1)
+max_width = 160
 min_height = 0
 margin_left = 0
-margin_top = 0
+margin_top = 2
 margin_right = 0
-margin_bottom = 0
+margin_bottom = 2
 disabled = false
 clip_text = true
-size_flags = -1
+size_flags = 2
 bound_args = []
 unbind_next = 0
 callable_method_name = &"set_int_checked_impl"
 metadata/default_values = {
-"bound_args": [],
-"callable_method_name": &"set_int_checked_impl",
-"clip_text": true,
-"disabled": false,
-"icon": "",
-"icon_alignment": 0,
-"icon_alignment_vertical": 1,
-"icon_texture": null,
-"margin_bottom": 0,
-"margin_left": 0,
-"margin_right": 0,
-"margin_top": 0,
-"max_width": 200,
-"min_height": 0,
-"modulate": Color(1, 1, 1, 1),
-"size_flags": -1,
-"text": "Set Int Checked",
-"tooltip_text": "",
-"unbind_next": 0
+&"bound_args": [],
+&"callable_method_name": &"set_int_checked_impl",
+&"clip_text": true,
+&"disabled": false,
+&"icon": "Clear",
+&"icon_alignment": 0,
+&"icon_alignment_vertical": 1,
+&"icon_texture": null,
+&"margin_bottom": 2,
+&"margin_left": 0,
+&"margin_right": 0,
+&"margin_top": 2,
+&"max_width": 160,
+&"min_height": 0,
+&"modulate": Color(5.72756e-06, 0.573129, 1.92523e-07, 1),
+&"size_flags": 2,
+&"text": "Set Int Checked",
+&"tooltip_text": "",
+&"unbind_next": 0
 }
 
 [node name="Node" type="Node"]

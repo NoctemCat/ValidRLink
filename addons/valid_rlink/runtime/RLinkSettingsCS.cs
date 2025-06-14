@@ -3,6 +3,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using static ValidRLink.GodotHelper;
 
 namespace ValidRLink;
@@ -11,6 +12,8 @@ namespace ValidRLink;
 /// Specifies settings on a class level
 /// </summary>
 [Tool, GlobalClass]
+[SuppressMessage("Style", "IDE0306:Simplify collection initialization", Justification = "Godot 4.1 support")]
+[SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "Godot 4.1 support")]
 public partial class RLinkSettingsCS : Resource
 {
     /// <summary>
@@ -75,7 +78,7 @@ public partial class RLinkSettingsCS : Resource
 
 
     /// <inheritdoc cref="SkipProperties"/>
-    public RLinkSettingsCS SetSkipProperties(System.Collections.Generic.IEnumerable<StringName> properties)
+    public RLinkSettingsCS SetSkipProperties(IEnumerable<StringName> properties)
     {
         SkipProperties = new(properties);
         return this;
@@ -96,7 +99,7 @@ public partial class RLinkSettingsCS : Resource
     }
 
     /// <inheritdoc cref="AllowedProperties"/>
-    public RLinkSettingsCS SetAllowedProperties(System.Collections.Generic.IEnumerable<StringName> properties)
+    public RLinkSettingsCS SetAllowedProperties(IEnumerable<StringName> properties)
     {
         AllowedProperties = new(properties);
         return this;
