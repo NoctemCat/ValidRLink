@@ -1,0 +1,875 @@
+[gd_scene load_steps=32 format=3]
+
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateBasic.cs" id="1_tyrjc"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInner.cs" id="2_ykr5n"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/InnerResource.cs" id="3_28d03"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInnerValidate.cs" id="4_28d03"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/InnerResourceValidate.cs" id="5_08x04"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkChild.cs" id="6_a5adi"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkScene.cs" id="7_a5adi"]
+[ext_resource type="PackedScene" uid="uid://cty6c0vlme0cm" path="res://tests/editor_csharp/simple_scene.tscn" id="8_5qioq"]
+[ext_resource type="Script" path="res://addons/valid_rlink/runtime/RLinkButtonCS.cs" id="9_jcvuu"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkChanges.cs" id="10_mqgjl"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkAsync.cs" id="11_wjsgh"]
+
+[sub_resource type="Resource" id="Resource_6xl1r"]
+script = ExtResource("3_28d03")
+ExportBool = true
+ExportInt = 100
+ExportFloat = 100.0
+ExportString = "new value"
+ExportVector2 = Vector2(100, 100)
+ExportVector2I = Vector2i(100, 100)
+ExportRect2 = Rect2(100, 100, 100, 100)
+ExportRect2I = Rect2i(100, 100, 100, 100)
+ExportVector3 = Vector3(100, 100, 100)
+ExportVector3I = Vector3i(100, 100, 100)
+ExportTransform2D = Transform2D(100, 100, 200, 200, 300, 300)
+ExportVector4 = Vector4(100, 100, 100, 100)
+ExportVector4I = Vector4i(100, 100, 100, 100)
+ExportPlane = Plane(100, 100, 100, 100)
+ExportQuaternion = Quaternion(-0.177884, -0.310742, -0.310742, 0.880475)
+ExportAabb = AABB(300, 300, 300, 200, 200, 200)
+ExportBasis = Basis(300, 200, 100, 300, 200, 100, 300, 200, 100)
+ExportTransform3D = Transform3D(300, 200, 100, 300, 200, 100, 300, 200, 100, 200, 200, 200)
+ExportProjection = Projection(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100, 100, 100, 100, 100)
+ExportColor = Color(0.3, 0.4, 0.5, 1)
+ExportStringName = &"new stringname"
+ExportNodePath = NodePath("../ValidateInner")
+ExportDictionary = {
+"key1": 100,
+Vector2i(20, 20): true
+}
+ExportArray = [Color(1, 1, 1, 1), 200, "text"]
+ExportPackedByteArray = PackedByteArray(20, 30, 40)
+ExportPackedInt32Array = PackedInt32Array(1234, 4321, 4544, 1131)
+ExportPackedInt64Array = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+ExportPackedFloat32Array = PackedFloat32Array(1234, 4321, 4544, 1131)
+ExportPackedFloat64Array = PackedFloat64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+ExportPackedStringArray = PackedStringArray("hello world", "new value", "third")
+ExportPackedVector2Array = PackedVector2Array(100, 100, 200, 200, 300, 300)
+ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
+ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
+
+[sub_resource type="Resource" id="Resource_uuurr"]
+script = ExtResource("3_28d03")
+ExportBool = true
+ExportInt = 0
+ExportFloat = 0.0
+ExportString = ""
+ExportVector2 = Vector2(0, 0)
+ExportVector2I = Vector2i(0, 0)
+ExportRect2 = Rect2(0, 0, 0, 0)
+ExportRect2I = Rect2i(0, 0, 0, 0)
+ExportVector3 = Vector3(0, 0, 0)
+ExportVector3I = Vector3i(0, 0, 0)
+ExportTransform2D = Transform2D(0, 0, 0, 0, 0, 0)
+ExportVector4 = Vector4(0, 0, 0, 0)
+ExportVector4I = Vector4i(0, 0, 0, 0)
+ExportPlane = Plane(0, 0, 0, 0)
+ExportQuaternion = Quaternion(0, 0, 0, 0)
+ExportAabb = AABB(0, 0, 0, 0, 0, 0)
+ExportBasis = Basis(0, 0, 0, 0, 0, 0, 0, 0, 0)
+ExportTransform3D = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+ExportProjection = Projection(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+ExportColor = Color(0, 0, 0, 0)
+ExportStringName = &""
+ExportNodePath = NodePath("")
+ExportDictionary = {}
+ExportArray = []
+ExportPackedByteArray = PackedByteArray()
+ExportPackedInt32Array = PackedInt32Array()
+ExportPackedInt64Array = PackedInt64Array()
+ExportPackedFloat32Array = PackedFloat32Array()
+ExportPackedFloat64Array = PackedFloat64Array()
+ExportPackedStringArray = PackedStringArray()
+ExportPackedVector2Array = PackedVector2Array()
+ExportPackedVector3Array = PackedVector3Array()
+ExportPackedColorArray = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_h3e78"]
+script = ExtResource("5_08x04")
+ExportBool = true
+ExportInt = 100
+ExportFloat = 100.0
+ExportString = "new value"
+ExportVector2 = Vector2(100, 100)
+ExportVector2I = Vector2i(100, 100)
+ExportRect2 = Rect2(100, 100, 100, 100)
+ExportRect2I = Rect2i(100, 100, 100, 100)
+ExportVector3 = Vector3(100, 100, 100)
+ExportVector3I = Vector3i(100, 100, 100)
+ExportTransform2D = Transform2D(100, 100, 200, 200, 300, 300)
+ExportVector4 = Vector4(100, 100, 100, 100)
+ExportVector4I = Vector4i(100, 100, 100, 100)
+ExportPlane = Plane(100, 100, 100, 100)
+ExportQuaternion = Quaternion(-0.262375, 0, 0, 0.964966)
+ExportAabb = AABB(300, 300, 300, 200, 200, 200)
+ExportBasis = Basis(300, 200, 100, 300, 200, 100, 300, 200, 100)
+ExportTransform3D = Transform3D(300, 200, 100, 300, 200, 100, 300, 200, 100, 200, 200, 200)
+ExportProjection = Projection(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100, 100, 100, 100, 100)
+ExportColor = Color(0.3, 0.4, 0.5, 1)
+ExportStringName = &"new stringname"
+ExportNodePath = NodePath("../ValidateInner")
+ExportDictionary = {
+"key1": 100,
+Vector2i(20, 20): true
+}
+ExportArray = [Color(1, 1, 1, 1), 200, "text"]
+ExportPackedByteArray = PackedByteArray(20, 30, 40)
+ExportPackedInt32Array = PackedInt32Array(1234, 4321, 4544, 1131)
+ExportPackedInt64Array = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+ExportPackedFloat32Array = PackedFloat32Array(1234, 4321, 4544, 1131)
+ExportPackedFloat64Array = PackedFloat64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+ExportPackedStringArray = PackedStringArray("hello world", "new value", "third")
+ExportPackedVector2Array = PackedVector2Array(100, 100, 200, 200, 300, 300)
+ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
+ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
+Inner = SubResource("Resource_uuurr")
+
+[sub_resource type="Resource" id="Resource_jyecc"]
+script = ExtResource("9_jcvuu")
+Text = "Toggle Direct Child"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"ToggleDirectChildImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"ToggleDirectChildImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Toggle Direct Child",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_ewcgb"]
+script = ExtResource("9_jcvuu")
+Text = "Toggle Direct Child Path"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"ToggleDirectChildPathImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"ToggleDirectChildPathImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Toggle Direct Child Path",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_ilhol"]
+script = ExtResource("9_jcvuu")
+Text = "Toggle Child Path"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"ToggleChildPathImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"ToggleChildPathImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Toggle Child Path",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_nqqtb"]
+script = ExtResource("9_jcvuu")
+Text = "Toggle Child From"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"ToggleChildFromImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"ToggleChildFromImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Toggle Child From",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_0sw20"]
+script = ExtResource("9_jcvuu")
+Text = "Toggle Child Get Parent"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"ToggleChildGetParentImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"ToggleChildGetParentImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Toggle Child Get Parent",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_1nqtg"]
+script = ExtResource("9_jcvuu")
+Text = "Toggle Has From"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"ToggleHasFromImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"ToggleHasFromImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Toggle Has From",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_ralbv"]
+script = ExtResource("9_jcvuu")
+Text = "Remove All Children"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"RemoveAllChildrenImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"RemoveAllChildrenImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Remove All Children",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_fbeda"]
+script = ExtResource("9_jcvuu")
+Text = "Remove All Children From"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"RemoveAllChildrenFromImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"RemoveAllChildrenFromImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Remove All Children From",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_scrrh"]
+script = ExtResource("9_jcvuu")
+Text = "Remove All Children Path"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"RemoveAllChildrenPathImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"RemoveAllChildrenPathImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Remove All Children Path",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_jcvuu"]
+script = ExtResource("9_jcvuu")
+Text = "Remove All"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"RemoveAllImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"RemoveAllImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Remove All",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_mqgjl"]
+script = ExtResource("9_jcvuu")
+Text = "Toggle Connect"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 0, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 4
+MarginRight = 8
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = 8
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"ToggleConnectImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"ToggleConnectImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 8,
+"MarginTop": 4,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 0, 1),
+"SizeFlags": 8,
+"Text": "Toggle Connect",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bph6x"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wjsgh"]
+noise = SubResource("FastNoiseLite_bph6x")
+
+[sub_resource type="Resource" id="Resource_48lt6"]
+script = ExtResource("9_jcvuu")
+Text = "Set Noise"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"SetNoiseImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"SetNoiseImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Set Noise",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_dyq4l"]
+script = ExtResource("9_jcvuu")
+Text = "Set Noise Property"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"SetNoisePropertyImpl"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"SetNoisePropertyImpl",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Set Noise Property",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_hanbw"]
+script = ExtResource("9_jcvuu")
+Text = "Set Int"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(0, 1, 0, 1)
+MaxWidth = 135
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 1
+CallableMethodName = &"SetIntAsync"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"SetIntAsync",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Set Int",
+"TooltipText": "",
+"UnbindNext": 1
+}
+
+[sub_resource type="Resource" id="Resource_avnbq"]
+script = ExtResource("9_jcvuu")
+Text = "Set Int Checked"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"SetIntCheckedAsync"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"SetIntCheckedAsync",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Set Int Checked",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[node name="Node" type="Node"]
+metadata/rlink_skip = false
+
+[node name="ValidateBasic" type="Node" parent="."]
+script = ExtResource("1_tyrjc")
+ExportBool = true
+ExportInt = 100
+ExportFloat = 100.0
+ExportString = "new value"
+ExportVector2 = Vector2(100, 100)
+ExportVector2I = Vector2i(100, 100)
+ExportRect2 = Rect2(100, 100, 100, 100)
+ExportRect2I = Rect2i(100, 100, 100, 100)
+ExportVector3 = Vector3(100, 100, 100)
+ExportVector3I = Vector3i(100, 100, 100)
+ExportTransform2D = Transform2D(100, 100, 200, 200, 300, 300)
+ExportVector4 = Vector4(100, 100, 100, 100)
+ExportVector4I = Vector4i(100, 100, 100, 100)
+ExportPlane = Plane(100, 100, 100, 100)
+ExportQuaternion = Quaternion(-0.262375, 0, 0, 0.964966)
+ExportAabb = AABB(300, 300, 300, 200, 200, 200)
+ExportBasis = Basis(300, 200, 100, 300, 200, 100, 300, 200, 100)
+ExportTransform3D = Transform3D(300, 200, 100, 300, 200, 100, 300, 200, 100, 200, 200, 200)
+ExportProjection = Projection(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100, 100, 100, 100, 100)
+ExportColor = Color(0.3, 0.4, 0.5, 1)
+ExportStringName = &"new stringname"
+ExportNodePath = NodePath("../ValidateInner")
+ExportDictionary = {
+"key1": 100,
+Vector2i(20, 20): true
+}
+ExportArray = [Color(1, 1, 1, 1), 200, "text"]
+ExportPackedByteArray = PackedByteArray(20, 30, 40)
+ExportPackedInt32Array = PackedInt32Array(1234, 4321, 4544, 1131)
+ExportPackedInt64Array = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+ExportPackedFloat32Array = PackedFloat32Array(1234, 4321, 4544, 1131)
+ExportPackedFloat64Array = PackedFloat64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
+ExportPackedStringArray = PackedStringArray("hello world", "new value", "third")
+ExportPackedVector2Array = PackedVector2Array(100, 100, 200, 200, 300, 300)
+ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
+ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
+
+[node name="ValidateInner" type="Node" parent="."]
+script = ExtResource("2_ykr5n")
+Inner = SubResource("Resource_6xl1r")
+
+[node name="ValidateInnerValidate" type="Node" parent="."]
+script = ExtResource("4_28d03")
+Inner = SubResource("Resource_h3e78")
+
+[node name="RLinkChild" type="Node" parent="."]
+script = ExtResource("6_a5adi")
+ToggleDirectChild = SubResource("Resource_jyecc")
+ToggleDirectChildPath = SubResource("Resource_ewcgb")
+ToggleChildPath = SubResource("Resource_ilhol")
+ToggleChildFrom = SubResource("Resource_nqqtb")
+ToggleChildGetParent = SubResource("Resource_0sw20")
+ToggleHasFrom = SubResource("Resource_1nqtg")
+RemoveAllChildren = SubResource("Resource_ralbv")
+RemoveAllChildrenFrom = SubResource("Resource_fbeda")
+RemoveAllChildrenPath = SubResource("Resource_scrrh")
+metadata/rlink_skip = false
+
+[node name="DirectChild" type="Node" parent="RLinkChild"]
+
+[node name="HasFrom" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="GetParent" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="ChildFrom" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="ChildPath" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="DirectChildPath" type="Node" parent="RLinkChild"]
+
+[node name="RLinkScene" type="Node" parent="." node_paths=PackedStringArray("SceneExport", "SceneLoad", "SceneFile")]
+script = ExtResource("7_a5adi")
+Scene = ExtResource("8_5qioq")
+SceneExport = NodePath("SceneExport")
+SceneLoad = NodePath("SceneLoad")
+SceneFile = NodePath("SceneFile")
+RemoveAll = SubResource("Resource_jcvuu")
+ToggleConnect = SubResource("Resource_mqgjl")
+
+[node name="SceneExport" parent="RLinkScene" instance=ExtResource("8_5qioq")]
+
+[node name="SceneLoad" parent="RLinkScene" instance=ExtResource("8_5qioq")]
+offset_top = 50.0
+offset_bottom = 50.0
+
+[node name="SceneFile" parent="RLinkScene" instance=ExtResource("8_5qioq")]
+offset_top = 100.0
+offset_bottom = 100.0
+
+[node name="RLinkChanges" type="Node" parent="."]
+script = ExtResource("10_mqgjl")
+NoiseTexture = SubResource("NoiseTexture2D_wjsgh")
+SetNoise = SubResource("Resource_48lt6")
+SetNoiseProperty = SubResource("Resource_dyq4l")
+
+[node name="RLinkAsync" type="Node" parent="."]
+script = ExtResource("11_wjsgh")
+IntVar = 4
+SetInt = SubResource("Resource_hanbw")
+Success = true
+SetIntChecked = SubResource("Resource_avnbq")
+metadata/rlink_skip = false
+
+[connection signal="CustomPressed" from="RLinkScene/SceneExport" to="RLinkScene" method="ScenePressed" binds= ["hello SceneExport"]]
+[connection signal="CustomPressed" from="RLinkScene/SceneLoad" to="RLinkScene" method="ScenePressed" binds= ["hello SceneLoad"]]
+[connection signal="CustomPressed" from="RLinkScene/SceneFile" to="RLinkScene" method="ScenePressed" binds= ["hello SceneFile"]]

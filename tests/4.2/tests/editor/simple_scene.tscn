@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/editor/scripts/simple_scene.gd" id="1_7rfpg"]
+
+[node name="SimpleScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7rfpg")
+int_var = 100
+
+[node name="MyName" type="Button" parent="."]
+layout_mode = 0
+offset_right = 112.0
+offset_bottom = 33.0
+
+[connection signal="pressed" from="MyName" to="." method="_on_button_pressed"]
