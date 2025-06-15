@@ -386,7 +386,7 @@ TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(0.880241, 0, 0.153971, 1)
+Modulate = Color(0.488731, 0.466175, 0.444257, 1)
 MaxWidth = 195
 MinHeight = 0
 MarginLeft = 0
@@ -551,16 +551,16 @@ metadata/default_values = {
 script = ExtResource("9_jcvuu")
 Text = "Toggle Connect"
 TooltipText = ""
-Icon = "Clear"
+Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(0.684796, 0.384807, 0, 1)
-MaxWidth = 195
+Modulate = Color(0.794962, 0.26934, 0.0398355, 1)
+MaxWidth = 200
 MinHeight = 0
-MarginLeft = 35
-MarginTop = 32
+MarginLeft = 0
+MarginTop = 2
 MarginRight = 0
-MarginBottom = 2
+MarginBottom = 0
 Disabled = false
 ClipText = true
 SizeFlags = -1
@@ -572,17 +572,17 @@ metadata/default_values = {
 &"CallableMethodName": &"ToggleConnectImpl",
 &"ClipText": true,
 &"Disabled": false,
-&"Icon": "Clear",
+&"Icon": "",
 &"IconAlignment": 0,
 &"IconAlignmentVertical": 1,
 &"IconTexture": null,
-&"MarginBottom": 2,
-&"MarginLeft": 35,
+&"MarginBottom": 0,
+&"MarginLeft": 0,
 &"MarginRight": 0,
-&"MarginTop": 32,
-&"MaxWidth": 195,
+&"MarginTop": 2,
+&"MaxWidth": 200,
 &"MinHeight": 0,
-&"Modulate": Color(0.684796, 0.384807, 0, 1),
+&"Modulate": Color(0.794962, 0.26934, 0.0398355, 1),
 &"SizeFlags": -1,
 &"Text": "Toggle Connect",
 &"TooltipText": "",
@@ -864,7 +864,7 @@ SetNoiseProperty = SubResource("Resource_dyq4l")
 
 [node name="RLinkAsync" type="Node" parent="."]
 script = ExtResource("11_wjsgh")
-IntVar = 4
+IntVar = 6
 SetInt = SubResource("Resource_hanbw")
 Success = true
 SetIntChecked = SubResource("Resource_avnbq")

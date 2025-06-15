@@ -15,7 +15,7 @@ const RLinkScript = preload(Context.RUNTIME_PATH + "rlink.gd")
 
 signal busy_changed(status: bool, id: int)
 
-var __context: Context
+var __ctx: Context
 var __settings: Settings
 var __compat: Compat
 var __undo_redo: EditorUndoRedoManager
@@ -48,32 +48,33 @@ var busy: bool:
         busy_changed.emit(busy, get_instance_id())
 
 
-func _init(ctx: Context, object: Object, in_result: ScanResult) -> void:
-    __context = ctx
-    __settings = ctx.settings
-    __compat = ctx.compat
-    __undo_redo = ctx.undo_redo
-    __scan_cache = ctx.scan_cache
-    __map = ctx.rlink_map
-    __conv_to_tool = ctx.converter_to_tool
-    __conv_to_runtime = ctx.converter_to_runtime
+func _init(context: Context, object: Object, in_result: ScanResult) -> void:
+    __ctx = context
+    __settings = __ctx.settings
+    __compat = __ctx.compat
+    __undo_redo = __ctx.undo_redo
+    __scan_cache = __ctx.scan_cache
+    __map = __ctx.rlink_map
+    __conv_to_tool = __ctx.converter_to_tool
+    __conv_to_runtime = __ctx.converter_to_runtime
     
     _object_id = object.get_instance_id()
     _validate_max_depth = in_result.max_depth
     
-    _buffer = RLinkBuffer.new(ctx)
+    _buffer = RLinkBuffer.new(__ctx)
     tool_obj = __conv_to_tool._convert_value(_buffer, runtime)
     
     _helper = RLinkScript.new(self)
-    if ctx.csharp_enabled:
-        _helper_cs = ctx.csharp_helper_script.new(self)
+    if __ctx.csharp_enabled:
+        _helper_cs = __ctx.csharp_helper_script.new(self)
         
-    __context.cancel_tasks.connect(_on_cancel_tasks)
+    __ctx.cancel_tasks.connect(_on_cancel_tasks)
 
 
 func _on_cancel_tasks() -> void:
-    _buffer.discard_changes()
     busy = false
+    _helper = null
+    _helper_cs = null
 
 
 func add_validate_exception(tool_id: int) -> void:
@@ -86,8 +87,8 @@ func remove_validate_exception(tool_id: int) -> void:
 
 func check_valid() -> bool:
     if not is_instance_valid(tool_obj):
-        busy = false
-        __context.clear_and_refresh()
+        _on_cancel_tasks()
+        __ctx.clear_and_refresh()
         return true
     return false
 
@@ -168,13 +169,13 @@ func validate_object(name: String, object: Object, result: ScanResult) -> void:
     
     var restore: Callable
     if rlink is RLink:
-        var old_id = rlink._object_id
+        var old_id: int = rlink._object_id
         rlink._object_id = obj_runtime.get_instance_id()
-        restore = func(): rlink._object_id = old_id
+        restore = func() -> void: rlink._object_id = old_id
     else:
-        var old_id = rlink._objectId
+        var old_id: int = rlink._objectId
         rlink._objectId = obj_runtime.get_instance_id()
-        restore = func(): rlink._objectId = old_id
+        restore = func() -> void: rlink._objectId = old_id
         
     var call_res: Variant = _call_validate(object, result)
     if result.validate_check_return and not is_same(call_res, true):
@@ -288,7 +289,7 @@ func call_rlink_button_cs(prop_name: StringName) -> Variant:
     if check_valid(): return
     if busy: return
     var to_call := tool_obj.get(prop_name) as RefCounted
-    if to_call == null or to_call.get_script() != __context.csharp_button_script:
+    if to_call == null or to_call.get_script() != __ctx.csharp_button_script:
         push_error("ValidRLink: '%s' expected RLinkButtonCS [rlink_data.call_rlink_button_cs]" % prop_name)
         return
     to_call.SetObject(tool_obj)

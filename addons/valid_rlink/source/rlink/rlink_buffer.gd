@@ -39,11 +39,11 @@ var _undo_methods: Array
 #endregion
 
 
-func _init(ctx: Context) -> void:
-    __ctx = ctx
-    __settings = ctx.settings
-    __compat = ctx.compat
-    __undo_redo = ctx.undo_redo
+func _init(context: Context) -> void:
+    __ctx = context
+    __settings = __ctx.settings
+    __compat = __ctx.compat
+    __undo_redo = __ctx.undo_redo
 
 
 #region: Changes buffer
@@ -329,8 +329,7 @@ func _get_owned_by(owner: Node, node: Node, owned: Array[Node]) -> void:
         _get_owned_by(owner, node.get_child(idx), owned)
         
 
-
-static func find_child_by_class(node:Node, cls:String):
+static func find_child_by_class(node: Node, cls: String):
     for child in node.get_children():
         if child.get_class() == cls:
             return child

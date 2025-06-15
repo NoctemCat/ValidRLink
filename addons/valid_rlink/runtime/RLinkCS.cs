@@ -34,11 +34,16 @@ public partial class RLinkCS : RefCounted
     /// <summary>
     /// Needed for assembly reloading to work
     /// </summary>
-    public RLinkCS() { }
+    public RLinkCS()
+    {
+        RLinkRefTracer.Instance.AddRefIfCreatedDirectly(this);
+    }
+
     public RLinkCS(RefCounted data)
     {
         _dataId = data.GetInstanceId();
         _objectId = data.Get(DataNames._ObjectId).AsUInt64();
+        RLinkRefTracer.Instance.AddRef(this);
     }
 
     [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "It complained without it")]

@@ -18,6 +18,7 @@ var csharp_helper_script: Script
 var csharp_button_script: Script
 var csharp_settings_script: Script
 var csharp_db: Node
+var csharp_ref_tracer: Node
 
 var popup: PopupMenu
 var button_theme: Theme
@@ -37,6 +38,11 @@ func emit_cancel_tasks() -> void:
 
 func object_is_button(object: Object) -> bool:
     return object is RLinkButton or (csharp_enabled and object.get_script() == csharp_button_script)
+
+
+func object_is_csharp(object: Object) -> bool:
+    var script: Script = object.get_script()
+    return script != null and script.get_class() == "CSharpScript"
 
 
 func clear_and_refresh() -> void:

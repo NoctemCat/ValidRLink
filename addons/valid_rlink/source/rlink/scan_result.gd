@@ -20,9 +20,9 @@ var allowed_properties: Array[StringName]
 var _methods_arg_infos: Dictionary
 
 
-func _init(ctx: Context, object: Object) -> void:
+func _init(context: Context, object: Object) -> void:
     skip = false
-    max_depth = ctx.settings.max_depth
+    max_depth = context.settings.max_depth
     validate_name = &""
     validate_arg_count = -1
     validate_check_return = false
@@ -35,6 +35,8 @@ func _init(ctx: Context, object: Object) -> void:
         object_name = object.name
     elif object is Resource and object.resource_name:
         object_name = object.resource_name
+    elif object is Resource and object.resource_path:
+        object_name = object.resource_path
     else:
         if script != null:
             object_name = script.resource_path.get_file()
@@ -47,20 +49,20 @@ func _init(ctx: Context, object: Object) -> void:
         return
 
     if script != null and not script.is_tool():
-        handle_script(ctx, object, script)
+        handle_script(context, object, script)
     else:
-        handle_native(ctx, object)
+        handle_native(context, object)
 
 
-func handle_native(ctx: Context, object: Object) -> void:
-    handle_script(ctx, object, object)
+func handle_native(context: Context, object: Object) -> void:
+    handle_script(context, object, object)
         
         
-func handle_script(ctx: Context, object: Object, script_or_native: Object) -> void:
-    var rlink_settings: RLinkSettings = _get_settings(ctx, object, script_or_native)
+func handle_script(context: Context, object: Object, script_or_native: Object) -> void:
+    var rlink_settings: RLinkSettings = _get_settings(context, object, script_or_native)
     ## Uncomment for autocomplete, then comment it again to make it optional
-    #var rlink_settings_cs: RLinkSettingsCS = _get_settings_cs(ctx, object, script_or_native) 
-    var rlink_settings_cs: Resource = _get_settings_cs(ctx, object, script_or_native)
+    #var rlink_settings_cs: RLinkSettingsCS = _get_settings_cs(context, object, script_or_native) 
+    var rlink_settings_cs: Resource = _get_settings_cs(context, object, script_or_native)
 
     var had_validate := false
     if rlink_settings != null:
@@ -70,7 +72,7 @@ func handle_script(ctx: Context, object: Object, script_or_native: Object) -> vo
             
         if rlink_settings.validate_name != &"":
             had_validate = true
-            if ctx.compat.comp_has_method(object, rlink_settings.validate_name):
+            if context.compat.comp_has_method(object, rlink_settings.validate_name):
                 validate_name = rlink_settings.validate_name
         
         skip_properties.append_array(rlink_settings.skip_properties)
@@ -86,7 +88,7 @@ func handle_script(ctx: Context, object: Object, script_or_native: Object) -> vo
             
         if rlink_settings_cs.ValidateName != &"":
             had_validate = true
-            if ctx.compat.comp_has_method(object, rlink_settings_cs.ValidateName):
+            if context.compat.comp_has_method(object, rlink_settings_cs.ValidateName):
                 validate_name = rlink_settings_cs.ValidateName
         
         skip_properties.append_array(rlink_settings_cs.SkipProperties)
@@ -97,15 +99,15 @@ func handle_script(ctx: Context, object: Object, script_or_native: Object) -> vo
 
 
     if !had_validate and validate_name == &"":
-        for name in ctx.settings.validate_changes_names:
-            if ctx.compat.comp_has_method(object, name):
+        for name in context.settings.validate_changes_names:
+            if context.compat.comp_has_method(object, name):
                 validate_name = name
                 break
     
 
     if validate_name != &"":
         if script_or_native is Script and script_or_native.get_class() == "CSharpScript":
-            var info: Dictionary = ctx.csharp_db.GetMethodInfo(script_or_native, validate_name)
+            var info: Dictionary = context.csharp_db.GetMethodInfo(script_or_native, validate_name)
             validate_arg_count = info["arg_count"]
             validate_check_return = info["needs_check"]
         else:

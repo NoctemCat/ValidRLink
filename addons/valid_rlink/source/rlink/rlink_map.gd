@@ -1,9 +1,17 @@
 @tool
 extends RefCounted
 
+const Context = preload("./../context.gd")
+
+var __ctx: Context
+
 var _created_objects_ids: Array[int]
 var _tool_ids_table: Dictionary
 var _runtime_ids_table: Dictionary
+
+
+func _init(context: Context) -> void:
+    __ctx = context
 
 
 func tool_from_obj(runtime: Object) -> Object:
@@ -84,8 +92,11 @@ func is_runtime(object: Object) -> bool:
 func clear() -> void:
     for tool_id in _created_objects_ids:
         var tool_obj := instance_from_id(tool_id)
-        if tool_obj != null and not tool_obj is Resource:
+        if tool_obj == null: continue
+        if not tool_obj is Resource:
             tool_obj.free()
+        elif Engine.is_editor_hint() and tool_obj is Resource and __ctx.object_is_csharp(tool_obj):
+            __ctx.csharp_ref_tracer.AddToDispose(tool_obj)
 
     _created_objects_ids.clear()
     _tool_ids_table.clear()

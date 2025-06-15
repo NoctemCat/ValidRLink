@@ -32,7 +32,7 @@ func before_all() -> void:
     # _ctx.csharp_button_script = load(Context.RUNTIME_PATH + "RLinkButtonCS.cs")
     # _ctx.csharp_settings_script = load(Context.RUNTIME_PATH + "RLinkSettingsCS.cs")
     
-    _ctx.rlink_map = RLinkMap.new()
+    _ctx.rlink_map = RLinkMap.new(_ctx)
     _ctx.scan_cache = ScanCache.new(_ctx)
     _ctx.rlink_data_cache = RLinkDataCache.new(_ctx)
     _ctx.converter_to_tool = ConverterToTool.new(_ctx)

@@ -15,7 +15,6 @@ var _popup: PopupMenu
 var _refresh_timer: Timer
 var _refresh_callable: Callable
 var _csharp_unload_detector: Node
-var _csharp_db: Node
 var _clear_entered: bool
 
 
@@ -61,7 +60,8 @@ func _exit_tree() -> void:
     if _csharp_unload_detector != null:
         _csharp_unload_detector.call(&"FreeHandle")
         _csharp_unload_detector.queue_free()
-        _csharp_db.queue_free()
+        _ctx.csharp_db.queue_free()
+        _ctx.csharp_ref_tracer.queue_free()
     _popup.queue_free()
     _refresh_timer.queue_free()
     remove_inspector_plugin(_inspector)
@@ -96,9 +96,10 @@ func _handle_csharp_support() -> void:
     
     _csharp_unload_detector = load(Context.SOURCE_PATH + "RLinkUnloadDetector.cs").new()
     add_child(_csharp_unload_detector, true)
-    _csharp_db = load(Context.SOURCE_PATH + "RLinkDB.cs").new()
-    add_child(_csharp_db, true)
-    _ctx.csharp_db = _csharp_db
+    _ctx.csharp_db = load(Context.SOURCE_PATH + "RLinkDB.cs").new()
+    add_child(_ctx.csharp_db, true)
+    _ctx.csharp_ref_tracer = load(Context.SOURCE_PATH + "RLinkRefTracerSerialize.cs").new()
+    add_child(_ctx.csharp_ref_tracer, true)
 
 
 func _connect_signals() -> void:

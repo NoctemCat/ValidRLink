@@ -20,8 +20,8 @@ var _timer: Timer
 var _validate_callable: Callable
 
 
-func _init(ctx: Context, data: RLinkData, obj_name: String) -> void:
-    __settings = ctx.settings
+func _init(context: Context, data: RLinkData, obj_name: String) -> void:
+    __settings = context.settings
     if data != null:
         _data_id = data.get_instance_id()
     object_name = obj_name

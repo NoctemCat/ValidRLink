@@ -16,9 +16,9 @@ var __scan_cache: ScanCache
 
 func _init(context: Context) -> void:
     __ctx = context
-    __map = context.rlink_map
-    __settings = context.settings
-    __scan_cache = context.scan_cache
+    __map = __ctx.rlink_map
+    __settings = __ctx.settings
+    __scan_cache = __ctx.scan_cache
 
 
 func _convert_value(_data: RLinkBuffer, value: Variant, _depth: int = 0, _search_ctx: Object = null) -> Variant:

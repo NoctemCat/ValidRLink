@@ -23,103 +23,103 @@ static var unbound_count_available: bool ## Is true if current Godot version sup
 @export
 var text: String: ## The button's text that will be displayed inside the button's area
     set(value):
-        var new := text != value
+        if text == value: return
         text = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var tooltip_text: String: ## Sets [member Control.tooltip_text]
     set(value):
-        var new := tooltip_text != value
+        if tooltip_text == value: return
         tooltip_text = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var icon: String: ## Sets editor icon by name, setting it unsets [member icon_texture]
     set(value):
-        if value: icon_texture = null
-        var new := text != value
+        if text == value: return
+        if value != "": icon_texture = null
         icon = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var icon_texture: Texture2D: ## Sets texture as icon, unsets [member icon]
     set(value):
-        if value: icon = ""
-        var new := icon_texture != value
+        if icon_texture == value: return
+        if value != null: icon = ""
         icon_texture = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var icon_alignment: HorizontalAlignment: ## Icon behavior for [member Button.icon_alignment]
     set(value):
-        var new := icon_alignment != value
+        if icon_alignment == value: return
         icon_alignment = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var icon_alignment_vertical: VerticalAlignment: ## Icon behavior for [member Button.vertical_icon_alignment]
     set(value):
-        var new := icon_alignment_vertical != value
+        if icon_alignment_vertical == value: return
         icon_alignment_vertical = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var modulate: Color: ## Modulates button
     set(value):
-        var new := modulate != value
+        if modulate == value: return
         modulate = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var max_width: int: ## Sets maximum width, can be shrunk
     set(value):
-        var new := max_width != value
+        if max_width == value: return
         max_width = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var min_height: int: ## Sets minimum height, can't be shrunk
     set(value):
-        var new := min_height != value
+        if min_height == value: return
         min_height = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var margin_left: int: ## Sets left margin
     set(value):
-        var new := margin_left != value
+        if margin_left == value: return
         margin_left = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var margin_top: int: ## Sets top margin
     set(value):
-        var new := margin_top != value
+        if margin_top == value: return
         margin_top = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var margin_right: int: ## Sets right margin
     set(value):
-        var new := margin_right != value
+        if margin_right == value: return
         margin_right = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var margin_bottom: int: ## Sets bottom margin
     set(value):
-        var new := margin_bottom != value
+        if margin_bottom == value: return
         margin_bottom = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var disabled: bool: ## Sets disabled on the button
     set(value):
-        var new := disabled != value
+        if disabled == value: return
         disabled = value
-        if new: emit_changed()
+        emit_changed()
 @export
 var clip_text: bool: ## Sets clip text on the button
     set(value):
-        var new := clip_text != value
+        if clip_text == value: return
         clip_text = value
-        if new: emit_changed()
+        emit_changed()
 ## If size is less than max width the flag is always SIZE_FILL, else it's SIZE_SHRINK_CENTER. 
 ## This allows to override the flag to other when the size of container is more than 
 ## its max width
 @export var size_flags: ControlSizes:
     set(value):
-        var new := size_flags != value
+        if size_flags == value: return
         size_flags = value
-        if new: emit_changed()
+        emit_changed()
         
 @export_group("Callable")
 

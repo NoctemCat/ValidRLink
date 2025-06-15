@@ -29,7 +29,7 @@ var _prop_names: Dictionary
 
 func _init(context: Context) -> void:
     __ctx = context
-    __ctx.rlink_map = RLinkMap.new()
+    __ctx.rlink_map = RLinkMap.new(__ctx)
     __ctx.scan_cache = ScanCache.new(__ctx)
     __ctx.rlink_data_cache = RLinkDataCache.new(__ctx)
     __ctx.converter_to_tool = ConverterToTool.new(__ctx)
@@ -43,7 +43,8 @@ func _init(context: Context) -> void:
 func _can_handle(object: Object) -> bool:
     if not object is Node and not object is Resource:
         return false
-
+    
+    if __ctx.object_is_button(object): return false
     var needs_clear := _prev_objects.size() >= 4
     
     if object is Node:
@@ -143,6 +144,8 @@ func _create_watcher(object: Object, data: RLinkData = null) -> void:
             object_name = object.name
         elif object is Resource and object.resource_name:
             object_name = object.resource_name
+        elif object is Resource and object.resource_path:
+            object_name = object.resource_path
         else:
             var script: Script = object.get_script() as Script
             if script != null:

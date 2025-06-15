@@ -61,9 +61,9 @@ public partial class RLinkButtonCS : Resource
         get => text;
         set
         {
-            bool changed = text != value;
+            if (text == value) { return; }
             text = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private string tooltipText = "";
@@ -76,9 +76,9 @@ public partial class RLinkButtonCS : Resource
         get => tooltipText;
         set
         {
-            bool changed = tooltipText != value;
+            if (tooltipText == value) { return; }
             tooltipText = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private string icon = "";
@@ -91,10 +91,10 @@ public partial class RLinkButtonCS : Resource
         get => icon;
         set
         {
-            if (!string.IsNullOrWhiteSpace(value)) IconTexture = null;
-            bool changed = icon != value;
+            if (icon == value) { return; }
+            if (!string.IsNullOrWhiteSpace(value)) { iconTexture = null; }
             icon = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private Texture2D? iconTexture = null;
@@ -107,10 +107,10 @@ public partial class RLinkButtonCS : Resource
         get => iconTexture;
         set
         {
-            if (value != null) Icon = "";
-            bool changed = iconTexture != value;
+            if (iconTexture == value) { return; }
+            if (value != null) { icon = ""; }
             iconTexture = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private HorizontalAlignment iconAlignment;
@@ -123,9 +123,9 @@ public partial class RLinkButtonCS : Resource
         get => iconAlignment;
         set
         {
-            bool changed = iconAlignment != value;
+            if (iconAlignment == value) { return; }
             iconAlignment = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private VerticalAlignment iconAlignmentVertical;
@@ -138,9 +138,9 @@ public partial class RLinkButtonCS : Resource
         get => iconAlignmentVertical;
         set
         {
-            bool changed = iconAlignmentVertical != value;
+            if (iconAlignmentVertical == value) { return; }
             iconAlignmentVertical = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private Color modulate;
@@ -153,9 +153,9 @@ public partial class RLinkButtonCS : Resource
         get => modulate;
         set
         {
-            bool changed = modulate != value;
+            if (modulate == value) { return; }
             modulate = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private int maxWidth;
@@ -168,9 +168,9 @@ public partial class RLinkButtonCS : Resource
         get => maxWidth;
         set
         {
-            bool changed = maxWidth != value;
+            if (maxWidth == value) { return; }
             maxWidth = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private int minHeight;
@@ -183,9 +183,9 @@ public partial class RLinkButtonCS : Resource
         get => minHeight;
         set
         {
-            bool changed = minHeight != value;
+            if (minHeight == value) { return; }
             minHeight = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private int marginLeft;
@@ -198,9 +198,9 @@ public partial class RLinkButtonCS : Resource
         get => marginLeft;
         set
         {
-            bool changed = marginLeft != value;
+            if (marginLeft == value) { return; }
             marginLeft = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private int marginTop;
@@ -213,9 +213,9 @@ public partial class RLinkButtonCS : Resource
         get => marginTop;
         set
         {
-            bool changed = marginTop != value;
+            if (marginTop == value) { return; }
             marginTop = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private int marginRight;
@@ -228,9 +228,9 @@ public partial class RLinkButtonCS : Resource
         get => marginRight;
         set
         {
-            bool changed = marginRight != value;
+            if (marginRight == value) { return; }
             marginRight = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private int marginBottom;
@@ -243,9 +243,9 @@ public partial class RLinkButtonCS : Resource
         get => marginBottom;
         set
         {
-            bool changed = marginBottom != value;
+            if (marginBottom == value) { return; }
             marginBottom = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private bool disabled;
@@ -258,9 +258,9 @@ public partial class RLinkButtonCS : Resource
         get => disabled;
         set
         {
-            bool changed = disabled != value;
+            if (disabled == value) { return; }
             disabled = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private bool clipText;
@@ -273,9 +273,9 @@ public partial class RLinkButtonCS : Resource
         get => clipText;
         set
         {
-            bool changed = clipText != value;
+            if (clipText == value) { return; }
             clipText = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
     private ControlSizes sizeFlags;
@@ -290,9 +290,9 @@ public partial class RLinkButtonCS : Resource
         get => sizeFlags;
         set
         {
-            bool changed = sizeFlags != value;
+            if (sizeFlags == value) { return; }
             sizeFlags = value;
-            if (changed) EmitChanged();
+            EmitChanged();
         }
     }
 
@@ -330,6 +330,7 @@ public partial class RLinkButtonCS : Resource
     public RLinkButtonCS()
     {
         BoundArgs ??= new();
+        RLinkRefTracer.Instance.AddRefIfCreatedDirectly(this);
     }
 
     [RequiresUnreferencedCode("Getting method by its name")]
@@ -337,6 +338,7 @@ public partial class RLinkButtonCS : Resource
     {
         BoundArgs = new();
         SetDefaults();
+        RLinkRefTracer.Instance.AddRef(this);
 
         StringName method = GodotHelper.Callable.GetMethod(callable);
         if (method.ToString().Contains("anonymous lambda"))
@@ -362,6 +364,8 @@ public partial class RLinkButtonCS : Resource
     {
         BoundArgs = new();
         SetDefaults();
+        RLinkRefTracer.Instance.AddRef(this);
+
         SetObject(target, method);
         if (properties is not null)
         {
@@ -377,6 +381,7 @@ public partial class RLinkButtonCS : Resource
     {
         BoundArgs = new();
         SetDefaults();
+        RLinkRefTracer.Instance.AddRef(this);
 
         CallableMethodName = method;
         if (properties is not null)
@@ -388,8 +393,10 @@ public partial class RLinkButtonCS : Resource
     [RequiresUnreferencedCode("Getting method by its name")]
     public RLinkButtonCS(Delegate method, Dictionary<StringName, Variant>? properties = null)
     {
+        GD.Print("> RLinkButtonCS 5");
         BoundArgs = new();
         SetDefaults();
+        RLinkRefTracer.Instance.AddRef(this);
 
         if (typeof(GodotObject).IsAssignableFrom(method.Method.DeclaringType) is false)
         {
@@ -423,21 +430,22 @@ public partial class RLinkButtonCS : Resource
         }
         return new Variant();
     }
+
 #if GODOT4_4_OR_GREATER
     public override void _ResetState()
 #else
-    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "It exists in a newer version")]
-    public void _ResetState()
+        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "It exists in a newer version")]
+        public void _ResetState()
 #endif
     {
         RestoreDefault();
     }
 
-    // protected override void Dispose(bool disposing)
-    // {
-    //     CancelTask();
-    //     base.Dispose(disposing);
-    // }
+    protected override void Dispose(bool disposing)
+    {
+        CancelTask();
+        base.Dispose(disposing);
+    }
 
     private void SetDefaults()
     {
