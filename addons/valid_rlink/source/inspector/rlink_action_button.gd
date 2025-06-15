@@ -64,16 +64,28 @@ func _init(context: Context, data: RLinkData, property: String, rlink_button: Re
     resized.connect(_on_resize)
     _on_resize()
     
-    if rlink_button == null: return
+    if rlink_button == null: 
+        _callable_set_default(property)
+        return
 
     data.busy_changed.connect(_on_busy_changed)
     if rlink_button is RLinkButton:
-        setup(rlink_button, property)
+        _setup(rlink_button, property)
     elif __ctx.csharp_enabled and rlink_button.get_script() == __ctx.csharp_button_script:
-        setup_cs(rlink_button, property)
+        _setup_cs(rlink_button, property)
 
 
-func setup(rlink_button: RLinkButton, property: String) -> void:
+func _callable_set_default(property: String) -> void:
+    var default_btn: Resource = load(__ctx.settings.default_button_path)
+    if default_btn == null or not default_btn is RLinkButton:
+        return
+    _button_id = default_btn.get_instance_id()
+    _on_rlink_button_changed()
+    _button_id = 0
+    _button.text = property.capitalize()
+
+
+func _setup(rlink_button: RLinkButton, property: String) -> void:
     _on_id_pressed_callable = _on_id_pressed
     _button_id = rlink_button.get_instance_id()
     if not rlink_button.has_meta(&"default_values"):
@@ -94,7 +106,7 @@ func setup(rlink_button: RLinkButton, property: String) -> void:
     _on_rlink_button_changed()
     
     
-func setup_cs(rlink_button_cs: Resource, property: String) -> void:
+func _setup_cs(rlink_button_cs: Resource, property: String) -> void:
     _on_id_pressed_callable = _on_id_pressed_cs
     _button_id_cs = rlink_button_cs.get_instance_id()
     if not rlink_button_cs.has_meta(&"default_values"):
