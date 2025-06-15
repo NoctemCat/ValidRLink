@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://d3dut4dsdaetg"]
+[gd_scene load_steps=23 format=3 uid="uid://d3dut4dsdaetg"]
 
 [ext_resource type="Script" uid="uid://c0776xyhyin8h" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
 [ext_resource type="Script" uid="uid://cdsgv6uw5huvs" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://dyvwgoa8khf0n" path="res://tests/editor/scripts/inner_resource_validate.gd" id="5_xpbgq"]
 [ext_resource type="Script" uid="uid://reta8lv7tvd8" path="res://tests/editor/scripts/rlink_child.gd" id="6_baol1"]
 [ext_resource type="Script" uid="uid://bu6htwwslgynt" path="res://tests/editor/scripts/validate_packed.gd" id="6_utf88"]
+[ext_resource type="Script" uid="uid://doynjs0muw35d" path="res://tests/editor/scripts/validate_inherit.gd" id="7_utf88"]
 [ext_resource type="Script" uid="uid://cl578xaoh1it6" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
 [ext_resource type="PackedScene" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
 [ext_resource type="Script" uid="uid://beknapxgoro47" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
@@ -356,6 +357,11 @@ metadata/rlink_skip = false
 [node name="ValidatePacked" type="Node" parent="."]
 script = ExtResource("6_utf88")
 array = PackedInt32Array(5, 0, 0, 0, 0)
+
+[node name="ValidateInherit" type="Node" parent="."]
+script = ExtResource("7_utf88")
+float_var = 55.5
+int_var = 200
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_baol1")

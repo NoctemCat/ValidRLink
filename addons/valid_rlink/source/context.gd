@@ -63,7 +63,7 @@ func establish_tracking(runtime: Object, name: String) -> void:
     var tool_btn: Object = tool.get(name)
     if tool_btn == null: return
     
-    rlink_map.add_pair_no_tracking(btn, tool_btn)
+    rlink_map.add_pair(btn, tool_btn)
     btn.changed.emit()
 
 

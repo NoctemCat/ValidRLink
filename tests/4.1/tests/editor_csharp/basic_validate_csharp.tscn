@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://b5g16v4nuu2pg"]
+[gd_scene load_steps=34 format=3 uid="uid://b5g16v4nuu2pg"]
 
 [ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateBasic.cs" id="1_tyrjc"]
 [ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInner.cs" id="2_ykr5n"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://tests/editor_csharp/scripts/InnerResourceValidate.cs" id="5_08x04"]
 [ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidatePacked.cs" id="6_7wkm2"]
 [ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkChild.cs" id="6_a5adi"]
+[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInherit.cs" id="7_0pnc5"]
 [ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkScene.cs" id="7_a5adi"]
 [ext_resource type="PackedScene" path="res://tests/editor_csharp/simple_scene.tscn" id="8_5qioq"]
 [ext_resource type="Script" path="res://addons/valid_rlink/runtime/RLinkButtonCS.cs" id="9_jcvuu"]
@@ -816,6 +817,11 @@ Inner = SubResource("Resource_h3e78")
 [node name="ValidatePacked" type="Node" parent="."]
 script = ExtResource("6_7wkm2")
 PackedArray = PackedInt32Array(100, 0, 0, 0, 0)
+
+[node name="ValidateInherit" type="Node" parent="."]
+script = ExtResource("7_0pnc5")
+FloatVar = 55.5
+IntVar = 200
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_a5adi")

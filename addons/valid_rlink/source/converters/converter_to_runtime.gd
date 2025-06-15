@@ -67,7 +67,6 @@ func _get_runtime_object(buffer: RLinkBuffer, tool_obj: Object) -> Object:
         __map.add_pair(runtime, tool_obj)
     else:
         __map.add_pair_no_tracking(runtime, tool_obj)
-    __scan_cache.add_pair(runtime, tool_obj)
     return runtime
     
     

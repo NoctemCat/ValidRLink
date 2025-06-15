@@ -7,6 +7,7 @@ const Compat = Context.Compatibility
 
 var object_id: int
 var object_name: String
+var script_id: int
 var skip: bool
 var max_depth: int
 var validate_name: StringName
@@ -43,10 +44,14 @@ func _init(context: Context, object: Object) -> void:
         else:
             object_name = object.to_string()
             
-    if skip: return
     if object is Script:
         skip = true
         return
+
+    if script != null:
+        script_id = script.get_instance_id()
+    else:
+        script_id = 0
 
     if script != null and not script.is_tool():
         handle_script(context, object, script)

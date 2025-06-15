@@ -1,10 +1,11 @@
-[gd_scene load_steps=32 format=3 uid="uid://clwknig30ctig"]
+[gd_scene load_steps=33 format=3 uid="uid://clwknig30ctig"]
 
 [ext_resource type="Script" uid="uid://cswdnxsjfowri" path="res://tests/editor_csharp/scripts/ValidateBasic.cs" id="1_tyrjc"]
 [ext_resource type="Script" uid="uid://bt0ngtfnsuu3" path="res://tests/editor_csharp/scripts/ValidateInner.cs" id="2_ykr5n"]
 [ext_resource type="Script" uid="uid://c2kddw4pjhaaa" path="res://tests/editor_csharp/scripts/InnerResource.cs" id="3_28d03"]
 [ext_resource type="Script" uid="uid://crply14ih1msy" path="res://tests/editor_csharp/scripts/ValidateInnerValidate.cs" id="4_28d03"]
 [ext_resource type="Script" uid="uid://b4iffjenx5sgh" path="res://tests/editor_csharp/scripts/InnerResourceValidate.cs" id="5_08x04"]
+[ext_resource type="Script" uid="uid://cv081lcko7h6q" path="res://tests/editor_csharp/scripts/ValidateInherit.cs" id="6_75rvy"]
 [ext_resource type="Script" uid="uid://oiivtaepeo5h" path="res://tests/editor_csharp/scripts/RLinkChild.cs" id="6_a5adi"]
 [ext_resource type="Script" uid="uid://dfu5kjfjxc3m0" path="res://tests/editor_csharp/scripts/RLinkScene.cs" id="7_a5adi"]
 [ext_resource type="PackedScene" path="res://tests/editor_csharp/simple_scene.tscn" id="8_5qioq"]
@@ -811,6 +812,11 @@ Inner = SubResource("Resource_wjsgh")
 [node name="ValidateInnerValidate" type="Node" parent="."]
 script = ExtResource("4_28d03")
 Inner = SubResource("Resource_h84kr")
+
+[node name="ValidateInherit" type="Node" parent="."]
+script = ExtResource("6_75rvy")
+FloatVar = 55.5
+IntVar = 200
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_a5adi")

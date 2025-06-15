@@ -34,7 +34,7 @@ public partial class RLinkDB : Node
         {
             foreach (var name in possibleNames)
             {
-                var mi = type.GetMethod(name, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                var mi = type.GetMethod(name, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
                 object? possibleSettings = mi?.Invoke(null, null);
                 if (possibleSettings is RLinkSettingsCS settings)
                 {

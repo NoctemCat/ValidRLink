@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dwaw68u3aybf3"]
+[gd_scene load_steps=24 format=3 uid="uid://dwaw68u3aybf3"]
 
 [ext_resource type="Script" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
 [ext_resource type="Script" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://tests/editor/scripts/rlink_child.gd" id="6_baol1"]
 [ext_resource type="Script" path="res://tests/editor/scripts/validate_packed.gd" id="6_nmym4"]
 [ext_resource type="Script" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
+[ext_resource type="Script" path="res://tests/editor/scripts/validate_inherit.gd" id="7_ve6au"]
 [ext_resource type="PackedScene" uid="uid://dr3jns3q1fokr" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
 [ext_resource type="Script" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
 [ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="10_p40gm"]
@@ -356,6 +357,12 @@ metadata/rlink_skip = false
 
 [node name="ValidateChanges" type="Node" parent="."]
 script = ExtResource("6_nmym4")
+array = PackedInt32Array(5, 0, 0, 0, 0)
+
+[node name="ValidateInherit" type="Node" parent="."]
+script = ExtResource("7_ve6au")
+float_var = 55.5
+int_var = 200
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_baol1")

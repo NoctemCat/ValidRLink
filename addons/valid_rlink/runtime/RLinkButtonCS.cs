@@ -393,7 +393,6 @@ public partial class RLinkButtonCS : Resource
     [RequiresUnreferencedCode("Getting method by its name")]
     public RLinkButtonCS(Delegate method, Dictionary<StringName, Variant>? properties = null)
     {
-        GD.Print("> RLinkButtonCS 5");
         BoundArgs = new();
         SetDefaults();
         RLinkRefTracer.AddRef(this);
@@ -434,8 +433,8 @@ public partial class RLinkButtonCS : Resource
 #if GODOT4_4_OR_GREATER
     public override void _ResetState()
 #else
-        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "It exists in a newer version")]
-        public void _ResetState()
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "It exists in a newer version")]
+    public void _ResetState()
 #endif
     {
         RestoreDefault();

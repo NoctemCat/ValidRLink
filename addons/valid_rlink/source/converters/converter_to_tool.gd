@@ -78,7 +78,6 @@ func _tool_register_defaults(buffer: RLinkBuffer, runtime: Object, tool_obj: Obj
         _connect_rlink_buttons(buffer, runtime)
 
     var res := __scan_cache.get_search(runtime)
-    __scan_cache.add_pair(runtime, tool_obj)
     
     for prop in runtime.get_property_list():
         if (_skip_property(res.skip_properties, res.allowed_properties, prop)):
