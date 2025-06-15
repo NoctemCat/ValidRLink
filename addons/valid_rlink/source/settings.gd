@@ -67,17 +67,18 @@ func _init() -> void:
     # TODO: add versioning
     if set_version:
         set_version.split(".")
-    set_default()
-    set_project_settings()
+    _set_default()
+    _set_project_settings()
+    _set_settings_order()
     
     
-func set_default() -> void:
+func _set_default() -> void:
     for prop_name in DEFAULT_VALUES:
         assert(prop_name in self)
         set(prop_name, DEFAULT_VALUES[prop_name])
     
     
-func set_project_settings() -> void:
+func _set_project_settings() -> void:
     for value_name in DEFAULT_VALUES:
         _add_setting(value_name, DEFAULT_VALUES[value_name])
     ProjectSettings.set_setting(MISC_VERSION_PATH, "0.1.0")
@@ -102,6 +103,22 @@ func _add_setting(prop_name: StringName, value: Variant) -> void:
     ProjectSettings.set_initial_value(setting_name, value)
 
 
+func _set_settings_order() -> void:
+    var idx := _find_min()
+    for prop_name in DEFAULT_VALUES:
+        var setting_name: String = BASE_SETTINGS_PATH + NAME_ALIASES.get(prop_name, prop_name)
+        ProjectSettings.set_order(setting_name, idx)
+        idx += 1
+
+
+func _find_min() -> int:
+    var min_value := 10000000
+    for prop_name in DEFAULT_VALUES:
+        var current := ProjectSettings.get_order(BASE_SETTINGS_PATH + NAME_ALIASES.get(prop_name, prop_name))
+        if current < min_value: min_value = current
+    return min_value
+
+
 func update_plugin_settings() -> void:
     for prop_name in DEFAULT_VALUES:
         var setting_name: String = BASE_SETTINGS_PATH + NAME_ALIASES.get(prop_name, prop_name)
@@ -111,6 +128,13 @@ func update_plugin_settings() -> void:
         push_warning("ValidRLink: 'copy_max_depth' is only accepts values higher than 1 [settings.update_plugin_settings]")
         max_depth = 3
         ProjectSettings.set_setting(BASE_SETTINGS_PATH + "copy_max_depth", 3)
+    
+    if default_button_path == "": return
+    var btn: Resource = null
+    if ResourceLoader.exists(default_button_path):
+        btn = load(default_button_path)
+    if not btn is RLinkButton:
+        push_warning("ValidRLink: Expected RLinkButton at 'default_button_path' [settings.update_plugin_settings]")
 
 
 func _decode_version(_version: int) -> Array[int]:

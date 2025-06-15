@@ -36,14 +36,14 @@ public partial class RLinkCS : RefCounted
     /// </summary>
     public RLinkCS()
     {
-        RLinkRefTracer.Instance.AddRefIfCreatedDirectly(this);
+        RLinkRefTracer.AddRefIfCreatedDirectly(this);
     }
 
     public RLinkCS(RefCounted data)
     {
         _dataId = data.GetInstanceId();
         _objectId = data.Get(DataNames._ObjectId).AsUInt64();
-        RLinkRefTracer.Instance.AddRef(this);
+        RLinkRefTracer.AddRef(this);
     }
 
     [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "It complained without it")]

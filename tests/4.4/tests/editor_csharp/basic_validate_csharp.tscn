@@ -505,18 +505,18 @@ metadata/default_values = {
 &"UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_jcvuu"]
+[sub_resource type="Resource" id="Resource_cgqdp"]
 script = ExtResource("9_jcvuu")
 Text = "Remove All"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 1, 1)
+Modulate = Color(0.794962, 0.26934, 0.0398355, 1)
 MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 0
+MarginTop = 2
 MarginRight = 0
 MarginBottom = 0
 Disabled = false
@@ -526,25 +526,25 @@ BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"RemoveAllImpl"
 metadata/default_values = {
-"BoundArgs": [],
-"CallableMethodName": &"RemoveAllImpl",
-"ClipText": true,
-"Disabled": false,
-"Icon": "",
-"IconAlignment": 0,
-"IconAlignmentVertical": 1,
-"IconTexture": null,
-"MarginBottom": 0,
-"MarginLeft": 0,
-"MarginRight": 0,
-"MarginTop": 0,
-"MaxWidth": 200,
-"MinHeight": 0,
-"Modulate": Color(1, 1, 1, 1),
-"SizeFlags": -1,
-"Text": "Remove All",
-"TooltipText": "",
-"UnbindNext": 0
+&"BoundArgs": [],
+&"CallableMethodName": &"RemoveAllImpl",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 0,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 200,
+&"MinHeight": 0,
+&"Modulate": Color(0.794962, 0.26934, 0.0398355, 1),
+&"SizeFlags": -1,
+&"Text": "Remove All",
+&"TooltipText": "",
+&"UnbindNext": 0
 }
 
 [sub_resource type="Resource" id="Resource_be5u1"]
@@ -827,13 +827,13 @@ metadata/rlink_skip = false
 
 [node name="DirectChild" type="Node" parent="RLinkChild"]
 
-[node name="ChildPath" type="Node" parent="RLinkChild/DirectChild"]
-
-[node name="ChildFrom" type="Node" parent="RLinkChild/DirectChild"]
+[node name="HasFrom" type="Node" parent="RLinkChild/DirectChild"]
 
 [node name="GetParent" type="Node" parent="RLinkChild/DirectChild"]
 
-[node name="HasFrom" type="Node" parent="RLinkChild/DirectChild"]
+[node name="ChildFrom" type="Node" parent="RLinkChild/DirectChild"]
+
+[node name="ChildPath" type="Node" parent="RLinkChild/DirectChild"]
 
 [node name="DirectChildPath" type="Node" parent="RLinkChild"]
 
@@ -843,7 +843,7 @@ Scene = ExtResource("8_5qioq")
 SceneExport = NodePath("SceneExport")
 SceneLoad = NodePath("SceneLoad")
 SceneFile = NodePath("SceneFile")
-RemoveAll = SubResource("Resource_jcvuu")
+RemoveAll = SubResource("Resource_cgqdp")
 ToggleConnect = SubResource("Resource_be5u1")
 
 [node name="SceneExport" parent="RLinkScene" instance=ExtResource("8_5qioq")]

@@ -128,15 +128,15 @@ ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
 ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 Inner = SubResource("Resource_uuurr")
 
-[sub_resource type="Resource" id="Resource_yxk53"]
+[sub_resource type="Resource" id="Resource_1tduh"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Direct Child"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 0, 1)
-MaxWidth = 95
+Modulate = Color(0.862745, 0.372549, 0.054902, 1)
+MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 0
@@ -161,24 +161,24 @@ metadata/default_values = {
 "MarginLeft": 0,
 "MarginRight": 0,
 "MarginTop": 0,
-"MaxWidth": 95,
+"MaxWidth": 200,
 "MinHeight": 0,
-"Modulate": Color(1, 1, 0, 1),
+"Modulate": Color(0.862745, 0.372549, 0.054902, 1),
 "SizeFlags": -1,
 "Text": "Toggle Direct Child",
 "TooltipText": "",
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_ugncx"]
+[sub_resource type="Resource" id="Resource_nc0pf"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Direct Child Path"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 0, 1)
-MaxWidth = 95
+Modulate = Color(0.862745, 0.372549, 0.054902, 1)
+MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 0
@@ -203,24 +203,24 @@ metadata/default_values = {
 "MarginLeft": 0,
 "MarginRight": 0,
 "MarginTop": 0,
-"MaxWidth": 95,
+"MaxWidth": 200,
 "MinHeight": 0,
-"Modulate": Color(1, 1, 0, 1),
+"Modulate": Color(0.862745, 0.372549, 0.054902, 1),
 "SizeFlags": -1,
 "Text": "Toggle Direct Child Path",
 "TooltipText": "",
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_qmnqy"]
+[sub_resource type="Resource" id="Resource_e2wdo"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Child Path"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 0, 1)
-MaxWidth = 95
+Modulate = Color(0.862745, 0.372549, 0.054902, 1)
+MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 0
@@ -245,24 +245,24 @@ metadata/default_values = {
 "MarginLeft": 0,
 "MarginRight": 0,
 "MarginTop": 0,
-"MaxWidth": 95,
+"MaxWidth": 200,
 "MinHeight": 0,
-"Modulate": Color(1, 1, 0, 1),
+"Modulate": Color(0.862745, 0.372549, 0.054902, 1),
 "SizeFlags": -1,
 "Text": "Toggle Child Path",
 "TooltipText": "",
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_sf507"]
+[sub_resource type="Resource" id="Resource_vjetc"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Child From"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 0, 1)
-MaxWidth = 95
+Modulate = Color(0.862745, 0.372549, 0.054902, 1)
+MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 0
@@ -287,24 +287,24 @@ metadata/default_values = {
 "MarginLeft": 0,
 "MarginRight": 0,
 "MarginTop": 0,
-"MaxWidth": 95,
+"MaxWidth": 200,
 "MinHeight": 0,
-"Modulate": Color(1, 1, 0, 1),
+"Modulate": Color(0.862745, 0.372549, 0.054902, 1),
 "SizeFlags": -1,
 "Text": "Toggle Child From",
 "TooltipText": "",
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_8v73b"]
+[sub_resource type="Resource" id="Resource_uch1a"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Child Get Parent"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 0, 1)
-MaxWidth = 95
+Modulate = Color(0.862745, 0.372549, 0.054902, 1)
+MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 0
@@ -329,24 +329,24 @@ metadata/default_values = {
 "MarginLeft": 0,
 "MarginRight": 0,
 "MarginTop": 0,
-"MaxWidth": 95,
+"MaxWidth": 200,
 "MinHeight": 0,
-"Modulate": Color(1, 1, 0, 1),
+"Modulate": Color(0.862745, 0.372549, 0.054902, 1),
 "SizeFlags": -1,
 "Text": "Toggle Child Get Parent",
 "TooltipText": "",
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_p1rjy"]
+[sub_resource type="Resource" id="Resource_8twqb"]
 script = ExtResource("9_jcvuu")
 Text = "Toggle Has From"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 0, 1)
-MaxWidth = 95
+Modulate = Color(0.862745, 0.372549, 0.054902, 1)
+MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 0
@@ -371,24 +371,24 @@ metadata/default_values = {
 "MarginLeft": 0,
 "MarginRight": 0,
 "MarginTop": 0,
-"MaxWidth": 95,
+"MaxWidth": 200,
 "MinHeight": 0,
-"Modulate": Color(1, 1, 0, 1),
+"Modulate": Color(0.862745, 0.372549, 0.054902, 1),
 "SizeFlags": -1,
 "Text": "Toggle Has From",
 "TooltipText": "",
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_ci3y1"]
+[sub_resource type="Resource" id="Resource_kyawj"]
 script = ExtResource("9_jcvuu")
 Text = "Remove All Children"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 0, 1)
-MaxWidth = 95
+Modulate = Color(0.862745, 0.372549, 0.054902, 1)
+MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 0
@@ -413,24 +413,24 @@ metadata/default_values = {
 "MarginLeft": 0,
 "MarginRight": 0,
 "MarginTop": 0,
-"MaxWidth": 95,
+"MaxWidth": 200,
 "MinHeight": 0,
-"Modulate": Color(1, 1, 0, 1),
+"Modulate": Color(0.862745, 0.372549, 0.054902, 1),
 "SizeFlags": -1,
 "Text": "Remove All Children",
 "TooltipText": "",
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_rr2ns"]
+[sub_resource type="Resource" id="Resource_a1ln3"]
 script = ExtResource("9_jcvuu")
 Text = "Remove All Children From"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 0, 1)
-MaxWidth = 95
+Modulate = Color(0.862745, 0.372549, 0.054902, 1)
+MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 0
@@ -455,24 +455,24 @@ metadata/default_values = {
 "MarginLeft": 0,
 "MarginRight": 0,
 "MarginTop": 0,
-"MaxWidth": 95,
+"MaxWidth": 200,
 "MinHeight": 0,
-"Modulate": Color(1, 1, 0, 1),
+"Modulate": Color(0.862745, 0.372549, 0.054902, 1),
 "SizeFlags": -1,
 "Text": "Remove All Children From",
 "TooltipText": "",
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_67bd1"]
+[sub_resource type="Resource" id="Resource_hdcgh"]
 script = ExtResource("9_jcvuu")
 Text = "Remove All Children Path"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 0, 1)
-MaxWidth = 95
+Modulate = Color(0.862745, 0.372549, 0.054902, 1)
+MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 0
@@ -497,9 +497,9 @@ metadata/default_values = {
 "MarginLeft": 0,
 "MarginRight": 0,
 "MarginTop": 0,
-"MaxWidth": 95,
+"MaxWidth": 200,
 "MinHeight": 0,
-"Modulate": Color(1, 1, 0, 1),
+"Modulate": Color(0.862745, 0.372549, 0.054902, 1),
 "SizeFlags": -1,
 "Text": "Remove All Children Path",
 "TooltipText": "",
@@ -819,15 +819,15 @@ PackedArray = PackedInt32Array(100, 0, 0, 0, 0)
 
 [node name="RLinkChild" type="Node" parent="."]
 script = ExtResource("6_a5adi")
-ToggleDirectChild = SubResource("Resource_yxk53")
-ToggleDirectChildPath = SubResource("Resource_ugncx")
-ToggleChildPath = SubResource("Resource_qmnqy")
-ToggleChildFrom = SubResource("Resource_sf507")
-ToggleChildGetParent = SubResource("Resource_8v73b")
-ToggleHasFrom = SubResource("Resource_p1rjy")
-RemoveAllChildren = SubResource("Resource_ci3y1")
-RemoveAllChildrenFrom = SubResource("Resource_rr2ns")
-RemoveAllChildrenPath = SubResource("Resource_67bd1")
+ToggleDirectChild = SubResource("Resource_1tduh")
+ToggleDirectChildPath = SubResource("Resource_nc0pf")
+ToggleChildPath = SubResource("Resource_e2wdo")
+ToggleChildFrom = SubResource("Resource_vjetc")
+ToggleChildGetParent = SubResource("Resource_uch1a")
+ToggleHasFrom = SubResource("Resource_8twqb")
+RemoveAllChildren = SubResource("Resource_kyawj")
+RemoveAllChildrenFrom = SubResource("Resource_a1ln3")
+RemoveAllChildrenPath = SubResource("Resource_hdcgh")
 metadata/rlink_skip = false
 
 [node name="DirectChild" type="Node" parent="RLinkChild"]

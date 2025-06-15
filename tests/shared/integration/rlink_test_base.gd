@@ -41,7 +41,7 @@ func before_all() -> void:
     
 #Runs before each test
 func before_each() -> void:
-    _ctx.settings.set_default()
+    _ctx.settings._set_default()
     
     
 #Runs after each test

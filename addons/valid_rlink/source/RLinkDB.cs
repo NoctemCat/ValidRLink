@@ -10,7 +10,6 @@ namespace ValidRLink;
 
 [Tool]
 [SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "Godot 4.1 support")]
-
 public partial class RLinkDB : Node
 {
     private readonly Dictionary<string, Type> _types;

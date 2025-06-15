@@ -41,7 +41,7 @@ public partial class RLinkSettingsCS : Resource
         SkipProperties ??= new();
         AllowedProperties ??= new();
         ValidateName ??= new StringName();
-        RLinkRefTracer.Instance.AddRefIfCreatedDirectly(this);
+        RLinkRefTracer.AddRefIfCreatedDirectly(this);
     }
 
     public RLinkSettingsCS(Godot.Collections.Dictionary dictionary)
@@ -51,7 +51,7 @@ public partial class RLinkSettingsCS : Resource
         AllowedProperties = GetDefault(dictionary, "allowed_properties", new Godot.Collections.Array<StringName>()).AsGodotArray<StringName>();
         ValidateName = GetDefault(dictionary, "validate_name", new StringName()).AsStringName();
         MaxDepth = GetDefault(dictionary, "max_depth", 0).AsInt32();
-        RLinkRefTracer.Instance.AddRef(this);
+        RLinkRefTracer.AddRef(this);
     }
 
     public RLinkSettingsCS(Dictionary<Variant, Variant> dictionary)
@@ -61,7 +61,7 @@ public partial class RLinkSettingsCS : Resource
         AllowedProperties = GetDefault(dictionary, "allowed_properties", new Godot.Collections.Array<StringName>()).AsGodotArray<StringName>();
         ValidateName = GetDefault(dictionary, "validate_name", new StringName()).AsStringName();
         MaxDepth = GetDefault(dictionary, "max_depth", 0).AsInt32();
-        RLinkRefTracer.Instance.AddRef(this);
+        RLinkRefTracer.AddRef(this);
     }
 
     /// <inheritdoc cref="Skip"/>

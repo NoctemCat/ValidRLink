@@ -330,7 +330,7 @@ public partial class RLinkButtonCS : Resource
     public RLinkButtonCS()
     {
         BoundArgs ??= new();
-        RLinkRefTracer.Instance.AddRefIfCreatedDirectly(this);
+        RLinkRefTracer.AddRefIfCreatedDirectly(this);
     }
 
     [RequiresUnreferencedCode("Getting method by its name")]
@@ -338,7 +338,7 @@ public partial class RLinkButtonCS : Resource
     {
         BoundArgs = new();
         SetDefaults();
-        RLinkRefTracer.Instance.AddRef(this);
+        RLinkRefTracer.AddRef(this);
 
         StringName method = GodotHelper.Callable.GetMethod(callable);
         if (method.ToString().Contains("anonymous lambda"))
@@ -364,7 +364,7 @@ public partial class RLinkButtonCS : Resource
     {
         BoundArgs = new();
         SetDefaults();
-        RLinkRefTracer.Instance.AddRef(this);
+        RLinkRefTracer.AddRef(this);
 
         SetObject(target, method);
         if (properties is not null)
@@ -381,7 +381,7 @@ public partial class RLinkButtonCS : Resource
     {
         BoundArgs = new();
         SetDefaults();
-        RLinkRefTracer.Instance.AddRef(this);
+        RLinkRefTracer.AddRef(this);
 
         CallableMethodName = method;
         if (properties is not null)
@@ -396,7 +396,7 @@ public partial class RLinkButtonCS : Resource
         GD.Print("> RLinkButtonCS 5");
         BoundArgs = new();
         SetDefaults();
-        RLinkRefTracer.Instance.AddRef(this);
+        RLinkRefTracer.AddRef(this);
 
         if (typeof(GodotObject).IsAssignableFrom(method.Method.DeclaringType) is false)
         {

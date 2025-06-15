@@ -213,6 +213,7 @@ metadata/default_values = {
 }
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_p40gm"]
+seed = 1234
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_py022"]
 noise = SubResource("FastNoiseLite_p40gm")
@@ -263,19 +264,19 @@ metadata/default_values = {
 script = ExtResource("9_65005")
 text = "Set Int Checked"
 tooltip_text = ""
-icon = "Clear"
+icon = ""
 icon_alignment = 0
 icon_alignment_vertical = 1
-modulate = Color(5.72756e-06, 0.573129, 1.92523e-07, 1)
-max_width = 160
+modulate = Color(0.794962, 0.26934, 0.0398355, 1)
+max_width = 200
 min_height = 0
 margin_left = 0
 margin_top = 2
 margin_right = 0
-margin_bottom = 2
+margin_bottom = 0
 disabled = false
 clip_text = true
-size_flags = 2
+size_flags = -1
 bound_args = []
 unbind_next = 0
 callable_method_name = &"set_int_checked_impl"
@@ -284,18 +285,18 @@ metadata/default_values = {
 &"callable_method_name": &"set_int_checked_impl",
 &"clip_text": true,
 &"disabled": false,
-&"icon": "Clear",
+&"icon": "",
 &"icon_alignment": 0,
 &"icon_alignment_vertical": 1,
 &"icon_texture": null,
-&"margin_bottom": 2,
+&"margin_bottom": 0,
 &"margin_left": 0,
 &"margin_right": 0,
 &"margin_top": 2,
-&"max_width": 160,
+&"max_width": 200,
 &"min_height": 0,
-&"modulate": Color(5.72756e-06, 0.573129, 1.92523e-07, 1),
-&"size_flags": 2,
+&"modulate": Color(0.794962, 0.26934, 0.0398355, 1),
+&"size_flags": -1,
 &"text": "Set Int Checked",
 &"tooltip_text": "",
 &"unbind_next": 0
@@ -398,7 +399,7 @@ noise_texture = SubResource("NoiseTexture2D_py022")
 
 [node name="RLinkAwait" type="Node" parent="."]
 script = ExtResource("11_65005")
-int_var = 4
+int_var = 6
 set_int = SubResource("Resource_asyf6")
 success = true
 set_int_checked = SubResource("Resource_hoejj")

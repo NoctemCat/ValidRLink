@@ -293,11 +293,9 @@ func _on_id_pressed(id: int) -> void:
                 text = _rlink_button.text
             rlink_runtime = _data.convert_to_runtime(_rlink_button)
             _buffer.object_add_changes(obj, _property, null, rlink_runtime)
-            _buffer.add_do_method([__ctx.rlink_data_cache, &"clear"])
-            _buffer.add_do_method([obj, &"notify_property_list_changed"])
-            _buffer.add_undo_method([__ctx.rlink_data_cache, &"clear"])
-            _buffer.add_undo_method([obj, &"notify_property_list_changed"])
             _buffer.push_action("Create '%s'" % text, obj)
+            __rlink_map.add_pair(rlink_runtime, _rlink_button)
+            __ctx.converter_to_tool._connect_rlink_buttons(_buffer, rlink_runtime)
             
         __compat.interface.edit_resource(rlink_runtime)
         
@@ -337,11 +335,9 @@ func _on_id_pressed_cs(id: int) -> void:
                 text = _rlink_button_cs.Text
             rlink_runtime_cs = _data.convert_to_runtime(_rlink_button_cs)
             _buffer.object_add_changes(obj, _property, null, rlink_runtime_cs)
-            _buffer.add_do_method([__ctx.rlink_data_cache, &"clear"])
-            _buffer.add_do_method([obj, &"notify_property_list_changed"])
-            _buffer.add_undo_method([__ctx.rlink_data_cache, &"clear"])
-            _buffer.add_undo_method([obj, &"notify_property_list_changed"])
             _buffer.push_action("Create '%s'" % text, obj)
+            __rlink_map.add_pair(rlink_runtime_cs, _rlink_button_cs)
+            __ctx.converter_to_tool._connect_rlink_buttons(_buffer, rlink_runtime_cs)
             
         __compat.interface.edit_resource(rlink_runtime_cs)
         
