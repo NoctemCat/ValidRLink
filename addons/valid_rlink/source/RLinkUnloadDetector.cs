@@ -40,7 +40,7 @@ public partial class RLinkUnloadDetector : Node, ISerializationListener
     // private void Unload(System.Runtime.Loader.AssemblyLoadContext alc)
     {
         Unloading?.Invoke();
-        _parent?.Call("clear_with_cancel");
+        _parent?.Call("clear_and_refresh");
         // if (_ctx is not null)
         // {
         //     _ctx.Unloading -= Unload;

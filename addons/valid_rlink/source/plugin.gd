@@ -15,7 +15,6 @@ var _popup: PopupMenu
 var _refresh_timer: Timer
 var _refresh_callable: Callable
 var _csharp_unload_detector: Node
-var _clear_entered: bool
 
 
 func _get_plugin_name() -> String:
@@ -55,7 +54,7 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
     _refresh_callable = Callable()
-    clear_with_cancel()
+    _ctx.clear_and_refresh(false)
     remove_tool_menu_item("ValidRLink: Clear Cache")
     if _csharp_unload_detector != null:
         _csharp_unload_detector.call(&"FreeHandle")
@@ -71,19 +70,11 @@ func _exit_tree() -> void:
 
 
 func _clear() -> void:
-    if _clear_entered: return
-    _clear_entered = true
-    if _ctx.rlink_data_cache.waits_for_result:
-        await _ctx.rlink_data_cache.stopped_waiting
-    _inspector.clear()
-    if _refresh_callable.is_valid():
-        _refresh_callable.call()
-    _clear_entered = false
+    await _ctx.clear_wait()
 
 
-func clear_with_cancel() -> void:
-    _ctx.emit_cancel_tasks()
-    _clear()
+func clear_and_refresh() -> void:
+    _ctx.clear_and_refresh()
 
 
 func _handle_csharp_support() -> void:
@@ -116,7 +107,7 @@ func _create_refresh_timer() -> void:
     _refresh_timer = Timer.new()
     _refresh_timer.wait_time = 0.4
     _refresh_timer.one_shot = true
-    _refresh_timer.timeout.connect(_refresh_inspector)
+    _refresh_timer.timeout.connect(_ctx.refresh_inspector)
     _refresh_callable = _refresh_timer.start
     add_child(_refresh_timer)
 
@@ -138,18 +129,13 @@ func _on_resource_saved(resource: Resource) -> void:
 
 func _on_settings_changed() -> void:
     _settings.update_plugin_settings()
-    _clear()
+    await _ctx.clear_wait(false)
+    if _refresh_callable.is_valid():
+        _refresh_callable.call()
     if _csharp_unload_detector != null:
         _csharp_unload_detector.CollectGC = _settings.csharp_collect_gc
         _csharp_unload_detector.ExecutePendingContinuations = _settings.csharp_execute_pending_continuations
         _csharp_unload_detector.SwallowBaseException = _settings.csharp_swallow_base_exception
-
-
-func _refresh_inspector() -> void:
-    var selection: EditorSelection = _ctx.compat.interface.get_selection()
-    var nodes := selection.get_selected_nodes()
-    if nodes.size() == 1:
-        nodes[0].notify_property_list_changed()
 
 
 func _copy_button_theme() -> void:

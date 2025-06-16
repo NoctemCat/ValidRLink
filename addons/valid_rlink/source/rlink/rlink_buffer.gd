@@ -283,8 +283,8 @@ func create_action(
         __undo_redo.create_action(name, merge_mode, custom_context, backward_undo_ops)
 
 
-func push_action(name: String, object: Object) -> void:
-    create_action(name, UndoRedo.MERGE_DISABLE, object)
+func push_action(name: String, object: Object, merge_mode: UndoRedo.MergeMode = UndoRedo.MERGE_DISABLE) -> void:
+    create_action(name, merge_mode, object)
     if has_changes:
         flush_changes()
     else:

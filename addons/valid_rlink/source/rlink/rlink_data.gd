@@ -256,6 +256,7 @@ func call_rlink_button(prop_name: StringName) -> void:
     to_call.set_object(tool_obj)
         
     var final_count := to_call.get_arg_count()
+    prints(final_count, to_call._base_arg_count)
     if final_count < 0 or final_count > 1:
         push_error("ValidRLink: '%s' takes maximum 1 argument [rlink_data.call_rlink_button]" % to_call.callable_method_name)
         return

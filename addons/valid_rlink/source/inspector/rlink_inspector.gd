@@ -100,9 +100,8 @@ func _parse_property(object: Object, type: Variant.Type, name: String, hint_type
             push_error("ValidRLink._parse_property: expected button at '%s'" % name)
             return false
         
-        var btn := RLinkActionButton.new(__ctx, data, name, rlink_button)
+        var btn := RLinkActionButton.new(__ctx, data, name, usage_flags, rlink_button)
         #btn.pressed.connect(data.call_rlink_button.bind(name))
-        btn.property_is_readonly = usage_flags & PROPERTY_USAGE_READ_ONLY != 0
         
         #_create_watcher(object, null)
         _add_button(object, btn)
@@ -110,8 +109,7 @@ func _parse_property(object: Object, type: Variant.Type, name: String, hint_type
     if __ctx.settings.turn_callables_to_buttons and type == TYPE_CALLABLE:
         var data := _rlink_data_cache.get_data(object, true)
         if data.tool_obj == null: return false
-        var btn := RLinkActionButton.new(__ctx, data, name)
-        btn.property_is_readonly = usage_flags & PROPERTY_USAGE_READ_ONLY != 0
+        var btn := RLinkActionButton.new(__ctx, data, name, usage_flags)
         #btn.pressed.connect(data.call_callable.bind(name))
         
         #_create_watcher(object, null)

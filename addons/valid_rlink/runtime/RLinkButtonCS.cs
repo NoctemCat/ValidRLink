@@ -679,12 +679,19 @@ public partial class RLinkButtonCS : Resource
             case MethodTypeEnum.CSharpDelegate:
             case MethodTypeEnum.CSharpAwaitable:
                 {
+                    if (_info is null)
+                    {
+                        GD.PushError($"ValidRLink: MethodInfo is null, name: {CallableMethodName} [RLinkButtonCS.RLinkCallv]");
+                        return new Variant();
+                    }
+
                     List<object?> argsObj = args.Select(arg => GodotHelper.ToObject(arg)).ToList();
                     object?[]? callCopy = GetArgsCopyList(argsObj);
+                    callCopy = ConvertImplicit(callCopy, _info.GetParameters());
 
                     try
                     {
-                        object? result = _info!.Invoke(instance, callCopy);
+                        object? result = _info.Invoke(instance, callCopy);
                         if (!GodotHelper.TryToVariant(result, out Variant variant))
                             variant = new Variant();
 
@@ -805,12 +812,20 @@ public partial class RLinkButtonCS : Resource
                 }
             case MethodTypeEnum.CSharpDelegate:
                 {
+                    if (_info is null)
+                    {
+                        GD.PushError($"ValidRLink: MethodInfo is null, name: {CallableMethodName} [RLinkButtonCS.RLinkCallvAwaitTask]");
+                        CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, new() });
+                        return;
+                    }
+
                     List<object?> argsObj = args.Select(arg => GodotHelper.ToObject(arg)).ToList();
                     object?[]? callCopy = GetArgsCopyList(argsObj);
+                    callCopy = ConvertImplicit(callCopy, _info.GetParameters());
 
                     try
                     {
-                        object? result = _info?.Invoke(instance, callCopy);
+                        object? result = _info.Invoke(instance, callCopy);
 
                         if (!GodotHelper.TryToVariant(result, out Variant variantConv))
                             variantConv = new Variant();
@@ -827,10 +842,18 @@ public partial class RLinkButtonCS : Resource
                 }
             case MethodTypeEnum.CSharpAwaitable:
                 {
+                    if (_info is null)
+                    {
+                        GD.PushError($"ValidRLink: MethodInfo is null, name: {CallableMethodName} [RLinkButtonCS.RLinkCallvAwaitTask]");
+                        CallDeferred(GodotObject.MethodName.EmitSignal, new Variant[] { SignalName.Completed, new() });
+                        return;
+                    }
+
                     _ctx = new();
                     List<object?> argsObj = args.Select(arg => GodotHelper.ToObject(arg)).ToList();
                     argsObj.Add(_ctx.Token);
                     object?[]? callCopy = GetArgsCopyList(argsObj);
+                    callCopy = ConvertImplicit(callCopy, _info.GetParameters());
 #if TOOLS
                     if (Engine.IsEditorHint())
                         RLinkUnloadDetector.Instance.Unloading += _ctx.Cancel;
@@ -930,6 +953,66 @@ public partial class RLinkButtonCS : Resource
         }
         if (callCopy.Length == 0) return null;
         return callCopy;
+    }
+
+    private object?[]? ConvertImplicit(object?[]? providedArgs, ParameterInfo[] infos)
+    {
+        if (providedArgs is null) { return null; }
+
+        object?[] args = new object[infos.Length];
+        for (int i = 0; i < infos.Length; i++)
+        {
+            if (i < providedArgs.Length)
+            {
+                object? provided = providedArgs[i];
+                if (provided is null)
+                {
+                    args[i] = null;
+                    continue;
+                }
+                var op = GetImplicitOperator(provided.GetType(), infos[i].ParameterType);
+                if (op is null)
+                {
+                    args[i] = providedArgs[i];
+                }
+                else
+                {
+                    args[i] = op.Invoke(null, new[] { providedArgs[i] });
+                }
+            }
+            // For now default values are unused
+            else if (infos[i].HasDefaultValue)
+            {
+                args[i] = infos[i].DefaultValue;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+        return args;
+    }
+
+    private MethodInfo? GetImplicitOperator(Type from, Type to)
+    {
+        var op = from.GetMethods().FirstOrDefault(mi =>
+            mi.Name == "op_Implicit" &&
+            mi.ReturnType == to &&
+            mi.GetParameters().Length == 1 &&
+            mi.GetParameters()[0].ParameterType == from
+        );
+        if (op is not null)
+        {
+            return op;
+        }
+        op = to.GetMethods().FirstOrDefault(mi =>
+            mi.Name == "op_Implicit" &&
+            mi.ReturnType == to &&
+            mi.GetParameters().Length == 1 &&
+            mi.GetParameters()[0].ParameterType == from
+        );
+        return op;
     }
 
     /// <summary>

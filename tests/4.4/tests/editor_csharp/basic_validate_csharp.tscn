@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://clwknig30ctig"]
+[gd_scene load_steps=40 format=3 uid="uid://clwknig30ctig"]
 
 [ext_resource type="Script" uid="uid://cswdnxsjfowri" path="res://tests/editor_csharp/scripts/ValidateBasic.cs" id="1_tyrjc"]
 [ext_resource type="Script" uid="uid://bt0ngtfnsuu3" path="res://tests/editor_csharp/scripts/ValidateInner.cs" id="2_ykr5n"]
@@ -12,6 +12,8 @@
 [ext_resource type="Script" uid="uid://bvn01egv77461" path="res://addons/valid_rlink/runtime/RLinkButtonCS.cs" id="9_jcvuu"]
 [ext_resource type="Script" uid="uid://8rot1okdp2cx" path="res://tests/editor_csharp/scripts/RLinkChanges.cs" id="10_mqgjl"]
 [ext_resource type="Script" uid="uid://dj8jidkak0kcq" path="res://tests/editor_csharp/scripts/RLinkAsync.cs" id="11_wjsgh"]
+[ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="13_118wc"]
+[ext_resource type="Script" uid="uid://c1aityuskur8g" path="res://tests/editor_csharp/scripts/ToolTesting.cs" id="13_h84kr"]
 
 [sub_resource type="Resource" id="Resource_wjsgh"]
 script = ExtResource("3_28d03")
@@ -763,6 +765,216 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
+[sub_resource type="Resource" id="Resource_r0jxy"]
+script = ExtResource("9_jcvuu")
+Text = "Hidden"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 2
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"TestHidden"
+metadata/default_values = {
+&"BoundArgs": [],
+&"CallableMethodName": &"TestHidden",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 0,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 200,
+&"MinHeight": 0,
+&"Modulate": Color(1, 1, 1, 1),
+&"SizeFlags": -1,
+&"Text": "Hidden",
+&"TooltipText": "",
+&"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_4tfqe"]
+script = ExtResource("9_jcvuu")
+Text = "Disabled"
+TooltipText = ""
+Icon = "Stop"
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 2
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"TestDisabled"
+metadata/default_values = {
+&"BoundArgs": [],
+&"CallableMethodName": &"TestDisabled",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Stop",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 0,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 200,
+&"MinHeight": 0,
+&"Modulate": Color(1, 1, 1, 1),
+&"SizeFlags": -1,
+&"Text": "Disabled",
+&"TooltipText": "",
+&"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_plibj"]
+script = ExtResource("9_jcvuu")
+Text = "UndoRedo"
+TooltipText = ""
+Icon = "UndoRedo"
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 2
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"TestUndoRedo"
+metadata/default_values = {
+&"BoundArgs": [],
+&"CallableMethodName": &"TestUndoRedo",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "UndoRedo",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 0,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 200,
+&"MinHeight": 0,
+&"Modulate": Color(1, 1, 1, 1),
+&"SizeFlags": -1,
+&"Text": "UndoRedo",
+&"TooltipText": "",
+&"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_2q8j3"]
+script = ExtResource("9_jcvuu")
+Text = "Make Green"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 2
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = [Color(0, 1, 0, 1)]
+UnbindNext = 0
+CallableMethodName = &"SetSelfModulate"
+metadata/default_values = {
+&"BoundArgs": [Color(0, 1, 0, 1)],
+&"CallableMethodName": &"SetSelfModulate",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 0,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 200,
+&"MinHeight": 0,
+&"Modulate": Color(1, 1, 1, 1),
+&"SizeFlags": -1,
+&"Text": "Make Green",
+&"TooltipText": "",
+&"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_m5xr4"]
+script = ExtResource("9_jcvuu")
+Text = "Clear Modulation"
+TooltipText = ""
+Icon = "Clear"
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 2
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = [Color(1, 1, 1, 1)]
+UnbindNext = 0
+CallableMethodName = &"SetSelfModulate"
+metadata/default_values = {
+&"BoundArgs": [Color(1, 1, 1, 1)],
+&"CallableMethodName": &"SetSelfModulate",
+&"ClipText": true,
+&"Disabled": false,
+&"Icon": "Clear",
+&"IconAlignment": 0,
+&"IconAlignmentVertical": 1,
+&"IconTexture": null,
+&"MarginBottom": 0,
+&"MarginLeft": 0,
+&"MarginRight": 0,
+&"MarginTop": 2,
+&"MaxWidth": 200,
+&"MinHeight": 0,
+&"Modulate": Color(1, 1, 1, 1),
+&"SizeFlags": -1,
+&"Text": "Clear Modulation",
+&"TooltipText": "",
+&"UnbindNext": 0
+}
+
 [node name="Node" type="Node"]
 metadata/rlink_skip = false
 
@@ -875,6 +1087,16 @@ SetInt = SubResource("Resource_hanbw")
 Success = true
 SetIntChecked = SubResource("Resource_avnbq")
 metadata/rlink_skip = false
+
+[node name="ToolTesting" type="Sprite2D" parent="."]
+position = Vector2(211, 42)
+texture = ExtResource("13_118wc")
+script = ExtResource("13_h84kr")
+HiddenAction = SubResource("Resource_r0jxy")
+StopAction = SubResource("Resource_4tfqe")
+UndoRedoAction = SubResource("Resource_plibj")
+MakeGreenAction = SubResource("Resource_2q8j3")
+ClearModulationAction = SubResource("Resource_m5xr4")
 
 [connection signal="CustomPressed" from="RLinkScene/SceneExport" to="RLinkScene" method="ScenePressed" binds= ["hello SceneExport"]]
 [connection signal="CustomPressed" from="RLinkScene/SceneLoad" to="RLinkScene" method="ScenePressed" binds= ["hello SceneLoad"]]

@@ -126,11 +126,8 @@ func _get_settings(ctx: Context, _object: Object, script_or_native: Object) -> R
         return null
         
     var rlink_settings: RLinkSettings = null
-    #var methods := _parse_methods(ctx, object)
     for name in ctx.settings.get_rlink_settings_names:
-        # TODO: Check in 4.1
         if name in script_or_native:
-        #if methods.has(name):
             var settings: Variant = script_or_native.call(name)
             if settings is Dictionary:
                 rlink_settings = RLinkSettings.new(settings)
@@ -183,39 +180,27 @@ func _parse_method_info(method: StringName) -> MethodInfo:
     if script != null: method_list = script.get_script_method_list()
     else: method_list = object.get_method_list()
     
-    var info: MethodInfo = null
+    var info: MethodInfo = _search_method(method_list, method)
+    if info == null:
+        info = _search_method(ClassDB.class_get_method_list(object.get_class()), method)
+    return info
+
+
+func _search_method(method_list: Array[Dictionary], method: StringName) -> MethodInfo:
     for method_dict in method_list:
         if method_dict["name"] == method:
             var arr: Array = method_dict["args"]
-            info = MethodInfo.new()
+            var info := MethodInfo.new()
             info.arg_count = arr.size()
             var return_info: Dictionary = method_dict["return"]
             if return_info["type"] == TYPE_BOOL:
                 info.check_return = true
             elif return_info["type"] == TYPE_NIL and return_info["usage"] & PROPERTY_USAGE_NIL_IS_VARIANT != 0:
                 info.check_return = true
-            _methods_arg_infos[method] = info
-            break
-    return info
+            return info
+    return null
 
 
 class MethodInfo:
     var arg_count: int
     var check_return: bool
-
-func _parse_methods(ctx: Context, object: Object) -> Dictionary:
-    var dict := {}
-    var script: Script = object.get_script() as Script
-    
-    var methods: Array[Dictionary]
-    if script != null: methods = script.get_script_method_list()
-    else: methods = object.get_method_list()
-    
-    for method in methods:
-        var name: String = method["name"]
-        var return_info: Dictionary = method["return"]
-        const FLAG_STATIC = 32
-        if ctx.compat.engine_version >= 0x040200 and (method["flags"] & FLAG_STATIC) != FLAG_STATIC:
-            continue
-        dict[name] = return_info
-    return dict

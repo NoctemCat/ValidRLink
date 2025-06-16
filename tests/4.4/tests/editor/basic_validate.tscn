@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://d3dut4dsdaetg"]
+[gd_scene load_steps=30 format=3 uid="uid://d3dut4dsdaetg"]
 
 [ext_resource type="Script" uid="uid://c0776xyhyin8h" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
 [ext_resource type="Script" uid="uid://cdsgv6uw5huvs" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
@@ -13,6 +13,8 @@
 [ext_resource type="Script" uid="uid://beknapxgoro47" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
 [ext_resource type="Script" uid="uid://cy812ttkiutkj" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
 [ext_resource type="Script" uid="uid://c7o2ghum5gwo5" path="res://tests/editor/scripts/rlink_await.gd" id="11_65005"]
+[ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="14_hoejj"]
+[ext_resource type="Script" uid="uid://c4gw126i42uxr" path="res://tests/editor/scripts/tool_testing.gd" id="15_b5c2a"]
 
 [sub_resource type="Resource" id="Resource_e88u2"]
 script = ExtResource("3_mgxhu")
@@ -303,6 +305,195 @@ metadata/default_values = {
 &"unbind_next": 0
 }
 
+[sub_resource type="Resource" id="Resource_kfynm"]
+script = ExtResource("9_65005")
+text = "Hidden"
+tooltip_text = ""
+icon = ""
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = []
+unbind_next = 0
+callable_method_name = &"test_hidden"
+
+[sub_resource type="Resource" id="Resource_ukry3"]
+script = ExtResource("9_65005")
+text = "Disabled"
+tooltip_text = ""
+icon = "Stop"
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 2
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = []
+unbind_next = 0
+callable_method_name = &"test_disabled"
+metadata/default_values = {
+&"bound_args": [],
+&"callable_method_name": &"test_disabled",
+&"clip_text": true,
+&"disabled": false,
+&"icon": "Stop",
+&"icon_alignment": 0,
+&"icon_alignment_vertical": 1,
+&"icon_texture": null,
+&"margin_bottom": 0,
+&"margin_left": 0,
+&"margin_right": 0,
+&"margin_top": 2,
+&"max_width": 200,
+&"min_height": 0,
+&"modulate": Color(1, 1, 1, 1),
+&"size_flags": -1,
+&"text": "Disabled",
+&"tooltip_text": "",
+&"unbind_next": 0
+}
+
+[sub_resource type="Resource" id="Resource_lqkxu"]
+script = ExtResource("9_65005")
+text = "UndoRedo"
+tooltip_text = ""
+icon = "UndoRedo"
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 2
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = []
+unbind_next = 0
+callable_method_name = &"test_undoredo"
+metadata/default_values = {
+&"bound_args": [],
+&"callable_method_name": &"test_undoredo",
+&"clip_text": true,
+&"disabled": false,
+&"icon": "UndoRedo",
+&"icon_alignment": 0,
+&"icon_alignment_vertical": 1,
+&"icon_texture": null,
+&"margin_bottom": 0,
+&"margin_left": 0,
+&"margin_right": 0,
+&"margin_top": 2,
+&"max_width": 200,
+&"min_height": 0,
+&"modulate": Color(1, 1, 1, 1),
+&"size_flags": -1,
+&"text": "UndoRedo",
+&"tooltip_text": "",
+&"unbind_next": 0
+}
+
+[sub_resource type="Resource" id="Resource_6aglg"]
+script = ExtResource("9_65005")
+text = "Make Green"
+tooltip_text = ""
+icon = ""
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 2
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = [Color(0, 1, 0, 1)]
+unbind_next = 0
+callable_method_name = &"set_self_modulate"
+metadata/default_values = {
+&"bound_args": [Color(0, 1, 0, 1)],
+&"callable_method_name": &"set_self_modulate",
+&"clip_text": true,
+&"disabled": false,
+&"icon": "",
+&"icon_alignment": 0,
+&"icon_alignment_vertical": 1,
+&"icon_texture": null,
+&"margin_bottom": 0,
+&"margin_left": 0,
+&"margin_right": 0,
+&"margin_top": 2,
+&"max_width": 200,
+&"min_height": 0,
+&"modulate": Color(1, 1, 1, 1),
+&"size_flags": -1,
+&"text": "Make Green",
+&"tooltip_text": "",
+&"unbind_next": 0
+}
+
+[sub_resource type="Resource" id="Resource_eqpqc"]
+script = ExtResource("9_65005")
+text = "Clear Modulation"
+tooltip_text = ""
+icon = "Clear"
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 2
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = [Color(1, 1, 1, 1)]
+unbind_next = 0
+callable_method_name = &"set_self_modulate"
+metadata/default_values = {
+&"bound_args": [Color(1, 1, 1, 1)],
+&"callable_method_name": &"set_self_modulate",
+&"clip_text": true,
+&"disabled": false,
+&"icon": "Clear",
+&"icon_alignment": 0,
+&"icon_alignment_vertical": 1,
+&"icon_texture": null,
+&"margin_bottom": 0,
+&"margin_left": 0,
+&"margin_right": 0,
+&"margin_top": 2,
+&"max_width": 200,
+&"min_height": 0,
+&"modulate": Color(1, 1, 1, 1),
+&"size_flags": -1,
+&"text": "Clear Modulation",
+&"tooltip_text": "",
+&"unbind_next": 0
+}
+
 [node name="Node" type="Node"]
 
 [node name="ValidateBasic" type="Node" parent="."]
@@ -410,6 +601,16 @@ set_int = SubResource("Resource_asyf6")
 success = true
 set_int_checked = SubResource("Resource_hoejj")
 metadata/rlink_skip = false
+
+[node name="ToolTesting" type="Sprite2D" parent="."]
+position = Vector2(232, 39)
+texture = ExtResource("14_hoejj")
+script = ExtResource("15_b5c2a")
+hidden_action = SubResource("Resource_kfynm")
+stop_action = SubResource("Resource_ukry3")
+undoredo_action = SubResource("Resource_lqkxu")
+make_green_action = SubResource("Resource_6aglg")
+clear_modulation_action = SubResource("Resource_eqpqc")
 
 [connection signal="custom_pressed" from="RLinkScene/SceneExport" to="RLinkScene" method="scene_pressed" binds= ["hello scene_export"]]
 [connection signal="custom_pressed" from="RLinkScene/SceneLoad" to="RLinkScene" method="scene_pressed" binds= ["hello scene_load"]]

@@ -31,6 +31,8 @@ var converter_to_tool: RefCounted
 var converter_to_runtime: RefCounted
 var rlink_inspector: RefCounted
 
+var _clear_entered := false
+
 
 func emit_cancel_tasks() -> void:
     cancel_tasks.emit()
@@ -45,9 +47,23 @@ func object_is_csharp(object: Object) -> bool:
     return script != null and script.get_class() == "CSharpScript"
 
 
-func clear_and_refresh() -> void:
+func clear_and_refresh(refresh: bool = true) -> void:
     cancel_tasks.emit()
     rlink_inspector.clear()
+    if refresh: refresh_inspector()
+
+
+func clear_wait(refresh: bool = true) -> void:
+    if _clear_entered: return
+    _clear_entered = true
+    if rlink_data_cache.waits_for_result:
+        await rlink_data_cache.stopped_waiting
+    rlink_inspector.clear()
+    if refresh: refresh_inspector()
+    _clear_entered = false
+
+
+func refresh_inspector() -> void:
     var selection: EditorSelection = compat.interface.get_selection()
     var nodes := selection.get_selected_nodes()
     if nodes.size() == 1:

@@ -26,7 +26,11 @@ var _data: RLinkData:
 var _buffer: RLinkBuffer:
     get: return _data._buffer
 var _property: StringName
-var property_is_readonly: bool = false
+var _usage_flags: int
+var _property_is_readonly: bool:
+    get: return (_usage_flags & PROPERTY_USAGE_READ_ONLY) == PROPERTY_USAGE_READ_ONLY
+var _property_is_storage: bool:
+    get: return (_usage_flags & PROPERTY_USAGE_STORAGE) == PROPERTY_USAGE_STORAGE
 var _button_id: int
 var _rlink_button: RLinkButton:
     get: return instance_from_id(_button_id)
@@ -41,12 +45,13 @@ var _max_width := 200.0
 var _size_override: int = -1
         
 
-func _init(context: Context, data: RLinkData, property: String, rlink_button: Resource = null) -> void:
+func _init(context: Context, data: RLinkData, property: String, usage_flags: int, rlink_button: Resource = null) -> void:
     __ctx = context
     __compat = context.compat
     __rlink_map = context.rlink_map
     _data_id = data.get_instance_id()
     _property = property
+    _usage_flags = usage_flags
     
     theme = context.button_theme
     
@@ -64,7 +69,7 @@ func _init(context: Context, data: RLinkData, property: String, rlink_button: Re
     resized.connect(_on_resize)
     _on_resize()
     
-    if rlink_button == null: 
+    if rlink_button == null:
         _callable_set_default(property)
         return
 
@@ -93,14 +98,16 @@ func _setup(rlink_button: RLinkButton, property: String) -> void:
             rlink_button.text = property.capitalize()
         _set_default(rlink_button)
         rlink_button.set_current_as_default()
-        var old_runtime: Resource = _data.runtime.get(property)
-        var run_button: Resource = rlink_button.duplicate()
-        _buffer.object_add_changes(_data.runtime, property, old_runtime, run_button)
-        _buffer.create_action("Buttons Set Default", UndoRedo.MERGE_ALL, _data.runtime)
-        _buffer.flush_changes()
-        _buffer.commit_action()
-        __rlink_map.add_pair(run_button, rlink_button)
-        __ctx.converter_to_tool._connect_rlink_buttons(_buffer, run_button)
+        
+        if _property_is_storage:
+            var old_runtime: Resource = _data.runtime.get(property)
+            var run_button: Resource = rlink_button.duplicate()
+            _buffer.object_add_changes(_data.runtime, property, old_runtime, run_button)
+            _buffer.add_do_method([__ctx, &"call_deferred", &"clear_wait"])
+            _buffer.add_undo_method([__ctx, &"call_deferred", &"clear_wait"])
+            __rlink_map.add_pair(run_button, rlink_button)
+            __ctx.converter_to_tool._connect_rlink_buttons(_buffer, run_button)
+            _buffer.push_action("Buttons Set Default", _data.runtime, UndoRedo.MERGE_ALL)
         
     _rlink_button.changed.connect(_on_rlink_button_changed)
     _on_rlink_button_changed()
@@ -115,14 +122,15 @@ func _setup_cs(rlink_button_cs: Resource, property: String) -> void:
         _set_default(rlink_button_cs)
         rlink_button_cs.SetCurrentAsDefault()
         
-        var old_runtime: Resource = _data.runtime.get(property)
-        var run_button: Resource = rlink_button_cs.duplicate()
-        _buffer.object_add_changes(_data.runtime, property, old_runtime, run_button)
-        _buffer.create_action("Buttons Set Default", UndoRedo.MERGE_ALL, _data.runtime)
-        _buffer.flush_changes()
-        _buffer.commit_action()
-        __rlink_map.add_pair(run_button, rlink_button_cs)
-        __ctx.converter_to_tool._connect_rlink_buttons(_buffer, run_button)
+        if _property_is_storage:
+            var old_runtime: Resource = _data.runtime.get(property)
+            var run_button: Resource = rlink_button_cs.duplicate()
+            _buffer.object_add_changes(_data.runtime, property, old_runtime, run_button)
+            _buffer.add_do_method([__ctx, &"clear_wait"])
+            _buffer.add_undo_method([__ctx, &"clear_wait"])
+            __rlink_map.add_pair(run_button, rlink_button_cs)
+            __ctx.converter_to_tool._connect_rlink_buttons(_buffer, run_button)
+            _buffer.push_action("Buttons Set Default", _data.runtime, UndoRedo.MERGE_ALL)
         
     _rlink_button_cs.changed.connect(_on_rlink_button_changed_cs)
     _on_rlink_button_changed_cs()
@@ -193,10 +201,11 @@ func _on_busy_changed(_status: bool, _id: int) -> void:
     elif _rlink_button_cs != null and "Disabled" in _rlink_button_cs:
         disabled = _rlink_button_cs.Disabled
 
-    _button.disabled = _data.busy or property_is_readonly or disabled
+    _button.disabled = _data.busy or _property_is_readonly or disabled
 
     
 func _on_rlink_button_changed() -> void:
+    if _rlink_button == null: return
     _max_width = _rlink_button.max_width
     _size_override = _rlink_button.size_flags
 
@@ -211,7 +220,7 @@ func _on_rlink_button_changed() -> void:
     _button.tooltip_text = _rlink_button.tooltip_text
     _button.icon_alignment = _rlink_button.icon_alignment
     _button.vertical_icon_alignment = _rlink_button.icon_alignment_vertical
-    _button.disabled = _data.busy or property_is_readonly or _rlink_button.disabled
+    _button.disabled = _data.busy or _property_is_readonly or _rlink_button.disabled
     _button.clip_text = _rlink_button.clip_text
     _button.custom_minimum_size.y = _rlink_button.min_height
     _button.modulate = _rlink_button.modulate
@@ -224,6 +233,7 @@ func _on_rlink_button_changed() -> void:
 
 
 func _on_rlink_button_changed_cs() -> void:
+    if _rlink_button_cs == null: return
     if not "MaxWidth" in _rlink_button_cs: return # Sometimes not present on reload
     _max_width = _rlink_button_cs.MaxWidth
     _size_override = _rlink_button_cs.SizeFlags
@@ -239,7 +249,7 @@ func _on_rlink_button_changed_cs() -> void:
     _button.tooltip_text = _rlink_button_cs.TooltipText
     _button.icon_alignment = _rlink_button_cs.IconAlignment as HorizontalAlignment
     _button.vertical_icon_alignment = _rlink_button_cs.IconAlignmentVertical as VerticalAlignment
-    _button.disabled = _data.busy or property_is_readonly or _rlink_button_cs.Disabled
+    _button.disabled = _data.busy or _property_is_readonly or _rlink_button_cs.Disabled
     _button.clip_text = _rlink_button_cs.ClipText
     _button.custom_minimum_size.y = _rlink_button_cs.MinHeight
     _button.modulate = _rlink_button_cs.Modulate
@@ -286,15 +296,21 @@ func _on_gui_input(input_event: InputEvent) -> void:
         __ctx.popup.add_icon_item(bucket_icon, "Set Current as Default", ContextActions.SetCurrentAsDefault)
         __ctx.popup.add_icon_item(reload_icon, "Reset", ContextActions.Reset)
         __ctx.popup.add_icon_item(clear_icon, "Clear", ContextActions.Clear)
-        __ctx.popup.id_pressed.connect(_on_id_pressed_callable)
-        __ctx.popup.popup_hide.connect(_on_hide)
+        if not __ctx.popup.id_pressed.is_connected(_on_id_pressed_callable): __ctx.popup.id_pressed.connect(_on_id_pressed_callable)
+        if not __ctx.popup.popup_hide.is_connected(_on_hide): __ctx.popup.popup_hide.connect(_on_hide)
         __ctx.popup.position = _button.get_screen_position() + event.position
         __ctx.popup.reset_size()
+        
+        if not _property_is_storage:
+            __ctx.popup.set_item_disabled(0, true)
+            __ctx.popup.set_item_disabled(1, true)
+            __ctx.popup.set_item_disabled(2, true)
+            __ctx.popup.set_item_disabled(3, true)
         __ctx.popup.popup()
 
 
 func _on_id_pressed(id: int) -> void:
-    if _data == null or _data.busy: return
+    if not _property_is_storage or _data == null or _data.busy: return
     var obj := _data.runtime
     if id == ContextActions.Edit:
         var rlink_runtime: RLinkButton = __rlink_map.runtime_from_obj(_rlink_button)
@@ -305,6 +321,8 @@ func _on_id_pressed(id: int) -> void:
                 text = _rlink_button.text
             rlink_runtime = _data.convert_to_runtime(_rlink_button)
             _buffer.object_add_changes(obj, _property, null, rlink_runtime)
+            _buffer.add_do_method([__ctx, &"clear_wait"])
+            _buffer.add_undo_method([__ctx, &"clear_wait"])
             _buffer.push_action("Create '%s'" % text, obj)
             __rlink_map.add_pair(rlink_runtime, _rlink_button)
             __ctx.converter_to_tool._connect_rlink_buttons(_buffer, rlink_runtime)
@@ -336,7 +354,7 @@ func _on_id_pressed(id: int) -> void:
 
 
 func _on_id_pressed_cs(id: int) -> void:
-    if _data == null or _data.busy: return
+    if not _property_is_storage or _data == null or _data.busy: return
     var obj := _data.runtime
     if id == ContextActions.Edit:
         var rlink_runtime_cs: Resource = __rlink_map.runtime_from_obj(_rlink_button_cs)

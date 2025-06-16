@@ -35,7 +35,7 @@ var tooltip_text: String: ## Sets [member Control.tooltip_text]
 @export
 var icon: String: ## Sets editor icon by name, setting it unsets [member icon_texture]
     set(value):
-        if text == value: return
+        if icon == value: return
         if value != "": icon_texture = null
         icon = value
         emit_changed()
@@ -216,17 +216,24 @@ func _set_method(object: Object, method: StringName) -> void:
         if script != null: method_list = script.get_script_method_list()
         else: method_list = object.get_method_list()
         
-        for method_dict in method_list:
-            if method_dict["name"] == callable_method_name:
-                var arr: Array = method_dict["args"]
-                _base_arg_count = arr.size()
-                var return_info: Dictionary = method_dict["return"]
-                if return_info["type"] == TYPE_BOOL:
-                    needs_check = true
-                elif return_info["type"] == TYPE_NIL and (return_info["usage"] & PROPERTY_USAGE_NIL_IS_VARIANT) == PROPERTY_USAGE_NIL_IS_VARIANT:
-                    needs_check = true
-                break
-    
+        var found := _search_method(method_list)
+        if not found:
+            _search_method(ClassDB.class_get_method_list(object.get_class()))
+
+
+func _search_method(method_list: Array[Dictionary]) -> bool:
+    for method_dict in method_list:
+        if method_dict["name"] == callable_method_name:
+            var arr: Array = method_dict["args"]
+            _base_arg_count = arr.size()
+            var return_info: Dictionary = method_dict["return"]
+            if return_info["type"] == TYPE_BOOL:
+                needs_check = true
+            elif return_info["type"] == TYPE_NIL and (return_info["usage"] & PROPERTY_USAGE_NIL_IS_VARIANT) == PROPERTY_USAGE_NIL_IS_VARIANT:
+                needs_check = true
+            return true
+    return false
+
 
 ## Sets exported properties by name from dictionary
 func set_dictioanary(properties: Dictionary) -> RLinkButton:
