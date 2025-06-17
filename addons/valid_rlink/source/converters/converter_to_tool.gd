@@ -99,8 +99,6 @@ func _tool_register_defaults(buffer: RLinkBuffer, runtime: Object, tool_obj: Obj
 
 
 func _connect_rlink_buttons(buffer: RLinkBuffer, runtime: Resource) -> void:
-    #if not runtime.changed.is_connected(buffer.reflect_to_tool.bind(runtime, 1)):
-        #runtime.changed.connect(buffer.reflect_to_tool.bind(runtime, 1))
     if not runtime.changed.is_connected(_convert_value.bind(buffer, runtime, 1)):
         runtime.changed.connect(_convert_value.bind(buffer, runtime, 1))
         

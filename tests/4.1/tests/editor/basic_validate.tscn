@@ -1,21 +1,24 @@
-[gd_scene load_steps=23 format=3 uid="uid://pv4ssbpvluxj"]
+[gd_scene load_steps=31 format=3 uid="uid://pv4ssbpvluxj"]
 
-[ext_resource type="Script" path="res://tests/editor/scripts/validate_basic.gd" id="1_aoqcc"]
-[ext_resource type="Script" path="res://tests/editor/scripts/validate_inner.gd" id="2_2l0tt"]
-[ext_resource type="Script" path="res://tests/editor/scripts/validate_inner_base.gd" id="2_mgxhu"]
-[ext_resource type="Script" path="res://tests/editor/scripts/inner_resource.gd" id="3_mgxhu"]
-[ext_resource type="Script" path="res://tests/editor/scripts/inner_resource_validate.gd" id="5_xpbgq"]
-[ext_resource type="Script" path="res://tests/editor/scripts/rlink_child.gd" id="6_baol1"]
-[ext_resource type="Script" path="res://tests/editor/scripts/validate_packed.gd" id="6_c8q22"]
-[ext_resource type="Script" path="res://tests/editor/scripts/validate_inherit.gd" id="7_q8hmo"]
-[ext_resource type="Script" path="res://tests/editor/scripts/rlink_scene.gd" id="7_v4orn"]
-[ext_resource type="PackedScene" path="res://tests/editor/simple_scene.tscn" id="8_tvfff"]
-[ext_resource type="Script" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="9_65005"]
-[ext_resource type="Script" path="res://tests/editor/scripts/resource_changes.gd" id="10_py022"]
-[ext_resource type="Script" path="res://tests/editor/scripts/rlink_await.gd" id="11_65005"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/validate_basic.gd" id="1_rh14h"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/validate_inner.gd" id="2_x17hg"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/inner_resource.gd" id="3_xknxw"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/validate_inner_validate.gd" id="4_e6hkr"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/inner_resource_validate.gd" id="5_h6c6x"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/validate_packed.gd" id="6_2x26x"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/validate_inherit.gd" id="7_o5ij6"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/rlink_child.gd" id="8_c5kg7"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/rlink_scene.gd" id="9_tgtpd"]
+[ext_resource type="PackedScene" uid="uid://jm7kpmihig8e" path="res://tests/editor/simple_scene.tscn" id="10_de7t4"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/rlink_changes.gd" id="10_rwyli"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/rlink_await.gd" id="11_hjgtf"]
+[ext_resource type="Script" path="res://addons/valid_rlink/runtime/rlink_button.gd" id="12_6obh1"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/tool_testing.gd" id="13_dqh21"]
+[ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="14_4a24f"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/tool_testing_callable.gd" id="14_a11i2"]
 
-[sub_resource type="Resource" id="Resource_e88u2"]
-script = ExtResource("3_mgxhu")
+[sub_resource type="Resource" id="Resource_o6xu8"]
+script = ExtResource("3_xknxw")
 export_bool_var = true
 export_int_var = 100
 export_float_var = 100.0
@@ -53,8 +56,8 @@ export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 
-[sub_resource type="Resource" id="Resource_of3dg"]
-script = ExtResource("3_mgxhu")
+[sub_resource type="Resource" id="Resource_hpbkq"]
+script = ExtResource("3_xknxw")
 export_bool_var = true
 export_int_var = 0
 export_float_var = 0.0
@@ -89,8 +92,8 @@ export_PackedVector2Array_var = PackedVector2Array()
 export_PackedVector3Array_var = PackedVector3Array()
 export_PackedColorArray_var = PackedColorArray()
 
-[sub_resource type="Resource" id="Resource_flfwn"]
-script = ExtResource("5_xpbgq")
+[sub_resource type="Resource" id="Resource_lmquw"]
+script = ExtResource("5_h6c6x")
 export_bool_var = true
 export_int_var = 100
 export_float_var = 100.0
@@ -127,10 +130,10 @@ export_PackedStringArray_var = PackedStringArray("hello world", "new value", "th
 export_PackedVector2Array_var = PackedVector2Array(100, 100, 200, 200, 300, 300)
 export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-inner = SubResource("Resource_of3dg")
+inner = SubResource("Resource_hpbkq")
 
-[sub_resource type="Resource" id="Resource_d0qh6"]
-script = ExtResource("9_65005")
+[sub_resource type="Resource" id="Resource_p4r47"]
+script = ExtResource("12_6obh1")
 text = "Remove All"
 tooltip_text = ""
 icon = ""
@@ -171,15 +174,15 @@ metadata/default_values = {
 "unbind_next": 0
 }
 
-[sub_resource type="Resource" id="Resource_jsxkh"]
-script = ExtResource("9_65005")
+[sub_resource type="Resource" id="Resource_10j2r"]
+script = ExtResource("12_6obh1")
 text = "Toggle Connect"
 tooltip_text = ""
 icon = ""
 icon_alignment = 0
 icon_alignment_vertical = 1
-modulate = Color(0, 0, 0, 1)
-max_width = 95
+modulate = Color(1, 1, 1, 1)
+max_width = 200
 min_height = 0
 margin_left = 0
 margin_top = 0
@@ -204,23 +207,22 @@ metadata/default_values = {
 "margin_left": 0,
 "margin_right": 0,
 "margin_top": 0,
-"max_width": 95,
+"max_width": 200,
 "min_height": 0,
-"modulate": Color(1, 1, 0, 1),
+"modulate": Color(1, 1, 1, 1),
 "size_flags": -1,
 "text": "Toggle Connect",
 "tooltip_text": "",
 "unbind_next": 0
 }
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_oua4o"]
-seed = 1234
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_iuein"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_py022"]
-noise = SubResource("FastNoiseLite_oua4o")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bhp13"]
+noise = SubResource("FastNoiseLite_iuein")
 
-[sub_resource type="Resource" id="Resource_asyf6"]
-script = ExtResource("9_65005")
+[sub_resource type="Resource" id="Resource_nbjh4"]
+script = ExtResource("12_6obh1")
 text = "Set Int"
 tooltip_text = ""
 icon = ""
@@ -261,8 +263,8 @@ metadata/default_values = {
 "unbind_next": 0
 }
 
-[sub_resource type="Resource" id="Resource_hoejj"]
-script = ExtResource("9_65005")
+[sub_resource type="Resource" id="Resource_cr4lf"]
+script = ExtResource("12_6obh1")
 text = "Set Int Checked"
 tooltip_text = ""
 icon = ""
@@ -303,10 +305,220 @@ metadata/default_values = {
 "unbind_next": 0
 }
 
+[sub_resource type="Resource" id="Resource_80jst"]
+script = ExtResource("12_6obh1")
+text = "Hidden"
+tooltip_text = ""
+icon = ""
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = []
+unbind_next = 0
+callable_method_name = &"test_hidden"
+metadata/default_values = {
+"bound_args": [],
+"callable_method_name": &"test_hidden",
+"clip_text": true,
+"disabled": false,
+"icon": "",
+"icon_alignment": 0,
+"icon_alignment_vertical": 1,
+"icon_texture": null,
+"margin_bottom": 0,
+"margin_left": 0,
+"margin_right": 0,
+"margin_top": 0,
+"max_width": 200,
+"min_height": 0,
+"modulate": Color(1, 1, 1, 1),
+"size_flags": -1,
+"text": "Hidden",
+"tooltip_text": "",
+"unbind_next": 0
+}
+
+[sub_resource type="Resource" id="Resource_qp6y4"]
+script = ExtResource("12_6obh1")
+text = "Disabled"
+tooltip_text = ""
+icon = "Stop"
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = []
+unbind_next = 0
+callable_method_name = &"test_disabled"
+metadata/default_values = {
+"bound_args": [],
+"callable_method_name": &"test_disabled",
+"clip_text": true,
+"disabled": false,
+"icon": "Stop",
+"icon_alignment": 0,
+"icon_alignment_vertical": 1,
+"icon_texture": null,
+"margin_bottom": 0,
+"margin_left": 0,
+"margin_right": 0,
+"margin_top": 0,
+"max_width": 200,
+"min_height": 0,
+"modulate": Color(1, 1, 1, 1),
+"size_flags": -1,
+"text": "Disabled",
+"tooltip_text": "",
+"unbind_next": 0
+}
+
+[sub_resource type="Resource" id="Resource_86o8r"]
+script = ExtResource("12_6obh1")
+text = "UndoRedo"
+tooltip_text = ""
+icon = "UndoRedo"
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = []
+unbind_next = 0
+callable_method_name = &"test_undoredo"
+metadata/default_values = {
+"bound_args": [],
+"callable_method_name": &"test_undoredo",
+"clip_text": true,
+"disabled": false,
+"icon": "UndoRedo",
+"icon_alignment": 0,
+"icon_alignment_vertical": 1,
+"icon_texture": null,
+"margin_bottom": 0,
+"margin_left": 0,
+"margin_right": 0,
+"margin_top": 0,
+"max_width": 200,
+"min_height": 0,
+"modulate": Color(1, 1, 1, 1),
+"size_flags": -1,
+"text": "UndoRedo",
+"tooltip_text": "",
+"unbind_next": 0
+}
+
+[sub_resource type="Resource" id="Resource_kbl6q"]
+script = ExtResource("12_6obh1")
+text = "Make Green"
+tooltip_text = ""
+icon = ""
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = [Color(0, 1, 0, 1)]
+unbind_next = 0
+callable_method_name = &"set_self_modulate"
+metadata/default_values = {
+"bound_args": [Color(0, 1, 0, 1)],
+"callable_method_name": &"set_self_modulate",
+"clip_text": true,
+"disabled": false,
+"icon": "",
+"icon_alignment": 0,
+"icon_alignment_vertical": 1,
+"icon_texture": null,
+"margin_bottom": 0,
+"margin_left": 0,
+"margin_right": 0,
+"margin_top": 0,
+"max_width": 200,
+"min_height": 0,
+"modulate": Color(1, 1, 1, 1),
+"size_flags": -1,
+"text": "Make Green",
+"tooltip_text": "",
+"unbind_next": 0
+}
+
+[sub_resource type="Resource" id="Resource_76cfv"]
+script = ExtResource("12_6obh1")
+text = "Clear Modulation"
+tooltip_text = ""
+icon = "Clear"
+icon_alignment = 0
+icon_alignment_vertical = 1
+modulate = Color(1, 1, 1, 1)
+max_width = 200
+min_height = 0
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+disabled = false
+clip_text = true
+size_flags = -1
+bound_args = [Color(1, 1, 1, 1)]
+unbind_next = 0
+callable_method_name = &"set_self_modulate"
+metadata/default_values = {
+"bound_args": [Color(1, 1, 1, 1)],
+"callable_method_name": &"set_self_modulate",
+"clip_text": true,
+"disabled": false,
+"icon": "Clear",
+"icon_alignment": 0,
+"icon_alignment_vertical": 1,
+"icon_texture": null,
+"margin_bottom": 0,
+"margin_left": 0,
+"margin_right": 0,
+"margin_top": 0,
+"max_width": 200,
+"min_height": 0,
+"modulate": Color(1, 1, 1, 1),
+"size_flags": -1,
+"text": "Clear Modulation",
+"tooltip_text": "",
+"unbind_next": 0
+}
+
 [node name="Node" type="Node"]
 
 [node name="ValidateBasic" type="Node" parent="."]
-script = ExtResource("1_aoqcc")
+script = ExtResource("1_rh14h")
 export_bool_var = true
 export_int_var = 100
 export_float_var = 100.0
@@ -345,26 +557,26 @@ export_PackedVector3Array_var = PackedVector3Array(300, 300, 300, 200, 200, 200)
 export_PackedColorArray_var = PackedColorArray(1, 1, 1, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 
 [node name="ValidateInner" type="Node" parent="."]
-script = ExtResource("2_2l0tt")
-inner = SubResource("Resource_e88u2")
+script = ExtResource("2_x17hg")
+inner = SubResource("Resource_o6xu8")
 metadata/rlink_skip = false
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
-script = ExtResource("2_mgxhu")
-inner = SubResource("Resource_flfwn")
+script = ExtResource("4_e6hkr")
+inner = SubResource("Resource_lmquw")
 metadata/rlink_skip = false
 
 [node name="ValidatePacked" type="Node" parent="."]
-script = ExtResource("6_c8q22")
-array = PackedInt32Array(3, 0, 0, 0, 0)
+script = ExtResource("6_2x26x")
+array = PackedInt32Array(5, 0, 0, 0, 0)
 
 [node name="ValidateInherit" type="Node" parent="."]
-script = ExtResource("7_q8hmo")
+script = ExtResource("7_o5ij6")
 float_var = 55.5
 int_var = 200
 
 [node name="RLinkChild" type="Node" parent="."]
-script = ExtResource("6_baol1")
+script = ExtResource("8_c5kg7")
 metadata/rlink_skip = false
 
 [node name="DirectChild" type="Node" parent="RLinkChild"]
@@ -380,36 +592,56 @@ metadata/rlink_skip = false
 [node name="DirectChildPath" type="Node" parent="RLinkChild"]
 
 [node name="RLinkScene" type="Node" parent="." node_paths=PackedStringArray("scene_export", "scene_load", "scene_file")]
-script = ExtResource("7_v4orn")
-scene = ExtResource("8_tvfff")
+script = ExtResource("9_tgtpd")
+scene = ExtResource("10_de7t4")
 scene_export = NodePath("SceneExport")
 scene_load = NodePath("SceneLoad")
 scene_file = NodePath("SceneFile")
-remove_all = SubResource("Resource_d0qh6")
-toggle_connect = SubResource("Resource_jsxkh")
+remove_all = SubResource("Resource_p4r47")
+toggle_connect = SubResource("Resource_10j2r")
 metadata/rlink_skip = false
 
-[node name="SceneExport" parent="RLinkScene" instance=ExtResource("8_tvfff")]
+[node name="SceneExport" parent="RLinkScene" instance=ExtResource("10_de7t4")]
 
-[node name="SceneLoad" parent="RLinkScene" instance=ExtResource("8_tvfff")]
+[node name="SceneLoad" parent="RLinkScene" instance=ExtResource("10_de7t4")]
 offset_top = 50.0
 offset_bottom = 50.0
 
-[node name="SceneFile" parent="RLinkScene" instance=ExtResource("8_tvfff")]
+[node name="SceneFile" parent="RLinkScene" instance=ExtResource("10_de7t4")]
 offset_top = 100.0
 offset_bottom = 100.0
 
 [node name="RLinkChanges" type="Node" parent="."]
-script = ExtResource("10_py022")
-noise_texture = SubResource("NoiseTexture2D_py022")
+script = ExtResource("10_rwyli")
+noise_texture = SubResource("NoiseTexture2D_bhp13")
 
 [node name="RLinkAwait" type="Node" parent="."]
-script = ExtResource("11_65005")
-int_var = 4
-set_int = SubResource("Resource_asyf6")
-success = true
-set_int_checked = SubResource("Resource_hoejj")
+script = ExtResource("11_hjgtf")
+int_var = -2
+set_int = SubResource("Resource_nbjh4")
+set_int_checked = SubResource("Resource_cr4lf")
 metadata/rlink_skip = false
+
+[node name="ToolTesting" type="Sprite2D" parent="."]
+self_modulate = Color(0, 1, 0, 1)
+position = Vector2(214, 67)
+texture = ExtResource("14_4a24f")
+script = ExtResource("13_dqh21")
+hidden_action = SubResource("Resource_80jst")
+stop_action = SubResource("Resource_qp6y4")
+undoredo_action = SubResource("Resource_86o8r")
+make_green_action = SubResource("Resource_kbl6q")
+clear_modulation_action = SubResource("Resource_76cfv")
+
+[node name="ToolTestingCallable" type="Sprite2D" parent="."]
+position = Vector2(207, 166)
+texture = ExtResource("14_4a24f")
+script = ExtResource("14_a11i2")
+hidden_action = Callable()
+stop_action = Callable()
+undoredo_action = Callable()
+make_green_action = Callable()
+clear_modulation_action = Callable()
 
 [connection signal="custom_pressed" from="RLinkScene/SceneExport" to="RLinkScene" method="scene_pressed" binds= ["hello scene_export"]]
 [connection signal="custom_pressed" from="RLinkScene/SceneLoad" to="RLinkScene" method="scene_pressed" binds= ["hello scene_load"]]

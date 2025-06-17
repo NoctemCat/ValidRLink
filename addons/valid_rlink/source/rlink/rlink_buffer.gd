@@ -284,15 +284,25 @@ func create_action(
 
 
 func push_action(name: String, object: Object, merge_mode: UndoRedo.MergeMode = UndoRedo.MERGE_DISABLE) -> void:
-    create_action(name, merge_mode, object)
-    if has_changes:
-        flush_changes()
+    if __settings.call_without_changes_commits_action:
+        create_action(name, merge_mode, object)
+        if has_changes:
+            flush_changes()
+        else:
+            # unlikely to store changes, but if for some reason 
+            # any are present discard them
+            discard_changes()
+        commit_action()
     else:
-        # unlikely to store changes, but if for some reason 
-        # any are present discard them
-        discard_changes()
-    commit_action()
-
+        if has_changes:
+            create_action(name, merge_mode, object)
+            flush_changes()
+            commit_action()
+        else:
+            # unlikely to store changes, but if for some reason 
+            # any are present discard them
+            discard_changes()
+            
 
 func push_validate_action(name: String, object: Object) -> void:
     if has_changes and __settings.validate_use_history:

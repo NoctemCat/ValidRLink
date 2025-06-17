@@ -42,7 +42,15 @@ func save_scene() -> void:
 
 
 func callable_arg_count_available() -> bool:
-    return engine_version > 0x040300
+    return engine_version >= 0x040300
+
+
+func object_arg_count_available() -> bool:
+    return engine_version >= 0x040300
+
+
+func object_get_method_list_fixed() -> bool:
+    return engine_version >= 0x040200
     
     
 func get_arg_count(callable: Callable) -> int:

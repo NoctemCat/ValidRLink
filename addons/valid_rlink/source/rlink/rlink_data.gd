@@ -113,34 +113,34 @@ func validate_changes(object_name: String) -> void:
     busy = false
 
 
-func _validate_visit_variant(name: String, v_visit: Dictionary, value: Variant, depth: int) -> void:
+func _validate_visit_variant(name: String, visit: Dictionary, value: Variant, depth: int) -> void:
     if value == null: return
 
     var type := typeof(value)
     if type == TYPE_OBJECT:
-        _validate_visit_object(name, v_visit, value, depth)
+        _validate_visit_object(name, visit, value, depth)
     elif type == TYPE_ARRAY:
-        _validate_visit_array(name, v_visit, value, depth)
+        _validate_visit_array(name, visit, value, depth)
     elif type == TYPE_DICTIONARY:
-        _validate_visit_dictionary(name, v_visit, value, depth)
+        _validate_visit_dictionary(name, visit, value, depth)
 
 
-func _validate_visit_array(name: String, v_visit: Dictionary, array: Array, depth: int) -> void:
+func _validate_visit_array(name: String, visit: Dictionary, array: Array, depth: int) -> void:
     for elem in array:
-        _validate_visit_variant(name, v_visit, elem, depth)
+        _validate_visit_variant(name, visit, elem, depth)
 
 
-func _validate_visit_dictionary(name: String, v_visit: Dictionary, dictionary: Dictionary, depth: int) -> void:
+func _validate_visit_dictionary(name: String, visit: Dictionary, dictionary: Dictionary, depth: int) -> void:
     for key in dictionary:
-        _validate_visit_variant(name, v_visit, key, depth)
-        _validate_visit_variant(name, v_visit, dictionary[key], depth)
+        _validate_visit_variant(name, visit, key, depth)
+        _validate_visit_variant(name, visit, dictionary[key], depth)
 
 
-func _validate_visit_object(name: String, v_visit: Dictionary, object: Object, depth: int) -> void:
+func _validate_visit_object(name: String, visit: Dictionary, object: Object, depth: int) -> void:
     var object_id := object.get_instance_id()
     if _validate_exceptions.has(object_id): return
-    if v_visit.has(object_id): return
-    v_visit[object_id] = true
+    if visit.has(object_id): return
+    visit[object_id] = true
 
     var res := __scan_cache.get_search(object)
 
@@ -154,7 +154,7 @@ func _validate_visit_object(name: String, v_visit: Dictionary, object: Object, d
         var value: Variant = object.get(prop_name)
         if __conv_to_tool._skip_object(value): continue
         
-        _validate_visit_variant(name, v_visit, value, depth + 1)
+        _validate_visit_variant(name, visit, value, depth + 1)
 
     if res.has_validate:
         validate_object(name, object, res)
@@ -236,6 +236,7 @@ func call_callable(prop_name: StringName) -> void:
         return
     
     var action_name := prop_name.capitalize()
+    
     _buffer.push_action(__settings.call_action_template % action_name, runtime)
     busy = false
 
@@ -256,7 +257,6 @@ func call_rlink_button(prop_name: StringName) -> void:
     to_call.set_object(tool_obj)
         
     var final_count := to_call.get_arg_count()
-    prints(final_count, to_call._base_arg_count)
     if final_count < 0 or final_count > 1:
         push_error("ValidRLink: '%s' takes maximum 1 argument [rlink_data.call_rlink_button]" % to_call.callable_method_name)
         return

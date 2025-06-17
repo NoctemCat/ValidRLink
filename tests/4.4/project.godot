@@ -10,12 +10,13 @@ config_version=5
 
 [addons]
 
-valid_rlink/misc/update_tree_on_signal_change=false
 valid_rlink/default_button_path="uid://tikqnu8om506"
+valid_rlink/misc/update_tree_on_signal_change=false
 
 [application]
 
 config/name="ValidRLink"
+run/main_scene="uid://d3dut4dsdaetg"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

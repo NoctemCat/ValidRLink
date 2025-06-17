@@ -14,12 +14,19 @@ enum ContextActions {
     Clear,
 }
 
+enum ButtonType {
+    CallableType,
+    GDScriptType,
+    CSharpType,
+}
+
 signal pressed
 
 var __ctx: Context
 var __compat: Compat
 var __rlink_map: RLinkMap
 
+var _button_type: ButtonType
 var _data_id: int
 var _data: RLinkData:
     get: return instance_from_id(_data_id)
@@ -63,12 +70,15 @@ func _init(context: Context, data: RLinkData, property: String, usage_flags: int
     _button.text = property.capitalize()
     _button.pressed.connect(_on_pressed)
     _button.gui_input.connect(_on_gui_input)
+    if _property_is_readonly:
+        _button.disabled = true
 
     _box.add_child(_button)
     add_child(_box)
     resized.connect(_on_resize)
     _on_resize()
     
+
     if rlink_button == null:
         _callable_set_default(property)
         return
@@ -81,6 +91,7 @@ func _init(context: Context, data: RLinkData, property: String, usage_flags: int
 
 
 func _callable_set_default(property: String) -> void:
+    if not ResourceLoader.exists(__ctx.settings.default_button_path): return
     var default_btn: Resource = load(__ctx.settings.default_button_path)
     if default_btn == null or not default_btn is RLinkButton:
         return
@@ -93,6 +104,7 @@ func _callable_set_default(property: String) -> void:
 func _setup(rlink_button: RLinkButton, property: String) -> void:
     _on_id_pressed_callable = _on_id_pressed
     _button_id = rlink_button.get_instance_id()
+    _button_type = ButtonType.GDScriptType
     if not rlink_button.has_meta(&"default_values"):
         if rlink_button.text.is_empty():
             rlink_button.text = property.capitalize()
@@ -116,6 +128,7 @@ func _setup(rlink_button: RLinkButton, property: String) -> void:
 func _setup_cs(rlink_button_cs: Resource, property: String) -> void:
     _on_id_pressed_callable = _on_id_pressed_cs
     _button_id_cs = rlink_button_cs.get_instance_id()
+    _button_type = ButtonType.CSharpType
     if not rlink_button_cs.has_meta(&"default_values"):
         if rlink_button_cs.Text.is_empty():
             rlink_button_cs.Text = property.capitalize()
@@ -137,6 +150,8 @@ func _setup_cs(rlink_button_cs: Resource, property: String) -> void:
 
 
 func _set_default(rlink_button: Resource) -> void:
+    if not ResourceLoader.exists(__ctx.settings.default_button_path): return
+    
     var real_defaults: Dictionary = {
         icon_alignment = HORIZONTAL_ALIGNMENT_LEFT,
         icon_alignment_vertical = VERTICAL_ALIGNMENT_CENTER,
@@ -145,9 +160,6 @@ func _set_default(rlink_button: Resource) -> void:
         clip_text = true,
         size_flags = RLinkButton.ControlSizes.SIZE_UNSET,
     }
-    
-    if not __ctx.settings.default_button_path or not ResourceLoader.exists(__ctx.settings.default_button_path):
-        return
         
     var default_btn: Resource = load(__ctx.settings.default_button_path)
     if default_btn == null or not default_btn is RLinkButton:
@@ -263,9 +275,10 @@ func _on_rlink_button_changed_cs() -> void:
     
 func _on_pressed() -> void:
     if _data == null: return
-    if _rlink_button != null:
+    
+    if _button_type == ButtonType.GDScriptType:
         _data.call_rlink_button(_property)
-    elif _rlink_button_cs != null:
+    elif _button_type == ButtonType.CSharpType:
         _data.call_rlink_button_cs(_property)
     else:
         _data.call_callable(_property)
@@ -282,7 +295,7 @@ func _on_resize() -> void:
 
 
 func _on_gui_input(input_event: InputEvent) -> void:
-    if _rlink_button == null and _rlink_button_cs == null: return
+    if _button_type == ButtonType.CallableType: return
     
     var event := input_event as InputEventMouseButton
     if event and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:

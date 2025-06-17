@@ -410,6 +410,8 @@ public partial class RLinkButtonCS : Resource
         }
     }
 
+    public static explicit operator RLinkButtonCS(Delegate method) => new(method);
+
     public override bool _PropertyCanRevert(StringName property)
     {
         if (HasMeta(DefaultValuesName))
@@ -573,29 +575,41 @@ public partial class RLinkButtonCS : Resource
         _info = null;
         MethodType = MethodTypeEnum.GodotMethod;
 
-        Godot.Collections.Array<Godot.Collections.Dictionary> methodList;
-        if (script is not null)
-            methodList = script.GetScriptMethodList();
-        else
-            methodList = obj.GetMethodList();
+        Dictionary<string, Godot.Collections.Dictionary> methods = new();
+        long version = Engine.GetVersionInfo()["hex"].AsInt64();
 
-        foreach (var methodDict in methodList)
+        foreach (var methodDict in obj.GetMethodList())
         {
-            if (methodDict["name"].AsString() == CallableMethodName)
+            methods[methodDict["name"].AsString()] = methodDict;
+        }
+
+        if (version < 0x040200 && script is not null)
+        {
+            foreach (var methodDict in script.GetScriptMethodList())
             {
-                _baseArgCount = methodDict["args"].AsGodotArray().Count;
-                Godot.Collections.Dictionary returnDict = methodDict["return"].AsGodotDictionary();
-                Variant.Type returnType = returnDict["type"].As<Variant.Type>();
-                if (
-                    returnType == Variant.Type.Bool || (returnType == Variant.Type.Nil &&
-                    (returnDict["usage"].As<PropertyUsageFlags>() & PropertyUsageFlags.NilIsVariant) != PropertyUsageFlags.NilIsVariant))
-                {
-                    NeedsCheck = true;
-                }
-                script?.Dispose();
-                return;
+                methods[methodDict["name"].AsString()] = methodDict;
             }
         }
+
+        if (methods.TryGetValue(methodName.ToString(), out Godot.Collections.Dictionary? method))
+        {
+            _baseArgCount = method["args"].AsGodotArray().Count;
+            Godot.Collections.Dictionary returnDict = method["return"].AsGodotDictionary();
+            Variant.Type returnType = returnDict["type"].As<Variant.Type>();
+            if (
+                returnType == Variant.Type.Bool || (returnType == Variant.Type.Nil &&
+                (returnDict["usage"].As<PropertyUsageFlags>() & PropertyUsageFlags.NilIsVariant) != PropertyUsageFlags.NilIsVariant))
+            {
+                NeedsCheck = true;
+            }
+            script?.Dispose();
+            return;
+        }
+        if (version >= 0x040300)
+        {
+            _baseArgCount = obj.Call("get_method_argument_count", methodName).AsInt32();
+        }
+        script?.Dispose();
     }
 
     /// <summary>
@@ -994,25 +1008,19 @@ public partial class RLinkButtonCS : Resource
         return args;
     }
 
-    private MethodInfo? GetImplicitOperator(Type from, Type to)
+    private static MethodInfo? GetImplicitOperator(Type from, Type to)
     {
-        var op = from.GetMethods().FirstOrDefault(mi =>
-            mi.Name == "op_Implicit" &&
-            mi.ReturnType == to &&
-            mi.GetParameters().Length == 1 &&
-            mi.GetParameters()[0].ParameterType == from
-        );
-        if (op is not null)
-        {
-            return op;
-        }
-        op = to.GetMethods().FirstOrDefault(mi =>
-            mi.Name == "op_Implicit" &&
-            mi.ReturnType == to &&
-            mi.GetParameters().Length == 1 &&
-            mi.GetParameters()[0].ParameterType == from
-        );
+        var op = from.GetMethods().FirstOrDefault(ImplicitOp);
+        op ??= to.GetMethods().FirstOrDefault(ImplicitOp);
         return op;
+
+        bool ImplicitOp(MethodInfo info)
+        {
+            return info.Name == "op_Implicit" &&
+                info.ReturnType == to &&
+                info.GetParameters().Length == 1 &&
+                info.GetParameters()[0].ParameterType == from;
+        }
     }
 
     /// <summary>

@@ -1,7 +1,8 @@
 @tool
 class_name RLinkButton
 extends Resource
-## Turns a method from non-tool class into a button in editor
+## Turns a method from non-tool class into a button in editor.
+## In release supports 
 
 const CLASS_NAME = "RLinkButton"
 const CLASS_NAME_CS = "RLinkButtonCS"
@@ -17,8 +18,8 @@ enum ControlSizes {
     SIZE_SHRINK_END = 8,
 }
 
+static var engine_version: int
 static var get_unbound_count_expr: Expression = null ## Calls [method Callable.get_unbound_arguments_count] through [Expression]
-static var unbound_count_available: bool ## Is true if current Godot version supports it
 
 @export
 var text: String: ## The button's text that will be displayed inside the button's area
@@ -139,11 +140,23 @@ var _base_arg_count: int
 
 
 static func _static_init() -> void:
-    unbound_count_available = Engine.get_version_info()["hex"] >= 0x040400
-    if unbound_count_available:
+    engine_version = Engine.get_version_info()["hex"]
+    if callable_unbound_count_available():
         get_unbound_count_expr = Expression.new()
         get_unbound_count_expr.parse("callable.get_unbound_arguments_count()", ["callable"])
-    
+
+
+static func callable_unbound_count_available() -> bool: 
+    return engine_version >= 0x040400
+
+
+static func object_arg_count_available() -> bool: 
+    return engine_version >= 0x040300
+
+
+static func object_get_method_list_fixed() -> bool: 
+    return engine_version >= 0x040200
+
 
 ## [param method] can be either [Callable] or name as a [String]
 func _init(method: Variant = null, properties: Dictionary = Dictionary()) -> void:
@@ -156,8 +169,8 @@ func _init(method: Variant = null, properties: Dictionary = Dictionary()) -> voi
 
         set_object(method.get_object(), method.get_method())
         bound_args = method.get_bound_arguments()
-        if unbound_count_available:
-            unbind_next = get_unbound_count_expr.execute([method])
+        if callable_unbound_count_available():
+            unbind_next = get_unbound_count_expr.execute([method])            
     elif method is StringName or method is String:
         callable_method_name = method
     set_dictioanary(properties)
@@ -211,27 +224,31 @@ func _set_method(object: Object, method: StringName) -> void:
         needs_check = false
         _base_arg_count = 0
         callable_method_name = method
-
-        var method_list: Array[Dictionary]
-        if script != null: method_list = script.get_script_method_list()
-        else: method_list = object.get_method_list()
         
-        var found := _search_method(method_list)
-        if not found:
-            _search_method(ClassDB.class_get_method_list(object.get_class()))
+        var methods: Dictionary = {}
+        for method_dict in object.get_method_list():
+            methods[method_dict["name"]] = method_dict
+            
+        if not object_get_method_list_fixed() and script != null:
+            for method_dict in script.get_script_method_list():
+                methods[method_dict["name"]] = method_dict
+        
+        if not _search_method(methods):
+            if object_arg_count_available():
+                _base_arg_count = object.call(&"get_method_argument_count", method)
 
 
-func _search_method(method_list: Array[Dictionary]) -> bool:
-    for method_dict in method_list:
-        if method_dict["name"] == callable_method_name:
-            var arr: Array = method_dict["args"]
-            _base_arg_count = arr.size()
-            var return_info: Dictionary = method_dict["return"]
-            if return_info["type"] == TYPE_BOOL:
-                needs_check = true
-            elif return_info["type"] == TYPE_NIL and (return_info["usage"] & PROPERTY_USAGE_NIL_IS_VARIANT) == PROPERTY_USAGE_NIL_IS_VARIANT:
-                needs_check = true
-            return true
+func _search_method(methods: Dictionary) -> bool:
+    if methods.has(callable_method_name):
+        var method_dict: Dictionary = methods[callable_method_name]
+        var arr: Array = method_dict["args"]
+        _base_arg_count = arr.size()
+        var return_info: Dictionary = method_dict["return"]
+        if return_info["type"] == TYPE_BOOL:
+            needs_check = true
+        elif return_info["type"] == TYPE_NIL and (return_info["usage"] & PROPERTY_USAGE_NIL_IS_VARIANT) == PROPERTY_USAGE_NIL_IS_VARIANT:
+            needs_check = true
+        return true
     return false
 
 

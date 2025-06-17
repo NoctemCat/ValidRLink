@@ -23,6 +23,7 @@ public static class RLinkRefTracer
     [MethodImpl(MethodImplOptions.NoInlining)]
     public static void AddRefIfCreatedDirectly(RefCounted? refCounted)
     {
+#if TOOLS
         if (Engine.IsEditorHint())
         {
             StackTrace stackTrace = new();
@@ -31,16 +32,19 @@ public static class RLinkRefTracer
                 AddRef(refCounted);
             }
         }
+#endif
     }
 
     [Conditional("TOOLS")]
     public static void AddRef(RefCounted? refCounted)
     {
+#if TOOLS
         if (Engine.IsEditorHint())
         {
             if (refCounted is null) { return; }
             _createdRefs.AddOrUpdate(refCounted.GetInstanceId(), true, (_, _) => true);
         }
+#endif
     }
 
     public static IEnumerable<ulong> GetRefs()
@@ -64,6 +68,8 @@ public static class RLinkRefTracer
     [Conditional("TOOLS")]
     public static void Clear()
     {
+#if TOOLS
         _createdRefs.Clear();
+#endif
     }
 }

@@ -1,20 +1,22 @@
-[gd_scene load_steps=33 format=3 uid="uid://bgk14m2e2tmt0"]
+[gd_scene load_steps=38 format=3 uid="uid://bgk14m2e2tmt0"]
 
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateBasic.cs" id="1_tyrjc"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInner.cs" id="2_ykr5n"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/InnerResource.cs" id="3_28d03"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInnerValidate.cs" id="4_28d03"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/InnerResourceValidate.cs" id="5_08x04"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkChild.cs" id="6_a5adi"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/ValidateInherit.cs" id="6_k8y4b"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkScene.cs" id="7_a5adi"]
-[ext_resource type="PackedScene" path="res://tests/editor_csharp/simple_scene.tscn" id="8_5qioq"]
-[ext_resource type="Script" path="res://addons/valid_rlink/runtime/RLinkButtonCS.cs" id="9_jcvuu"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkChanges.cs" id="10_mqgjl"]
-[ext_resource type="Script" path="res://tests/editor_csharp/scripts/RLinkAsync.cs" id="11_wjsgh"]
+[ext_resource type="Script" path="res://tests/editor_csharp/charp_scripts/ValidateBasic.cs" id="1_nxjor"]
+[ext_resource type="Script" path="res://tests/editor_csharp/charp_scripts/ValidateInner.cs" id="2_fslj4"]
+[ext_resource type="Script" path="res://tests/editor_csharp/charp_scripts/InnerResource.cs" id="3_n62ij"]
+[ext_resource type="Script" path="res://tests/editor_csharp/charp_scripts/ValidateInnerValidate.cs" id="4_462ie"]
+[ext_resource type="Script" path="res://tests/editor_csharp/charp_scripts/InnerResourceValidate.cs" id="5_v05vd"]
+[ext_resource type="Script" path="res://tests/editor_csharp/charp_scripts/ValidateInherit.cs" id="6_7h5wj"]
+[ext_resource type="Script" path="res://tests/editor_csharp/charp_scripts/RLinkChild.cs" id="7_c6bt8"]
+[ext_resource type="Script" path="res://addons/valid_rlink/runtime/RLinkButtonCS.cs" id="8_ake5t"]
+[ext_resource type="Script" path="res://tests/editor_csharp/charp_scripts/RLinkScene.cs" id="9_qnhb8"]
+[ext_resource type="Script" path="res://tests/editor_csharp/charp_scripts/RLinkChanges.cs" id="10_8vihd"]
+[ext_resource type="PackedScene" uid="uid://csykpfej1hh33" path="res://tests/editor_csharp/simple_scene.tscn" id="10_krhn1"]
+[ext_resource type="Script" path="res://tests/editor_csharp/charp_scripts/RLinkAsync.cs" id="11_fs6ph"]
+[ext_resource type="Script" path="res://tests/editor_csharp/charp_scripts/ToolTesting.cs" id="12_eexwb"]
+[ext_resource type="Texture2D" uid="uid://chp2tjgrycnrs" path="res://icon.svg" id="13_v08yt"]
 
-[sub_resource type="Resource" id="Resource_6xl1r"]
-script = ExtResource("3_28d03")
+[sub_resource type="Resource" id="Resource_6kefo"]
+script = ExtResource("3_n62ij")
 ExportBool = true
 ExportInt = 100
 ExportFloat = 100.0
@@ -52,9 +54,9 @@ ExportPackedVector2Array = PackedVector2Array(100, 100, 200, 200, 300, 300)
 ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
 ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 
-[sub_resource type="Resource" id="Resource_uuurr"]
-script = ExtResource("3_28d03")
-ExportBool = true
+[sub_resource type="Resource" id="Resource_76068"]
+script = ExtResource("5_v05vd")
+ExportBool = false
 ExportInt = 0
 ExportFloat = 0.0
 ExportString = ""
@@ -74,10 +76,10 @@ ExportBasis = Basis(0, 0, 0, 0, 0, 0, 0, 0, 0)
 ExportTransform3D = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 ExportProjection = Projection(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 ExportColor = Color(0, 0, 0, 0)
-ExportStringName = &""
-ExportNodePath = NodePath("")
-ExportDictionary = {}
-ExportArray = []
+ExportStringName = null
+ExportNodePath = null
+ExportDictionary = null
+ExportArray = null
 ExportPackedByteArray = PackedByteArray()
 ExportPackedInt32Array = PackedInt32Array()
 ExportPackedInt64Array = PackedInt64Array()
@@ -88,48 +90,8 @@ ExportPackedVector2Array = PackedVector2Array()
 ExportPackedVector3Array = PackedVector3Array()
 ExportPackedColorArray = PackedColorArray()
 
-[sub_resource type="Resource" id="Resource_h3e78"]
-script = ExtResource("5_08x04")
-ExportBool = true
-ExportInt = 100
-ExportFloat = 100.0
-ExportString = "new value"
-ExportVector2 = Vector2(100, 100)
-ExportVector2I = Vector2i(100, 100)
-ExportRect2 = Rect2(100, 100, 100, 100)
-ExportRect2I = Rect2i(100, 100, 100, 100)
-ExportVector3 = Vector3(100, 100, 100)
-ExportVector3I = Vector3i(100, 100, 100)
-ExportTransform2D = Transform2D(100, 100, 200, 200, 300, 300)
-ExportVector4 = Vector4(100, 100, 100, 100)
-ExportVector4I = Vector4i(100, 100, 100, 100)
-ExportPlane = Plane(100, 100, 100, 100)
-ExportQuaternion = Quaternion(-0.262375, 0, 0, 0.964966)
-ExportAabb = AABB(300, 300, 300, 200, 200, 200)
-ExportBasis = Basis(300, 200, 100, 300, 200, 100, 300, 200, 100)
-ExportTransform3D = Transform3D(300, 200, 100, 300, 200, 100, 300, 200, 100, 200, 200, 200)
-ExportProjection = Projection(200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 100, 100, 100, 100, 100)
-ExportColor = Color(0.3, 0.4, 0.5, 1)
-ExportStringName = &"new stringname"
-ExportNodePath = NodePath("../ValidateInner")
-ExportDictionary = {
-"key1": 100,
-Vector2i(20, 20): true
-}
-ExportArray = [Color(1, 1, 1, 1), 200, "text"]
-ExportPackedByteArray = PackedByteArray(20, 30, 40)
-ExportPackedInt32Array = PackedInt32Array(1234, 4321, 4544, 1131)
-ExportPackedInt64Array = PackedInt64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
-ExportPackedFloat32Array = PackedFloat32Array(1234, 4321, 4544, 1131)
-ExportPackedFloat64Array = PackedFloat64Array(1234, 4321, 4544, 1131, 34214, 324, 234)
-ExportPackedStringArray = PackedStringArray("hello world", "new value", "third")
-ExportPackedVector2Array = PackedVector2Array(100, 100, 200, 200, 300, 300)
-ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
-ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
-Inner = SubResource("Resource_uuurr")
-
-[sub_resource type="Resource" id="Resource_jyecc"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_wrd13"]
+script = ExtResource("8_ake5t")
 Text = "Toggle Direct Child"
 TooltipText = ""
 Icon = ""
@@ -170,8 +132,8 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_ewcgb"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_5nw0u"]
+script = ExtResource("8_ake5t")
 Text = "Toggle Direct Child Path"
 TooltipText = ""
 Icon = ""
@@ -212,8 +174,8 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_ilhol"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_1qpru"]
+script = ExtResource("8_ake5t")
 Text = "Toggle Child Path"
 TooltipText = ""
 Icon = ""
@@ -254,8 +216,8 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_nqqtb"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_6t4w2"]
+script = ExtResource("8_ake5t")
 Text = "Toggle Child From"
 TooltipText = ""
 Icon = ""
@@ -296,8 +258,8 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_0sw20"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_lrqpl"]
+script = ExtResource("8_ake5t")
 Text = "Toggle Child Get Parent"
 TooltipText = ""
 Icon = ""
@@ -338,8 +300,8 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_1nqtg"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_stpg1"]
+script = ExtResource("8_ake5t")
 Text = "Toggle Has From"
 TooltipText = ""
 Icon = ""
@@ -380,8 +342,8 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_ralbv"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_64yw4"]
+script = ExtResource("8_ake5t")
 Text = "Remove All Children"
 TooltipText = ""
 Icon = ""
@@ -422,8 +384,8 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_fbeda"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_up5p7"]
+script = ExtResource("8_ake5t")
 Text = "Remove All Children From"
 TooltipText = ""
 Icon = ""
@@ -464,8 +426,8 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_scrrh"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_lojpa"]
+script = ExtResource("8_ake5t")
 Text = "Remove All Children Path"
 TooltipText = ""
 Icon = ""
@@ -506,8 +468,8 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_jcvuu"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_ufb2r"]
+script = ExtResource("8_ake5t")
 Text = "Remove All"
 TooltipText = ""
 Icon = ""
@@ -548,23 +510,23 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_mqgjl"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_ube6e"]
+script = ExtResource("8_ake5t")
 Text = "Toggle Connect"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(1, 1, 0, 1)
+Modulate = Color(1, 1, 1, 1)
 MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
-MarginTop = 4
-MarginRight = 8
+MarginTop = 0
+MarginRight = 0
 MarginBottom = 0
 Disabled = false
 ClipText = true
-SizeFlags = 8
+SizeFlags = -1
 BoundArgs = []
 UnbindNext = 0
 CallableMethodName = &"ToggleConnectImpl"
@@ -579,24 +541,21 @@ metadata/default_values = {
 "IconTexture": null,
 "MarginBottom": 0,
 "MarginLeft": 0,
-"MarginRight": 8,
-"MarginTop": 4,
+"MarginRight": 0,
+"MarginTop": 0,
 "MaxWidth": 200,
 "MinHeight": 0,
-"Modulate": Color(1, 1, 0, 1),
-"SizeFlags": 8,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
 "Text": "Toggle Connect",
 "TooltipText": "",
 "UnbindNext": 0
 }
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_bph6x"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l1aeh"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wjsgh"]
-noise = SubResource("FastNoiseLite_bph6x")
-
-[sub_resource type="Resource" id="Resource_48lt6"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_bu2v4"]
+script = ExtResource("8_ake5t")
 Text = "Set Noise"
 TooltipText = ""
 Icon = ""
@@ -637,8 +596,8 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_dyq4l"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_2h4l1"]
+script = ExtResource("8_ake5t")
 Text = "Set Noise Property"
 TooltipText = ""
 Icon = ""
@@ -679,15 +638,15 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
-[sub_resource type="Resource" id="Resource_hanbw"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_0js8k"]
+script = ExtResource("8_ake5t")
 Text = "Set Int"
 TooltipText = ""
 Icon = ""
 IconAlignment = 0
 IconAlignmentVertical = 1
-Modulate = Color(0, 1, 0, 1)
-MaxWidth = 135
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
 MinHeight = 0
 MarginLeft = 0
 MarginTop = 0
@@ -721,8 +680,8 @@ metadata/default_values = {
 "UnbindNext": 1
 }
 
-[sub_resource type="Resource" id="Resource_avnbq"]
-script = ExtResource("9_jcvuu")
+[sub_resource type="Resource" id="Resource_ls5sg"]
+script = ExtResource("8_ake5t")
 Text = "Set Int Checked"
 TooltipText = ""
 Icon = ""
@@ -763,11 +722,200 @@ metadata/default_values = {
 "UnbindNext": 0
 }
 
+[sub_resource type="Resource" id="Resource_oyafg"]
+script = ExtResource("8_ake5t")
+Text = "Hidden"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"TestHidden"
+
+[sub_resource type="Resource" id="Resource_p7e77"]
+script = ExtResource("8_ake5t")
+Text = "Disabled"
+TooltipText = ""
+Icon = "Stop"
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"TestDisabled"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"TestDisabled",
+"ClipText": true,
+"Disabled": false,
+"Icon": "Stop",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Disabled",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_aep0k"]
+script = ExtResource("8_ake5t")
+Text = "UndoRedo"
+TooltipText = ""
+Icon = "UndoRedo"
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = []
+UnbindNext = 0
+CallableMethodName = &"TestUndoRedo"
+metadata/default_values = {
+"BoundArgs": [],
+"CallableMethodName": &"TestUndoRedo",
+"ClipText": true,
+"Disabled": false,
+"Icon": "UndoRedo",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "UndoRedo",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_daylu"]
+script = ExtResource("8_ake5t")
+Text = "Make Green"
+TooltipText = ""
+Icon = ""
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = [Color(0, 1, 0, 1)]
+UnbindNext = 0
+CallableMethodName = &"SetSelfModulate"
+metadata/default_values = {
+"BoundArgs": [Color(0, 1, 0, 1)],
+"CallableMethodName": &"SetSelfModulate",
+"ClipText": true,
+"Disabled": false,
+"Icon": "",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Make Green",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
+[sub_resource type="Resource" id="Resource_sx0yd"]
+script = ExtResource("8_ake5t")
+Text = "Clear Modulation"
+TooltipText = ""
+Icon = "Clear"
+IconAlignment = 0
+IconAlignmentVertical = 1
+Modulate = Color(1, 1, 1, 1)
+MaxWidth = 200
+MinHeight = 0
+MarginLeft = 0
+MarginTop = 0
+MarginRight = 0
+MarginBottom = 0
+Disabled = false
+ClipText = true
+SizeFlags = -1
+BoundArgs = [Color(1, 1, 1, 1)]
+UnbindNext = 0
+CallableMethodName = &"SetSelfModulate"
+metadata/default_values = {
+"BoundArgs": [Color(1, 1, 1, 1)],
+"CallableMethodName": &"SetSelfModulate",
+"ClipText": true,
+"Disabled": false,
+"Icon": "Clear",
+"IconAlignment": 0,
+"IconAlignmentVertical": 1,
+"IconTexture": null,
+"MarginBottom": 0,
+"MarginLeft": 0,
+"MarginRight": 0,
+"MarginTop": 0,
+"MaxWidth": 200,
+"MinHeight": 0,
+"Modulate": Color(1, 1, 1, 1),
+"SizeFlags": -1,
+"Text": "Clear Modulation",
+"TooltipText": "",
+"UnbindNext": 0
+}
+
 [node name="Node" type="Node"]
 metadata/rlink_skip = false
 
 [node name="ValidateBasic" type="Node" parent="."]
-script = ExtResource("1_tyrjc")
+script = ExtResource("1_nxjor")
 ExportBool = true
 ExportInt = 100
 ExportFloat = 100.0
@@ -806,29 +954,29 @@ ExportPackedVector3Array = PackedVector3Array(300, 300, 300, 200, 200, 200)
 ExportPackedColorArray = PackedColorArray(1, 1, 1, 1, 0.960784, 0.870588, 0.701961, 1, 1, 0.980392, 0.941176, 1, 0.3, 0.4, 0.5, 1)
 
 [node name="ValidateInner" type="Node" parent="."]
-script = ExtResource("2_ykr5n")
-Inner = SubResource("Resource_6xl1r")
+script = ExtResource("2_fslj4")
+Inner = SubResource("Resource_6kefo")
 
 [node name="ValidateInnerValidate" type="Node" parent="."]
-script = ExtResource("4_28d03")
-Inner = SubResource("Resource_h3e78")
+script = ExtResource("4_462ie")
+Inner = SubResource("Resource_76068")
 
 [node name="ValidateInherit" type="Node" parent="."]
-script = ExtResource("6_k8y4b")
+script = ExtResource("6_7h5wj")
 FloatVar = 55.5
 IntVar = 200
 
 [node name="RLinkChild" type="Node" parent="."]
-script = ExtResource("6_a5adi")
-ToggleDirectChild = SubResource("Resource_jyecc")
-ToggleDirectChildPath = SubResource("Resource_ewcgb")
-ToggleChildPath = SubResource("Resource_ilhol")
-ToggleChildFrom = SubResource("Resource_nqqtb")
-ToggleChildGetParent = SubResource("Resource_0sw20")
-ToggleHasFrom = SubResource("Resource_1nqtg")
-RemoveAllChildren = SubResource("Resource_ralbv")
-RemoveAllChildrenFrom = SubResource("Resource_fbeda")
-RemoveAllChildrenPath = SubResource("Resource_scrrh")
+script = ExtResource("7_c6bt8")
+ToggleDirectChild = SubResource("Resource_wrd13")
+ToggleDirectChildPath = SubResource("Resource_5nw0u")
+ToggleChildPath = SubResource("Resource_1qpru")
+ToggleChildFrom = SubResource("Resource_6t4w2")
+ToggleChildGetParent = SubResource("Resource_lrqpl")
+ToggleHasFrom = SubResource("Resource_stpg1")
+RemoveAllChildren = SubResource("Resource_64yw4")
+RemoveAllChildrenFrom = SubResource("Resource_up5p7")
+RemoveAllChildrenPath = SubResource("Resource_lojpa")
 metadata/rlink_skip = false
 
 [node name="DirectChild" type="Node" parent="RLinkChild"]
@@ -844,38 +992,42 @@ metadata/rlink_skip = false
 [node name="DirectChildPath" type="Node" parent="RLinkChild"]
 
 [node name="RLinkScene" type="Node" parent="." node_paths=PackedStringArray("SceneExport", "SceneLoad", "SceneFile")]
-script = ExtResource("7_a5adi")
-Scene = ExtResource("8_5qioq")
+script = ExtResource("9_qnhb8")
+Scene = ExtResource("10_krhn1")
 SceneExport = NodePath("SceneExport")
 SceneLoad = NodePath("SceneLoad")
 SceneFile = NodePath("SceneFile")
-RemoveAll = SubResource("Resource_jcvuu")
-ToggleConnect = SubResource("Resource_mqgjl")
+RemoveAll = SubResource("Resource_ufb2r")
+ToggleConnect = SubResource("Resource_ube6e")
 
-[node name="SceneExport" parent="RLinkScene" instance=ExtResource("8_5qioq")]
+[node name="SceneExport" parent="RLinkScene" instance=ExtResource("10_krhn1")]
 
-[node name="SceneLoad" parent="RLinkScene" instance=ExtResource("8_5qioq")]
+[node name="SceneLoad" parent="RLinkScene" instance=ExtResource("10_krhn1")]
 offset_top = 50.0
 offset_bottom = 50.0
 
-[node name="SceneFile" parent="RLinkScene" instance=ExtResource("8_5qioq")]
+[node name="SceneFile" parent="RLinkScene" instance=ExtResource("10_krhn1")]
 offset_top = 100.0
 offset_bottom = 100.0
 
 [node name="RLinkChanges" type="Node" parent="."]
-script = ExtResource("10_mqgjl")
-NoiseTexture = SubResource("NoiseTexture2D_wjsgh")
-SetNoise = SubResource("Resource_48lt6")
-SetNoiseProperty = SubResource("Resource_dyq4l")
+script = ExtResource("10_8vihd")
+NoiseTexture = SubResource("NoiseTexture2D_l1aeh")
+SetNoise = SubResource("Resource_bu2v4")
+SetNoiseProperty = SubResource("Resource_2h4l1")
 
 [node name="RLinkAsync" type="Node" parent="."]
-script = ExtResource("11_wjsgh")
-IntVar = 4
-SetInt = SubResource("Resource_hanbw")
-Success = true
-SetIntChecked = SubResource("Resource_avnbq")
+script = ExtResource("11_fs6ph")
+SetInt = SubResource("Resource_0js8k")
+SetIntChecked = SubResource("Resource_ls5sg")
 metadata/rlink_skip = false
 
-[connection signal="CustomPressed" from="RLinkScene/SceneExport" to="RLinkScene" method="ScenePressed" binds= ["hello SceneExport"]]
-[connection signal="CustomPressed" from="RLinkScene/SceneLoad" to="RLinkScene" method="ScenePressed" binds= ["hello SceneLoad"]]
-[connection signal="CustomPressed" from="RLinkScene/SceneFile" to="RLinkScene" method="ScenePressed" binds= ["hello SceneFile"]]
+[node name="ToolTesting" type="Sprite2D" parent="."]
+position = Vector2(264, 45)
+texture = ExtResource("13_v08yt")
+script = ExtResource("12_eexwb")
+HiddenAction = SubResource("Resource_oyafg")
+StopAction = SubResource("Resource_p7e77")
+UndoRedoAction = SubResource("Resource_aep0k")
+MakeGreenAction = SubResource("Resource_daylu")
+ClearModulationAction = SubResource("Resource_sx0yd")

@@ -40,6 +40,14 @@ public partial class RLinkDB : Node
                 {
                     return settings;
                 }
+                else if (possibleSettings is Godot.Collections.Dictionary godotDictionary)
+                {
+                    return new RLinkSettingsCS(godotDictionary);
+                }
+                else if (possibleSettings is Dictionary<Variant, Variant> csharpDictionary)
+                {
+                    return new RLinkSettingsCS(csharpDictionary);
+                }
             }
         }
         return null;

@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://jm7kpmihig8e"]
 
-[ext_resource type="Script" path="res://tests/editor/scripts/simple_scene.gd" id="1_7rfpg"]
+[ext_resource type="Script" path="res://tests/editor/gdscript_scripts/simple_scene.gd" id="1_kfkby"]
 
 [node name="SimpleScene" type="Control"]
 layout_mode = 3
@@ -9,7 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_7rfpg")
+script = ExtResource("1_kfkby")
 int_var = 100
 
 [node name="MyName" type="Button" parent="."]

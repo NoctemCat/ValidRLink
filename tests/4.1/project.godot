@@ -15,7 +15,8 @@ valid_rlink/default_button_path="res://default_button.tres"
 [application]
 
 config/name="ValidRLink"
-config/features=PackedStringArray("4.1", "C#", "Forward Plus")
+run/main_scene="res://tests/editor/basic_validate.tscn"
+config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"
 
 [debug]

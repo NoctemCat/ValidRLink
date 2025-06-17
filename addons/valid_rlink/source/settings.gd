@@ -8,11 +8,12 @@ const DEF_VALIDATE_CHANGES_NAMES: Array[StringName] = [&"_validate_changes", &"v
 const DEF_GET_RLINK_SETTINGS_NAMES: Array[StringName] = [&"_get_rlink_settings", &"get_rlink_settings", &"GetRLinkSettings", &"_GetRLinkSettings"]
 const DEFAULT_VALUES := {
     turn_callables_to_buttons = true,
+    call_without_changes_commits_action = true,
+    call_action_template = "%s",
     validate_wait_time = 0.05,
     validate_use_history = true,
     max_depth = 3,
     apply_changes_to_external_user_resources = false,
-    call_action_template = "%s",
     default_button_path = "",
     validate_changes_names = DEF_VALIDATE_CHANGES_NAMES,
     get_rlink_settings_names = DEF_GET_RLINK_SETTINGS_NAMES,
@@ -44,11 +45,12 @@ var plugin_version := 0x000100
 var engine_version: int
 
 var turn_callables_to_buttons: bool
+var call_without_changes_commits_action: bool
+var call_action_template: String
 var validate_wait_time: float
 var validate_use_history: bool
 var max_depth: int
 var apply_changes_to_external_user_resources: bool
-var call_action_template: String
 var default_button_path: String
 
 var validate_changes_names: Array[StringName]

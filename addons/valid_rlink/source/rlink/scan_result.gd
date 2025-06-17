@@ -5,6 +5,8 @@ const Context = preload("./../context.gd")
 const Settings = Context.Settings
 const Compat = Context.Compatibility
 
+var __compat: Compat
+
 var object_id: int
 var object_name: String
 var script_id: int
@@ -22,6 +24,7 @@ var _methods_arg_infos: Dictionary
 
 
 func _init(context: Context, object: Object) -> void:
+    __compat = context.compat
     skip = false
     max_depth = context.settings.max_depth
     validate_name = &""
@@ -77,7 +80,7 @@ func handle_script(context: Context, object: Object, script_or_native: Object) -
             
         if rlink_settings.validate_name != &"":
             had_validate = true
-            if context.compat.comp_has_method(object, rlink_settings.validate_name):
+            if __compat.comp_has_method(object, rlink_settings.validate_name):
                 validate_name = rlink_settings.validate_name
         
         skip_properties.append_array(rlink_settings.skip_properties)
@@ -93,7 +96,7 @@ func handle_script(context: Context, object: Object, script_or_native: Object) -
             
         if rlink_settings_cs.ValidateName != &"":
             had_validate = true
-            if context.compat.comp_has_method(object, rlink_settings_cs.ValidateName):
+            if __compat.comp_has_method(object, rlink_settings_cs.ValidateName):
                 validate_name = rlink_settings_cs.ValidateName
         
         skip_properties.append_array(rlink_settings_cs.SkipProperties)
@@ -102,13 +105,11 @@ func handle_script(context: Context, object: Object, script_or_native: Object) -
         if rlink_settings_cs.MaxDepth > 0:
             max_depth = rlink_settings_cs.MaxDepth
 
-
     if !had_validate and validate_name == &"":
         for name in context.settings.validate_changes_names:
-            if context.compat.comp_has_method(object, name):
+            if __compat.comp_has_method(object, name):
                 validate_name = name
                 break
-    
 
     if validate_name != &"":
         if script_or_native is Script and script_or_native.get_class() == "CSharpScript":
@@ -153,8 +154,8 @@ func get_method_info(method: StringName) -> MethodInfo:
     
     info = _parse_method_info(method)
     return info
-    
-    
+
+
 func get_arg_count(method: StringName) -> int:
     var info: MethodInfo = _methods_arg_infos.get(method)
     if info != null: return info.arg_count
@@ -174,20 +175,26 @@ func get_check_return(method: StringName) -> bool:
 func _parse_method_info(method: StringName) -> MethodInfo:
     var object := instance_from_id(object_id)
     if object == null: return null
+
+    var methods: Dictionary = {}
+    for method_dict in object.get_method_list():
+        methods[method_dict["name"]] = method_dict
     
-    var method_list: Array[Dictionary]
     var script: Script = object.get_script()
-    if script != null: method_list = script.get_script_method_list()
-    else: method_list = object.get_method_list()
-    
-    var info: MethodInfo = _search_method(method_list, method)
-    if info == null:
-        info = _search_method(ClassDB.class_get_method_list(object.get_class()), method)
+    if not __compat.object_get_method_list_fixed() and script != null:
+        for method_dict in script.get_script_method_list():
+            methods[method_dict["name"]] = method_dict
+        
+    var info := _search_method(methods, method)
+    if info == null and __compat.object_arg_count_available():
+        info = MethodInfo.new()
+        info.arg_count = object.call(&"get_method_argument_count", method)
     return info
 
 
-func _search_method(method_list: Array[Dictionary], method: StringName) -> MethodInfo:
-    for method_dict in method_list:
+func _search_method(methods: Dictionary, method: StringName) -> MethodInfo:
+    if methods.has(method):
+        var method_dict: Dictionary = methods[method]
         if method_dict["name"] == method:
             var arr: Array = method_dict["args"]
             var info := MethodInfo.new()

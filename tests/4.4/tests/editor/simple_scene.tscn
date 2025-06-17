@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://dx0jx4oij73ou"]
 
-[ext_resource type="Script" path="res://tests/editor/scripts/simple_scene.gd" id="1_7rfpg"]
+[ext_resource type="Script" uid="uid://c4mp7wxonwbxt" path="res://tests/editor/gdscript_scripts/simple_scene.gd" id="1_7rfpg"]
 
 [node name="SimpleScene" type="Control"]
 layout_mode = 3
