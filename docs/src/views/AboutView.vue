@@ -1,7 +1,14 @@
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n({
+    useScope: 'local',
+});
+</script>
+
 <template>
     <div class="about">
-        <h1>This is an about page</h1>
-        <h1>More custom text</h1>
+        <h1>{{ t('about') }}</h1>
+        <h1>{{ t('text') }}</h1>
     </div>
 </template>
 
@@ -16,3 +23,17 @@
     }
 }
 </style>
+
+<i18n locale="en">
+{
+  "about": "This is an about page",
+  "text": "More custom text",
+}
+</i18n>
+
+<i18n locale="ru">
+{
+  "about": "Это страница про нас",
+  "text": "Больше своего текста",
+}
+</i18n>

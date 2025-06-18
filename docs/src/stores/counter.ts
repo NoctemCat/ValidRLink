@@ -1,12 +1,15 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
+import { computed } from 'vue';
+import { defineStore } from 'pinia';
+import { usePreferredDark } from '@vueuse/core';
+import { useRoute } from 'vue-router';
 
-export const useCounterStore = defineStore('counter', () => {
-    const count = ref(0)
-    const doubleCount = computed(() => count.value * 2)
-    function increment() {
-        count.value++
-    }
-
-    return { count, doubleCount, increment }
-})
+export const useModeStore = defineStore('counter', () => {
+    const route = useRoute();
+    const mode = computed(() => {
+        if (route.query.mode == 'dark' || route.query.mode == 'light') {
+            return route.query.mode;
+        }
+        return usePreferredDark() ? 'dark' : 'light';
+    });
+    return { mode };
+});

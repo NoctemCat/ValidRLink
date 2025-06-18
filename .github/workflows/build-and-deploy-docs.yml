@@ -44,6 +44,10 @@ jobs:
           yarn build
         working-directory: ./docs
 
+      - name: Create 404
+        run: cp dist/index.html dist/404.html
+        working-directory: ./docs
+
       - name: Upload as artifact
         id: deployment
         uses: actions/upload-pages-artifact@v3 

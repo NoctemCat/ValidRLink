@@ -1,6 +1,24 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { RouterLink, RouterView, useRoute, useRouter, type Router } from 'vue-router';
+import HelloWorld from './components/HelloWorld.vue';
+import { useI18n } from 'vue-i18n';
+import { watchEffect } from 'vue';
+import { useModeStore } from './stores/counter';
+
+const route = useRoute();
+const router = useRouter();
+const { mode } = useModeStore();
+const { locale } = useI18n({ useScope: 'global' });
+
+watchEffect(() => {
+    locale.value = route.params.lang as string;
+});
+watchEffect(() => {
+    if (route.query.mode != 'light' && route.query.mode != 'dark') {
+        router.replace({ ...route, query: { ...route.query, mode } });
+    }
+});
 </script>
 
 <template>
@@ -8,11 +26,13 @@ import HelloWorld from './components/HelloWorld.vue'
         <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
         <div class="wrapper">
-            <HelloWorld msg="You did it!" />
+            <HelloWorld :msg="'You did it! ' + mode" />
 
             <nav>
-                <RouterLink to="/">Home</RouterLink>
-                <RouterLink to="/about">About</RouterLink>
+                <RouterLink :to="{ name: 'home' }">Home</RouterLink>
+                <RouterLink :to="{ name: 'about' }">About</RouterLink>
+                <RouterLink :to="{ params: { lang: 'en' } }">En</RouterLink>
+                <RouterLink :to="{ params: { lang: 'ru' } }">Ru</RouterLink>
             </nav>
         </div>
     </header>
