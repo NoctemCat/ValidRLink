@@ -1,29 +1,41 @@
 <script setup lang="ts">
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { RouterLink, RouterView, useRoute, useRouter, type Router } from 'vue-router';
+import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue';
 import { useI18n } from 'vue-i18n';
 import { watchEffect } from 'vue';
 import { useModeStore } from './stores/counter';
+import { storeToRefs } from 'pinia';
 
 const route = useRoute();
 const router = useRouter();
-const { mode } = useModeStore();
 const { locale } = useI18n({ useScope: 'global' });
+
+const modeStore = useModeStore();
+const { mode, isDark, isDifferentFromPreferred } = storeToRefs(modeStore);
+const { setMode } = modeStore;
 
 watchEffect(() => {
     locale.value = route.params.lang as string;
 });
 watchEffect(() => {
-    if (route.query.mode != 'light' && route.query.mode != 'dark') {
-        router.replace({ ...route, query: { ...route.query, mode } });
+    if (isDifferentFromPreferred.value) {
+        router.replace({ ...route, query: { ...route.query, mode: mode.value } });
+    } else {
+        router.replace({ ...route, query: { ...route.query, mode: undefined } });
+    }
+});
+watchEffect(() => {
+    if (isDark.value) {
+        document.body.classList.add('dark');
+    } else if (document.body.classList.contains('dark')) {
+        document.body.classList.remove('dark');
     }
 });
 </script>
 
 <template>
     <header>
-        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+        <img alt="ValidRLink logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
         <div class="wrapper">
             <HelloWorld :msg="'You did it! ' + mode" />
@@ -33,6 +45,8 @@ watchEffect(() => {
                 <RouterLink :to="{ name: 'about' }">About</RouterLink>
                 <RouterLink :to="{ params: { lang: 'en' } }">En</RouterLink>
                 <RouterLink :to="{ params: { lang: 'ru' } }">Ru</RouterLink>
+                <a @click="setMode('dark')">Dark</a>
+                <a @click="setMode('light')">Light</a>
             </nav>
         </div>
     </header>
