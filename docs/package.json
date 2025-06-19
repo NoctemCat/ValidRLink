@@ -1,0 +1,18 @@
+{
+  "name": "vitepress2",
+  "packageManager": "yarn@4.9.2",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@vue/tsconfig": "^0.7.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitepress": "^1.6.3",
+    "vue": "^3.5.17"
+  },
+  "scripts": {
+    "docs:dev": "vitepress dev src",
+    "docs:build": "vitepress build src",
+    "docs:preview": "vitepress preview src"
+  }
+}

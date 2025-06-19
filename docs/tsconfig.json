@@ -1,0 +1,14 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "strict": true,
+    "esModuleInterop": true,
+  },
+  "include": [
+    "./shims.d.ts",
+    "./src/.vitepress/**/*.ts", 
+    "./src/.vitepress/**/*.mts",
+    "./src/.vitepress/**/*.vue"
+  ],
+}

@@ -1,0 +1,8 @@
+.yarn
+
+# Whether you use PnP or not, the node_modules folder is often used to store
+# build artifacts that should be gitignored
+node_modules
+
+src/.vitepress/dist
+src/.vitepress/cache
