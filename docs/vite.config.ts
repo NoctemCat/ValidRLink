@@ -54,29 +54,12 @@ export default defineConfig({
                                                 as: 'font',
                                                 type: 'font/woff2',
                                                 href: m[1],
-                                                // crossorigin: 'anonymous',
+                                                crossorigin: true,
                                             },
                                         });
                                     }
                                 }
                             }
-                            // if (
-                            //     k.includes('inter') &&
-                            //     k.endsWith('.woff2') &&
-                            //     (k.includes('latin') || k.includes('cyrillic'))
-                            // ) {
-                            //     console.log(v);
-                            //     // tags.push({
-                            //     //     injectTo: 'head-prepend',
-                            //     //     tag: 'link',
-                            //     //     attrs: {
-                            //     //         rel: 'preload',
-                            //     //         as: 'font',
-                            //     //         type: 'font/woff2',
-                            //     //         href: `/ValidRLink/${v.fileName}`,
-                            //     //     },
-                            //     // });
-                            // }
                         }
                     }
                     return tags;
