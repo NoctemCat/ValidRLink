@@ -4,6 +4,7 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
     title: "ValidRLink Docs",
     description: "Plugin for Godot",
+    base: "/ValidRLink/",
 
     themeConfig: {
         logo: "/logo.svg",
