@@ -13,6 +13,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.6",
+    "@unhead/vue": "^2.0.10",
     "@vueuse/core": "^13.3.0",
     "pinia": "^3.0.1",
     "vue": "^3.5.13",
@@ -23,6 +25,7 @@
     "@intlify/unplugin-vue-i18n": "^6.0.8",
     "@tsconfig/node22": "^22.0.1",
     "@types/node": "^22.14.0",
+    "@unhead/addons": "^2.0.10",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.5.0",
