@@ -1,5 +1,5 @@
 ---
-title: ValidRLink Docs | Introduction
+title: Introduction
 description: Introduction
 outline: [2, 4]
 ---

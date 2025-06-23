@@ -1,5 +1,5 @@
 ---
-title: ValidRLink Docs | Plugin Settings
+title: Plugin Settings
 description: Plugin Settings
 outline: [2, 4]
 ---

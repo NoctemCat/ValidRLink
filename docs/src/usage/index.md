@@ -1,5 +1,5 @@
 ---
-title: ValidRLink Docs | Basic Usage
+title: Basic Usage
 description: Basic Usage
 outline: [2, 4]
 ---

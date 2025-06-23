@@ -1,5 +1,5 @@
 ---
-title: ValidRLink Docs | Local Settings
+title: Local Settings
 description: Local Settings
 outline: [2, 4]
 ---

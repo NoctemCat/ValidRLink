@@ -1,5 +1,5 @@
 ---
-title: ValidRLink Docs | Installation
+title: Installation
 description: Installation
 outline: [2, 4]
 ---

@@ -1,5 +1,5 @@
 ---
-title: ValidRLink Docs | Limitations
+title: Limitations
 description: Limitations
 outline: [2, 4]
 ---

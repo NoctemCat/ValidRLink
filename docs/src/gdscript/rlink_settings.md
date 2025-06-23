@@ -1,5 +1,5 @@
 ---
-title: ValidRLink Docs | RLinkSettings
+title: RLinkSettings
 description: Documentation for RLinkSettings
 outline: [2, 4]
 ---

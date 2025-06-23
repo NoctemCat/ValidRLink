@@ -1,5 +1,5 @@
 ---
-title: ValidRLink Docs | RLinkCS
+title: RLinkCS
 description: Documentation for RLinkCS
 outline: [2, 4]
 ---
