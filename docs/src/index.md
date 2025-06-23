@@ -3,22 +3,25 @@
 layout: home
 
 hero:
-  name: "ValidRLink Docs"
+  name: "ValidRLink"
   text: "Plugin for Godot"
-  tagline: My great project tagline
+  tagline: Adds ability to validate exported values and workable non-tool buttons
+  image:
+    src: /web-app-manifest-512x512.png
+    alt: ValidRLink
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: Get Started
+      link: /introduction
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: View on GitHub
+      link: https://github.com/NoctemCat/ValidRLink
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Data Validation
+    details: Works even in a non-tool class
+  - title: Stateful Buttons
+    details: Can be edited
+  - title: C#
+    details: Fully supported
 ---

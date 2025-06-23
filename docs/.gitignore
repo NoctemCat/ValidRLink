@@ -6,3 +6,7 @@ node_modules
 
 src/.vitepress/dist
 src/.vitepress/cache
+
+.vscode/
+.vscode/**
+!.vscode/*.code-snippets

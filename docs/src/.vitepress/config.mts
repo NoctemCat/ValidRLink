@@ -8,18 +8,98 @@ export default defineConfig({
 
     themeConfig: {
         logo: "/logo.svg",
-        // https://vitepress.dev/reference/default-theme-config
+        search: {
+            provider: "local",
+            options: {
+                locales: {
+                    ru: {
+                        translations: {
+                            button: {
+                                buttonText: "Поиск",
+                                buttonAriaLabel: "Поиск",
+                            },
+                            modal: {
+                                displayDetails: "Отобразить подробный список",
+                                resetButtonTitle: "Сбросить поиск",
+                                backButtonTitle: "Закрыть поиск",
+                                noResultsText: "Нет результатов по запросу",
+                                footer: {
+                                    selectText: "выбрать",
+                                    selectKeyAriaLabel: "выбрать",
+                                    navigateText: "перейти",
+                                    navigateUpKeyAriaLabel: "стрелка вверх",
+                                    navigateDownKeyAriaLabel: "стрелка вниз",
+                                    closeText: "закрыть",
+                                    closeKeyAriaLabel: "esc",
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+
         nav: [
             { text: "Home", link: "/" },
-            { text: "Examples", link: "/markdown-examples" },
+            { text: "Docs", link: "/introduction" },
         ],
 
         sidebar: [
             {
-                text: "Examples",
+                text: "Setup",
+                collapsed: false,
                 items: [
-                    { text: "Markdown Examples", link: "/markdown-examples" },
-                    { text: "Runtime API Examples", link: "/api-examples" },
+                    { text: "Introduction", link: "/introduction" },
+                    { text: "Installation", link: "/installation" },
+                ],
+            },
+            {
+                text: "Usage",
+                collapsed: false,
+                items: [
+                    { text: "Basic Usage", link: "/usage/" },
+                    {
+                        text: "How it works?",
+                        link: "/usage/how_it_works",
+                    },
+                    { text: "Limitations", link: "/usage/limitations" },
+                    { text: "Plugin Settings", link: "/usage/plugin_settings" },
+                    { text: "Local Settings", link: "/usage/local_settings" },
+                ],
+            },
+            {
+                text: "Classes",
+                items: [
+                    {
+                        text: "GDScript Classes",
+                        collapsed: false,
+                        items: [
+                            { text: "RLink", link: "/gdscript/rlink" },
+                            {
+                                text: "RLinkButton",
+                                link: "/gdscript/rlink_button",
+                            },
+                            {
+                                text: "RLinkSetting",
+                                link: "/gdscript/rlink_settings",
+                            },
+                        ],
+                    },
+                    {
+                        text: "C# Classes",
+                        collapsed: false,
+                        items: [
+                            { text: "RLinkCS", link: "/csharp/RLinkCS" },
+                            {
+                                text: "RLinkButtonCS",
+                                link: "/csharp/RLinkButtonCS",
+                            },
+                            {
+                                text: "RLinkSettingCS",
+                                link: "/csharp/RLinkSettingsCS",
+                            },
+                        ],
+                    },
                 ],
             },
         ],
@@ -27,39 +107,47 @@ export default defineConfig({
         socialLinks: [
             { icon: "github", link: "https://github.com/NoctemCat/ValidRLink" },
         ],
+
+        footer: {
+            message:
+                'Released under the <a href="https://github.com/NoctemCat/ValidRLink/blob/main/LICENSE">MIT License</a>',
+            copyright:
+                'Copyright © 2025 <a href="https://github.com/NoctemCat">NoctemCat</a>',
+        },
     },
+
     locales: {
         root: {
             label: "English",
             lang: "en",
         },
-        ru: {
-            label: "Русский",
-            lang: "ru",
+        // ru: {
+        //     label: "Русский",
+        //     lang: "ru",
 
-            themeConfig: {
-                nav: [
-                    { text: "Home", link: "/" },
-                    { text: "Examples", link: "/ru/markdown-examples" },
-                ],
+        //     themeConfig: {
+        //         nav: [
+        //             { text: "Home", link: "/" },
+        //             { text: "Examples", link: "/ru/markdown-examples" },
+        //         ],
 
-                sidebar: [
-                    {
-                        text: "Examples",
-                        items: [
-                            {
-                                text: "Markdown Examples",
-                                link: "/ru/markdown-examples",
-                            },
-                            {
-                                text: "Runtime API Examples",
-                                link: "/ru/api-examples",
-                            },
-                        ],
-                    },
-                ],
-            },
-        },
+        //         sidebar: [
+        //             {
+        //                 text: "Examples",
+        //                 items: [
+        //                     {
+        //                         text: "Markdown Examples",
+        //                         link: "/ru/markdown-examples",
+        //                     },
+        //                     {
+        //                         text: "Runtime API Examples",
+        //                         link: "/ru/api-examples",
+        //                     },
+        //                 ],
+        //             },
+        //         ],
+        //     },
+        // },
     },
 
     head: [
@@ -68,7 +156,7 @@ export default defineConfig({
             {
                 rel: "icon",
                 type: "image/png",
-                href: "/favicon-96x96.png",
+                href: "/ValidRLink/favicon-96x96.png",
                 sizes: "96x96",
             },
         ],
@@ -77,14 +165,14 @@ export default defineConfig({
             {
                 rel: "icon",
                 type: "image/svg+xml",
-                href: "/favicon.svg",
+                href: "/ValidRLink/favicon.svg",
             },
         ],
         [
             "link",
             {
                 rel: "shortcut icon",
-                href: "/favicon.svg",
+                href: "/ValidRLink/favicon.svg",
             },
         ],
         [
@@ -92,14 +180,14 @@ export default defineConfig({
             {
                 rel: "apple-touch-icon",
                 sizes: "180x180",
-                href: "/apple-touch-icon.png",
+                href: "/ValidRLink/apple-touch-icon.png",
             },
         ],
         [
             "link",
             {
                 rel: "manifest",
-                href: "/site.webmanifest",
+                href: "/ValidRLink/site.webmanifest",
             },
         ],
     ],
