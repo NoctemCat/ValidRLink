@@ -1,6 +1,7 @@
 # ValidRLink
 
 **ValidRLink** is a Godot plugin that supports 4.1+ version.
+Adds ability to validate exported values and workable non-tool buttons.
 Everything is workable in a non-tool class
 
 ## Documentation
@@ -21,7 +22,7 @@ func validate_changes() -> void:
     elif int_var > 100: int_var = 100
 ```
 
-### Add Buttons
+### Add Button
 
 ```gdscript
 @export var hello_world := RLinkButton.new(hello_world_impl)
