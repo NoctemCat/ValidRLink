@@ -38,7 +38,7 @@ click is pressed
 ### Validate Use History
 
 With this on, validate uses editor's history when it flushes values, i.e.
-all action can be undone, with some [caveats](./validation). When off,
+all action can be undone, with some [caveats](./limitations). When off,
 flushes changes directly, they can't be undone
 
 ### Copy Max Depth
