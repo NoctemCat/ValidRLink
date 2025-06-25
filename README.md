@@ -2,7 +2,19 @@
 
 **ValidRLink** is a Godot plugin that supports 4.1+ version.
 Adds ability to validate exported values and workable non-tool buttons.
-Everything is workable in a non-tool class
+Everything is workable in a non-tool class.
+
+If it detects any changes in inspector it will call your own method where 
+you can check exported values or set them, you can change the method name in settings.
+
+You can also export buttons that will call your methods, similar to 
+`@export_tool_button` only your classes doesn't need to be `@tool`
+
+By the nature of how it works, it will only work with exported data, while 
+inside your methods the instance doesn't have any children or parents and 
+it's not in the tree. To work with the scene your method can accept helper 
+class [`RLink`](https://noctemcat.github.io/ValidRLink/usage/#working-with-scene), 
+which provides common operations on the tree
 
 ## Documentation
 
